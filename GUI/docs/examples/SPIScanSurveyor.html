@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Deploy | SPI-Scan Surveyor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GUI SPI-Scan Surveyor">
+    <meta name="author" content="Benthic Science Limited">
+	<!-- Version 0.1.0 21 April 2012 D-Space/Benthic Science Limited --!>
+	<!-- Open-source under the Apache License Version 2.0, January 2004 http://www.apache.org/licenses/ --!>
+	<!-- Based on the Twitter Bootstrap --!>
+
+    <!-- Le styles -->
+    <link href="../assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="../assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="../assets/ico/SPIfavicon2.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="../assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="../assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="../assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">SPI-Scan Surveyor</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+	      <li class="active"><a href="./SPIScanSurveyor.html">DEPLOY</a>
+              <li><a href="./SETUP.html">setup</a></li>
+              <li><a href="./IO.html">input/output</a></li>
+              <li><a href="./FILES.html">files</a></li>
+            </ul>
+ 		<p align="right"><font color="red">Sys Temp XX &deg;C</font><img src="../assets/img/SPIscanlogo.png" width="125px" height="40px"></p>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+ <div class="row">
+        <div class="span8">
+           <p align="center"><a class="btn" href="#">Fit in window</a><a class="btn" href="#">Real size</a><a class="btn" href="#">Pixel for pixel</a></p>
+          <h3>Main Scan View</h3>
+           <iframe width="100%" name="scanframeborder="1"></iframe>
+        </div>
+        <div class="span4">
+<form class="well">          
+<table border="0" align="center">
+<TBODY>
+	<TR><TD align="center" colspan="4"><h3>Deployment Camera View</h3>
+        <TR><TD align="center" colspan="4"><iframe width="200" height="150" src="http://youtu.be/eh_HUIJkRzU" frameborder=1 name="webcamfeed" scrolling="auto" allowfullscreen></iframe>
+	<TR><TD align="center"><a class="btn" href="#" >Lasers<i class="icon-asterisk"></i></a>
+	<TD align="center"><a class="btn" href="#">Start<i class="icon-play"></i></a><TD align="center"><a class="btn" href="#">Stop<i class="icon-stop"></i></a><TD align="center"><a class="btn" href="#">Capture<i class="icon-camera"></i></a>
+	<TR><TD align="center" colspan="4"><label class="control-label" for="select01">Scan Resolution</label>
+		<div class="controls">
+		<select id="scanresolution">
+		<option> 75 dpi</option>
+		<option>125 dpi</option>
+		<option>300 dpi</option>
+		<option>600 dpi</option>		
+		</div>
+	<TR><TD align="center" colspan="4"><a class="btn btn-warning btn-large">Save Scan</a>
+	<TR><TD align="center" colspan="2"><a class="btn btn-primary btn-large">Preview</a>
+	<TD align="center" colspan="2"><a class="btn btn-primary btn-large">Acquire</a>
+	<TR><TD align="center" colspan="2"><a class="btn btn-inverse btn-large">Pump 1</a><TD align="center" colspan="2"><a class="btn btn-inverse btn-large">Pump 2</a>
+	<TR><TD align="left" colspan="4">File Prefix<nbsp><nbsp><input type="text" class="input-small">
+	<TR><TD align="left" colspan="4"><label class="control-label" for="textarea">Scan Memo</label><textarea class="input-xlarge" id="memo" rows="3"></textarea>
+	<TR><TD align="center" colspan="4"><label class="control-label" for="select01">LED Brightness</label>
+		<div class="controls">
+		<select id="LEDBright">
+		<option> Off</option>
+		<option> 10%</option>
+		<option> 20%</option>
+		<option> 30%</option>
+		<option> 40%</option>
+		<option> 50%</option>
+		<option> 60%</option>
+		<option> 70%</option>
+		<option> 80%</option>
+		<option>100%</option>
+		</div>
+	<TR><TD colspan="2"><label class="checkbox"><input type="checkbox">Autoscan</label>
+</TBODY>
+</table>
+</form>
+       </div>
+      </div>
+<HR>
+      <footer>
+        <p align="right"><a class="btn" href="./SPIScanManual.html" target="blank">Manual <i class="icon-question-sign"></i></a></p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/bootstrap-transition.js"></script>
+    <script src="../assets/js/bootstrap-alert.js"></script>
+    <script src="../assets/js/bootstrap-modal.js"></script>
+    <script src="../assets/js/bootstrap-dropdown.js"></script>
+    <script src="../assets/js/bootstrap-scrollspy.js"></script>
+    <script src="../assets/js/bootstrap-tab.js"></script>
+    <script src="../assets/js/bootstrap-tooltip.js"></script>
+    <script src="../assets/js/bootstrap-popover.js"></script>
+    <script src="../assets/js/bootstrap-button.js"></script>
+    <script src="../assets/js/bootstrap-collapse.js"></script>
+    <script src="../assets/js/bootstrap-carousel.js"></script>
+    <script src="../assets/js/bootstrap-typeahead.js"></script>
+
+  </body>
+</html>
