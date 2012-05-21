@@ -19,53 +19,20 @@ The Arduino is predefined as driving:
  
 */
 
+#include "SPIproto.h"      // Serial protocol constants
+
 // Configurable parameters
 enum {
   kBaudRate = 115200,
-  kMaxMsgSize = 50      // Max data size
+  kMaxMsgSize = 50,      // Max data size
+  
+  kTotalSize = kHdrSize + kMaxMsgSize + kCksumSize,
 };
 
 // Less configurable parameters
-enum {
-  kHdrSize = 4,
-  kCmdPos = 1,
-  kIDPos  = 2,
-  kLenPos = 3,
-  kDataPos = 4,
-  kCksumSize = 1,
-  kTotalSize = kHdrSize + kMaxMsgSize + kCksumSize,
-  kSyncByte  = 0xAA
-};
-
-enum {
-  // Responses sent by the SPI
-  kCCNoErr,        // No parameters
-  kCCError,        // 1 byte error code, 4 bytes error info
-  kCCSysInfo,      // Character string
-  kCCPinStates,    // pin states, list of HIGH/LOW
-  kCCPinValues,    // pin analog values, list of 16 bits MSB-first.
-  
-  // Command codes sent to the SPI
-  kCCGetSysInfo  = 0x80,   // No parameters
-  kCCGetPins,           // n byte pin#
-  kCCSetPins,           // n byte pin# + 0x80=on  
-  kCCSetPinModes,       // n byte pin# + 0x80=output
-  kCCAnalogReads,       // n byte pin#
-  kCCSetPWM,            // 1 byte pin 1 byte PWM value
-  
-  // Error numbers
-  kNoErr = 0,
-  kErrUnknownCmd,
-  kErrMsgOversize,
-  kErrInvalidPin,
-  kErrOutToInput,
-  kErrPredefined,
-  kErrOddPWM
-};
-
 const char kSysInfoStr[] = "SPIScan " __DATE__ __TIME__ ;
 
-//====================== Predefined ======================
+//====================== Predefined pins  ======================
 
 enum {
   kOnboardLEDPin = 13,
@@ -93,7 +60,7 @@ enum { kNPredefs = sizeof(gPredefinedPins)/sizeof(KnownPin) };
 //======================= Globals ========================
 byte   gInMsg[kTotalSize];
 byte   gCkSum;
-byte   gNetErr;      // Last error 
+Sp_Error   gNetErr;      // Last error 
 long   gNetParam;    // Last error parameter
 short  gInWrIdx = 0;
 
@@ -114,7 +81,7 @@ void setup()
 
 // ----------------------- Packet protocol --------------------------
 
-void SendMsg(byte cmd, byte transID, const void* p, byte len)
+void SendMsg(Sp_Command cmd, byte transID, const void* p, byte len)
 {
   int i;
   byte header[kHdrSize] = { kSyncByte, cmd, transID, len };
@@ -130,12 +97,12 @@ void SendMsg(byte cmd, byte transID, const void* p, byte len)
   Serial.write(cksum);
 }
 
-void SendErrMsg(byte errcode, byte transID, long parameter)
+void SendErrMsg(Sp_Error errcode, byte transID, long parameter)
 {
   SendMsg(kCCError, transID, &parameter, sizeof(parameter));
 }
 
-void SendMsgOrNetErr(byte resp, byte transID, void* dataP, byte nBytes)
+void SendMsgOrNetErr(Sp_Command resp, byte transID, void* dataP, byte nBytes)
 // Either send specified message or an error code if gNetErr is nonzero: useful
 // for responding to list messages
 {
@@ -269,7 +236,7 @@ void SetPinList(byte transID, byte* pinNums, byte nPins)
   
   for (i=0; i<nPins; i++)
     SetPin(pinNums[i] & 0x7F, (pinNums[i] & 0x80) ? HIGH : LOW);
-  SendMsgOrNetErr(kNoErr, transID, NULL, 0);
+  SendMsgOrNetErr(kCCNoErr, transID, NULL, 0);
 }
 
 void SetModeList(byte transID, byte* pinNums, byte nPins)
@@ -278,7 +245,7 @@ void SetModeList(byte transID, byte* pinNums, byte nPins)
   
   for (i=0; i<nPins; i++)
     SetMode(pinNums[i] & 0x7F, (pinNums[i] & 0x80) ? OUTPUT : INPUT);
-  SendMsgOrNetErr(kNoErr, transID, NULL, 0);
+  SendMsgOrNetErr(kCCNoErr, transID, NULL, 0);
 }
 
 void AnalogWriteList(byte transID, byte* pvList, byte nValues)
@@ -295,12 +262,12 @@ void AnalogWriteList(byte transID, byte* pvList, byte nValues)
       analogWrite(pinNum, pvList[1]);
     pvList += 2;
   }
-  SendMsgOrNetErr(kNoErr, transID, NULL, 0);
+  SendMsgOrNetErr(kCCNoErr, transID, NULL, 0);
 }
 
 void ProcessMsg()
 {
-  gNetErr = 0;
+  gNetErr = kNoErr;
   switch (gInMsg[kCmdPos]) {
     
     case kCCGetPins:
@@ -338,9 +305,10 @@ void ProcessMsg()
 
 void loop()
 {
+   //digitalWrite(kOnboardLEDPin,HIGH);
    while (GetMsg())
      ProcessMsg();
     // Do anything else needed in idle time; like blink the LED
-    if (millis() & 0x200) digitalWrite(kOnboardLEDPin,HIGH);
+    if (millis() & 0x80) digitalWrite(kOnboardLEDPin,HIGH);
                      else digitalWrite(kOnboardLEDPin,LOW);
 }
