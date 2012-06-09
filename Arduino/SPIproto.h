@@ -25,7 +25,7 @@ enum {
   kSyncByte  = 0xAA
 };
 
-enum Sp_Command {
+typedef enum Sp_Command {
   // Responses sent by the SPI
   kCCNoErr,        // No parameters
   kCCError,        // 1 byte error code, 4 bytes error info
@@ -40,9 +40,11 @@ enum Sp_Command {
   kCCSetPinModes,       // n byte pin# + 0x80=output
   kCCAnalogReads,       // n byte pin#
   kCCSetPWM,            // 1 byte pin 1 byte PWM value
-};
+  
+  kCCInvalid = 0xFE
+} Sp_Command;
 
-enum Sp_Error {
+typedef enum Sp_Error {
   // Error numbers
   kNoErr = 0,
   kErrUnknownCmd,
@@ -51,4 +53,4 @@ enum Sp_Error {
   kErrOutToInput,
   kErrPredefined,
   kErrOddPWM
-};
+} Sp_Error;

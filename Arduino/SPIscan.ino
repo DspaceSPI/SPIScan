@@ -59,25 +59,10 @@ enum { kNPredefs = sizeof(gPredefinedPins)/sizeof(KnownPin) };
 
 //======================= Globals ========================
 byte   gInMsg[kTotalSize];
-byte   gCkSum;
-Sp_Error   gNetErr;      // Last error 
+byte   gCkSum = 0;
+Sp_Error   gNetErr = kNoErr;      // Last error 
 long   gNetParam;    // Last error parameter
 short  gInWrIdx = 0;
-
-void setup()
-{
-   int i;
-   
-   // Setup predefined state
-   for (i=0 ; i<kNPredefs; i++) {
-     pinMode(gPredefinedPins[i].pinNum, gPredefinedPins[i].outDir);
-     digitalWrite(gPredefinedPins[i].pinNum, gPredefinedPins[i].outState);
-   }
-   // Turn on serial port
-   Serial.begin(kBaudRate);
-   // Turn on I2C as master
-   // Wire.begin();
-}
 
 // ----------------------- Packet protocol --------------------------
 
@@ -87,7 +72,7 @@ void SendMsg(Sp_Command cmd, byte transID, const void* p, byte len)
   byte header[kHdrSize] = { kSyncByte, cmd, transID, len };
   byte cksum = kSyncByte + cmd + transID + len;
   
-  Serial.write(header,kHdrSize);
+  Serial.write(&header[0],kHdrSize);
   if (len>0) {
      const byte* bp = (byte*)p;
      for (i=0; i<len; i++)
@@ -99,7 +84,8 @@ void SendMsg(Sp_Command cmd, byte transID, const void* p, byte len)
 
 void SendErrMsg(Sp_Error errcode, byte transID, long parameter)
 {
-  SendMsg(kCCError, transID, &parameter, sizeof(parameter));
+  uint8_t msg[5] = { errcode, parameter>>24, parameter>>16, parameter>>8, parameter & 0xFF };
+  SendMsg(kCCError, transID, &msg, sizeof(msg));
 }
 
 void SendMsgOrNetErr(Sp_Command resp, byte transID, void* dataP, byte nBytes)
@@ -120,8 +106,10 @@ bool GetMsg()
    byte b;
    
    n = Serial.available();
+   
    for (i=0; i<n; i++) {
      b = Serial.read();
+     //Serial.write(b);
      if (gInWrIdx==0) {
        if (b==kSyncByte) {
          gInMsg[gInWrIdx++] = b;
@@ -133,9 +121,9 @@ bool GetMsg()
         if (gInWrIdx > kLenPos && gInWrIdx >= kHdrSize + gInMsg[kLenPos] + kCksumSize) {
             // Message complete; reset wridx
             gInWrIdx = 0;
-            if (gCkSum != b)
+            if (gCkSum != b) {
                return false;      // Ignore if it has a bad checksum
-            else if (gInMsg[kLenPos]>kMaxMsgSize) {
+            } else if (gInMsg[kLenPos]>kMaxMsgSize) {
                 SendErrMsg(kErrMsgOversize,gInMsg[kIDPos],gInMsg[kLenPos]);    // valid, but too big for buffer
                 return false;
             } else
@@ -303,12 +291,31 @@ void ProcessMsg()
   }
 }
 
+
+//---------------------------- Arduino main ------------------------
+
+void setup()
+{
+   int i;
+   
+   // Setup predefined state
+   for (i=0 ; i<kNPredefs; i++) {
+     pinMode(gPredefinedPins[i].pinNum, gPredefinedPins[i].outDir);
+     digitalWrite(gPredefinedPins[i].pinNum, gPredefinedPins[i].outState);
+   }
+   // Turn on serial port
+   gInWrIdx = 0;
+   Serial.begin(kBaudRate);
+  
+   SendMsg(kCCSysInfo,0,kSysInfoStr,strlen(kSysInfoStr));
+}
+
+long count = 0;
+
 void loop()
 {
-   //digitalWrite(kOnboardLEDPin,HIGH);
    while (GetMsg())
      ProcessMsg();
-    // Do anything else needed in idle time; like blink the LED
-    if (millis() & 0x80) digitalWrite(kOnboardLEDPin,HIGH);
-                     else digitalWrite(kOnboardLEDPin,LOW);
 }
+
+
