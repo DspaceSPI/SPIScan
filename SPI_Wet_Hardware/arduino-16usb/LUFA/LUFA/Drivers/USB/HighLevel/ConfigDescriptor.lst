@@ -1,0 +1,307 @@
+   1               		.file	"ConfigDescriptor.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               		.section	.text.USB_GetNextDescriptorOfType,"ax",@progbits
+  17               	.global	USB_GetNextDescriptorOfType
+  19               	USB_GetNextDescriptorOfType:
+  20               	.LFB64:
+  21               	.LSM0:
+  22               	.LVL0:
+  23 0000 CF93      		push r28
+  24 0002 DF93      		push r29
+  25               	/* prologue: function */
+  26               	/* frame size = 0 */
+  27               	/* stack size = 2 */
+  28               	.L__stack_usage = 2
+  29 0004 FC01      		movw r30,r24
+  30 0006 DB01      		movw r26,r22
+  31               	.LSM1:
+  32 0008 00C0      		rjmp .L2
+  33               	.LVL1:
+  34               	.L4:
+  35               	.LBB9:
+  36               	.LBB10:
+  37               	.LSM2:
+  38 000a CD91      		ld r28,X+
+  39 000c DC91      		ld r29,X
+  40 000e 1197      		sbiw r26,1
+  41 0010 2881      		ld r18,Y
+  42 0012 30E0      		ldi r19,lo8(0)
+  43               	.LVL2:
+  44               	.LSM3:
+  45 0014 C20F      		add r28,r18
+  46 0016 D31F      		adc r29,r19
+  47 0018 1196      		adiw r26,1
+  48 001a DC93      		st X,r29
+  49 001c CE93      		st -X,r28
+  50               	.LSM4:
+  51 001e 8081      		ld r24,Z
+  52 0020 9181      		ldd r25,Z+1
+  53 0022 821B      		sub r24,r18
+  54 0024 930B      		sbc r25,r19
+  55 0026 9183      		std Z+1,r25
+  56 0028 8083      		st Z,r24
+  57               	.LBE10:
+  58               	.LBE9:
+  59               	.LSM5:
+  60 002a CD91      		ld r28,X+
+  61 002c DC91      		ld r29,X
+  62 002e 1197      		sbiw r26,1
+  63 0030 8981      		ldd r24,Y+1
+  64 0032 8417      		cp r24,r20
+  65 0034 01F0      		breq .L1
+  66               	.LVL3:
+  67               	.L2:
+  68               	.LSM6:
+  69 0036 8081      		ld r24,Z
+  70 0038 9181      		ldd r25,Z+1
+  71 003a 0097      		sbiw r24,0
+  72 003c 01F4      		brne .L4
+  73               	.L1:
+  74               	/* epilogue start */
+  75               	.LSM7:
+  76 003e DF91      		pop r29
+  77 0040 CF91      		pop r28
+  78 0042 0895      		ret
+  79               	.LFE64:
+  81               		.section	.text.USB_GetNextDescriptorOfTypeBefore,"ax",@progbits
+  82               	.global	USB_GetNextDescriptorOfTypeBefore
+  84               	USB_GetNextDescriptorOfTypeBefore:
+  85               	.LFB65:
+  86               	.LSM8:
+  87               	.LVL4:
+  88 0000 CF93      		push r28
+  89 0002 DF93      		push r29
+  90               	/* prologue: function */
+  91               	/* frame size = 0 */
+  92               	/* stack size = 2 */
+  93               	.L__stack_usage = 2
+  94 0004 FC01      		movw r30,r24
+  95 0006 DB01      		movw r26,r22
+  96               	.LSM9:
+  97 0008 00C0      		rjmp .L6
+  98               	.LVL5:
+  99               	.L8:
+ 100               	.LBB11:
+ 101               	.LBB12:
+ 102               	.LSM10:
+ 103 000a CD91      		ld r28,X+
+ 104 000c DC91      		ld r29,X
+ 105 000e 1197      		sbiw r26,1
+ 106 0010 6881      		ld r22,Y
+ 107 0012 70E0      		ldi r23,lo8(0)
+ 108               	.LVL6:
+ 109               	.LSM11:
+ 110 0014 C60F      		add r28,r22
+ 111 0016 D71F      		adc r29,r23
+ 112 0018 1196      		adiw r26,1
+ 113 001a DC93      		st X,r29
+ 114 001c CE93      		st -X,r28
+ 115               	.LSM12:
+ 116 001e 8081      		ld r24,Z
+ 117 0020 9181      		ldd r25,Z+1
+ 118 0022 861B      		sub r24,r22
+ 119 0024 970B      		sbc r25,r23
+ 120 0026 9183      		std Z+1,r25
+ 121 0028 8083      		st Z,r24
+ 122               	.LBE12:
+ 123               	.LBE11:
+ 124               	.LSM13:
+ 125 002a CD91      		ld r28,X+
+ 126 002c DC91      		ld r29,X
+ 127 002e 1197      		sbiw r26,1
+ 128 0030 8981      		ldd r24,Y+1
+ 129 0032 8417      		cp r24,r20
+ 130 0034 01F0      		breq .L5
+ 131               	.LSM14:
+ 132 0036 8217      		cp r24,r18
+ 133 0038 01F4      		brne .L6
+ 134               	.LSM15:
+ 135 003a 1182      		std Z+1,__zero_reg__
+ 136 003c 1082      		st Z,__zero_reg__
+ 137               	.LSM16:
+ 138 003e 00C0      		rjmp .L5
+ 139               	.LVL7:
+ 140               	.L6:
+ 141               	.LSM17:
+ 142 0040 8081      		ld r24,Z
+ 143 0042 9181      		ldd r25,Z+1
+ 144 0044 0097      		sbiw r24,0
+ 145 0046 01F4      		brne .L8
+ 146               	.L5:
+ 147               	/* epilogue start */
+ 148               	.LSM18:
+ 149 0048 DF91      		pop r29
+ 150 004a CF91      		pop r28
+ 151 004c 0895      		ret
+ 152               	.LFE65:
+ 154               		.section	.text.USB_GetNextDescriptorOfTypeAfter,"ax",@progbits
+ 155               	.global	USB_GetNextDescriptorOfTypeAfter
+ 157               	USB_GetNextDescriptorOfTypeAfter:
+ 158               	.LFB66:
+ 159               	.LSM19:
+ 160               	.LVL8:
+ 161 0000 FF92      		push r15
+ 162 0002 0F93      		push r16
+ 163 0004 1F93      		push r17
+ 164 0006 CF93      		push r28
+ 165 0008 DF93      		push r29
+ 166               	/* prologue: function */
+ 167               	/* frame size = 0 */
+ 168               	/* stack size = 5 */
+ 169               	.L__stack_usage = 5
+ 170 000a EC01      		movw r28,r24
+ 171 000c 8B01      		movw r16,r22
+ 172 000e F42E      		mov r15,r20
+ 173               	.LSM20:
+ 174 0010 422F      		mov r20,r18
+ 175               	.LVL9:
+ 176 0012 0E94 0000 		call USB_GetNextDescriptorOfType
+ 177               	.LVL10:
+ 178               	.LSM21:
+ 179 0016 8881      		ld r24,Y
+ 180 0018 9981      		ldd r25,Y+1
+ 181 001a 0097      		sbiw r24,0
+ 182 001c 01F0      		breq .L10
+ 183               	.LSM22:
+ 184 001e CE01      		movw r24,r28
+ 185 0020 B801      		movw r22,r16
+ 186 0022 4F2D      		mov r20,r15
+ 187 0024 0E94 0000 		call USB_GetNextDescriptorOfType
+ 188               	.L10:
+ 189               	/* epilogue start */
+ 190               	.LSM23:
+ 191 0028 DF91      		pop r29
+ 192 002a CF91      		pop r28
+ 193               	.LVL11:
+ 194 002c 1F91      		pop r17
+ 195 002e 0F91      		pop r16
+ 196               	.LVL12:
+ 197 0030 FF90      		pop r15
+ 198               	.LVL13:
+ 199 0032 0895      		ret
+ 200               	.LFE66:
+ 202               		.section	.text.USB_GetNextDescriptorComp,"ax",@progbits
+ 203               	.global	USB_GetNextDescriptorComp
+ 205               	USB_GetNextDescriptorComp:
+ 206               	.LFB67:
+ 207               	.LSM24:
+ 208               	.LVL14:
+ 209 0000 AF92      		push r10
+ 210 0002 BF92      		push r11
+ 211 0004 CF92      		push r12
+ 212 0006 DF92      		push r13
+ 213 0008 EF92      		push r14
+ 214 000a FF92      		push r15
+ 215 000c 0F93      		push r16
+ 216 000e 1F93      		push r17
+ 217 0010 CF93      		push r28
+ 218 0012 DF93      		push r29
+ 219               	/* prologue: function */
+ 220               	/* frame size = 0 */
+ 221               	/* stack size = 10 */
+ 222               	.L__stack_usage = 10
+ 223 0014 8C01      		movw r16,r24
+ 224 0016 EB01      		movw r28,r22
+ 225 0018 5A01      		movw r10,r20
+ 226               	.LSM25:
+ 227 001a 00C0      		rjmp .L13
+ 228               	.LVL15:
+ 229               	.L15:
+ 230               	.LBB13:
+ 231               	.LSM26:
+ 232 001c E880      		ld r14,Y
+ 233 001e F980      		ldd r15,Y+1
+ 234               	.LVL16:
+ 235               	.LBB14:
+ 236               	.LBB15:
+ 237               	.LSM27:
+ 238 0020 F701      		movw r30,r14
+ 239 0022 2081      		ld r18,Z
+ 240 0024 30E0      		ldi r19,lo8(0)
+ 241               	.LVL17:
+ 242               	.LSM28:
+ 243 0026 C701      		movw r24,r14
+ 244 0028 820F      		add r24,r18
+ 245 002a 931F      		adc r25,r19
+ 246 002c 9983      		std Y+1,r25
+ 247 002e 8883      		st Y,r24
+ 248               	.LSM29:
+ 249 0030 F801      		movw r30,r16
+ 250 0032 8081      		ld r24,Z
+ 251 0034 9181      		ldd r25,Z+1
+ 252 0036 821B      		sub r24,r18
+ 253 0038 930B      		sbc r25,r19
+ 254 003a 9183      		std Z+1,r25
+ 255 003c 8083      		st Z,r24
+ 256               	.LBE15:
+ 257               	.LBE14:
+ 258               	.LSM30:
+ 259 003e 8881      		ld r24,Y
+ 260 0040 9981      		ldd r25,Y+1
+ 261 0042 F501      		movw r30,r10
+ 262 0044 0995      		icall
+ 263               	.LVL18:
+ 264 0046 8230      		cpi r24,lo8(2)
+ 265 0048 01F0      		breq .L13
+ 266               	.LSM31:
+ 267 004a 8130      		cpi r24,lo8(1)
+ 268 004c 01F4      		brne .L14
+ 269               	.LSM32:
+ 270 004e E882      		st Y,r14
+ 271 0050 F982      		std Y+1,r15
+ 272               	.LSM33:
+ 273 0052 F801      		movw r30,r16
+ 274 0054 D182      		std Z+1,r13
+ 275 0056 C082      		st Z,r12
+ 276 0058 00C0      		rjmp .L14
+ 277               	.LVL19:
+ 278               	.L13:
+ 279               	.LBE13:
+ 280               	.LSM34:
+ 281 005a F801      		movw r30,r16
+ 282 005c C080      		ld r12,Z
+ 283 005e D180      		ldd r13,Z+1
+ 284 0060 C114      		cp r12,__zero_reg__
+ 285 0062 D104      		cpc r13,__zero_reg__
+ 286 0064 01F4      		brne .L15
+ 287               	.LSM35:
+ 288 0066 82E0      		ldi r24,lo8(2)
+ 289               	.L14:
+ 290               	/* epilogue start */
+ 291               	.LSM36:
+ 292 0068 DF91      		pop r29
+ 293 006a CF91      		pop r28
+ 294               	.LVL20:
+ 295 006c 1F91      		pop r17
+ 296 006e 0F91      		pop r16
+ 297               	.LVL21:
+ 298 0070 FF90      		pop r15
+ 299 0072 EF90      		pop r14
+ 300 0074 DF90      		pop r13
+ 301 0076 CF90      		pop r12
+ 302 0078 BF90      		pop r11
+ 303 007a AF90      		pop r10
+ 304               	.LVL22:
+ 305 007c 0895      		ret
+ 306               	.LFE67:
+ 356               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 ConfigDescriptor.c
+     /tmp/ccTGE1z9.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccTGE1z9.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccTGE1z9.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccTGE1z9.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccTGE1z9.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccTGE1z9.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccTGE1z9.s:19     .text.USB_GetNextDescriptorOfType:0000000000000000 USB_GetNextDescriptorOfType
+     /tmp/ccTGE1z9.s:84     .text.USB_GetNextDescriptorOfTypeBefore:0000000000000000 USB_GetNextDescriptorOfTypeBefore
+     /tmp/ccTGE1z9.s:157    .text.USB_GetNextDescriptorOfTypeAfter:0000000000000000 USB_GetNextDescriptorOfTypeAfter
+     /tmp/ccTGE1z9.s:205    .text.USB_GetNextDescriptorComp:0000000000000000 USB_GetNextDescriptorComp
+
+NO UNDEFINED SYMBOLS

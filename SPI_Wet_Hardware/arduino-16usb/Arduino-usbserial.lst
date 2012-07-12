@@ -1,0 +1,925 @@
+   1               		.file	"Arduino-usbserial.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  15               	.Ltext0:
+  16               		.section	.text.SetupHardware,"ax",@progbits
+  17               	.global	SetupHardware
+  19               	SetupHardware:
+  20               	.LFB84:
+  21               	.LSM0:
+  22               	/* prologue: function */
+  23               	/* frame size = 0 */
+  24               	/* stack size = 0 */
+  25               	.L__stack_usage = 0
+  26               	.LSM1:
+  27 0000 84B7      		in r24,84-32
+  28 0002 877F      		andi r24,lo8(-9)
+  29 0004 84BF      		out 84-32,r24
+  30               	.LSM2:
+  31 0006 28E1      		ldi r18,lo8(24)
+  32               	/* #APP */
+  33               	 ;  143 "Arduino-usbserial.c" 1
+  34 0008 0FB6      		in __tmp_reg__, __SREG__
+  35 000a F894      		cli
+  36 000c 2093 6000 		sts 96, r18
+  37 0010 1092 6000 		sts 96, __zero_reg__
+  38 0014 0FBE      		out __SREG__,__tmp_reg__
+  39               		
+  40               	 ;  0 "" 2
+  41               	.LVL0:
+  42               	/* #NOAPP */
+  43               	.LBB157:
+  44               	.LBB158:
+  45               	.LSM3:
+  46 0016 87E6      		ldi r24,lo8(103)
+  47 0018 90E0      		ldi r25,hi8(103)
+  48 001a 9093 CD00 		sts 204+1,r25
+  49 001e 8093 CC00 		sts 204,r24
+  50               	.LSM4:
+  51 0022 86E0      		ldi r24,lo8(6)
+  52 0024 8093 CA00 		sts 202,r24
+  53               	.LSM5:
+  54 0028 1092 C800 		sts 200,__zero_reg__
+  55               	.LSM6:
+  56 002c 2093 C900 		sts 201,r18
+  57               	.LSM7:
+  58 0030 539A      		sbi 42-32,3
+  59               	.LSM8:
+  60 0032 5A9A      		sbi 43-32,2
+  61               	.LBE158:
+  62               	.LBE157:
+  63               	.LBB159:
+  64               	.LBB160:
+  65               	.LSM9:
+  66 0034 8AB1      		in r24,42-32
+  67 0036 8063      		ori r24,lo8(48)
+  68 0038 8AB9      		out 42-32,r24
+  69               	.LSM10:
+  70 003a 8BB1      		in r24,43-32
+  71 003c 8063      		ori r24,lo8(48)
+  72 003e 8BB9      		out 43-32,r24
+  73               	.LBE160:
+  74               	.LBE159:
+  75               	.LSM11:
+  76 0040 0E94 0000 		call USB_Init
+  77               	.LSM12:
+  78 0044 84E0      		ldi r24,lo8(4)
+  79 0046 85BD      		out 69-32,r24
+  80               	.LSM13:
+  81 0048 5F9A      		sbi 43-32,7
+  82               	.LSM14:
+  83 004a 579A      		sbi 42-32,7
+  84               	/* epilogue start */
+  85               	.LSM15:
+  86 004c 0895      		ret
+  87               	.LFE84:
+  89               		.section	.text.main,"ax",@progbits
+  90               	.global	main
+  92               	main:
+  93               	.LFB83:
+  94               	.LSM16:
+  95 0000 CF92      		push r12
+  96 0002 DF92      		push r13
+  97 0004 EF92      		push r14
+  98 0006 FF92      		push r15
+  99 0008 0F93      		push r16
+ 100 000a 1F93      		push r17
+ 101               	/* prologue: function */
+ 102               	/* frame size = 0 */
+ 103               	/* stack size = 6 */
+ 104               	.L__stack_usage = 6
+ 105               	.LSM17:
+ 106 000c 0E94 0000 		call SetupHardware
+ 107               	.LVL1:
+ 108               	.LBB161:
+ 109               	.LBB162:
+ 110               	.LSM18:
+ 111 0010 8FB7      		in r24,__SREG__
+ 112               	.LVL2:
+ 113               	.LBB163:
+ 114               	.LBB164:
+ 115               	.LSM19:
+ 116               	/* #APP */
+ 117               	 ;  50 "/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/atomic.h" 1
+ 118 0012 F894      		cli
+ 119               	 ;  0 "" 2
+ 120               	.LVL3:
+ 121               	/* #NOAPP */
+ 122               	.LBE164:
+ 123               	.LBE163:
+ 124               	.LSM20:
+ 125 0014 20E0      		ldi r18,lo8(USBtoUSART_Buffer)
+ 126 0016 30E0      		ldi r19,hi8(USBtoUSART_Buffer)
+ 127 0018 3093 0000 		sts USBtoUSART_Buffer+128+1,r19
+ 128 001c 2093 0000 		sts USBtoUSART_Buffer+128,r18
+ 129               	.LSM21:
+ 130 0020 3093 0000 		sts USBtoUSART_Buffer+130+1,r19
+ 131 0024 2093 0000 		sts USBtoUSART_Buffer+130,r18
+ 132               	.LVL4:
+ 133               	.LBB165:
+ 134               	.LBB166:
+ 135               	.LSM22:
+ 136 0028 8FBF      		out __SREG__,r24
+ 137               	.LSM23:
+ 138               	.LVL5:
+ 139               	.LBE166:
+ 140               	.LBE165:
+ 141               	.LBE162:
+ 142               	.LBE161:
+ 143               	.LBB167:
+ 144               	.LBB168:
+ 145               	.LSM24:
+ 146 002a 4FB7      		in r20,__SREG__
+ 147               	.LVL6:
+ 148               	.LBB169:
+ 149               	.LBB170:
+ 150               	.LSM25:
+ 151               	/* #APP */
+ 152               	 ;  50 "/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/atomic.h" 1
+ 153 002c F894      		cli
+ 154               	 ;  0 "" 2
+ 155               	.LVL7:
+ 156               	/* #NOAPP */
+ 157               	.LBE170:
+ 158               	.LBE169:
+ 159               	.LSM26:
+ 160 002e 80E0      		ldi r24,lo8(USARTtoUSB_Buffer)
+ 161 0030 90E0      		ldi r25,hi8(USARTtoUSB_Buffer)
+ 162               	.LVL8:
+ 163 0032 9093 0000 		sts USARTtoUSB_Buffer+128+1,r25
+ 164 0036 8093 0000 		sts USARTtoUSB_Buffer+128,r24
+ 165               	.LSM27:
+ 166 003a 9093 0000 		sts USARTtoUSB_Buffer+130+1,r25
+ 167 003e 8093 0000 		sts USARTtoUSB_Buffer+130,r24
+ 168               	.LVL9:
+ 169               	.LBB171:
+ 170               	.LBB172:
+ 171               	.LSM28:
+ 172 0042 4FBF      		out __SREG__,r20
+ 173               	.LSM29:
+ 174               	.LBE172:
+ 175               	.LBE171:
+ 176               	.LBE168:
+ 177               	.LBE167:
+ 178               	.LSM30:
+ 179               	/* #APP */
+ 180               	 ;  87 "Arduino-usbserial.c" 1
+ 181 0044 7894      		sei
+ 182               	 ;  0 "" 2
+ 183               	/* #NOAPP */
+ 184               	.LBB173:
+ 185               	.LBB174:
+ 186               	.LBB175:
+ 187               	.LBB177:
+ 188               	.LSM31:
+ 189 0046 122F      		mov r17,r18
+ 190 0048 032F      		mov r16,r19
+ 191               	.LBE177:
+ 192               	.LBE175:
+ 193               	.LBE174:
+ 194               	.LBB186:
+ 195               	.LBB187:
+ 196               	.LSM32:
+ 197 004a E82E      		mov r14,r24
+ 198 004c D92E      		mov r13,r25
+ 199               	.LBE187:
+ 200               	.LBE186:
+ 201               	.LSM33:
+ 202 004e 83E0      		ldi r24,lo8(3)
+ 203 0050 F82E      		mov r15,r24
+ 204               	.LVL10:
+ 205               	.L15:
+ 206               	.LBB194:
+ 207               	.LBB195:
+ 208               	.LBB196:
+ 209               	.LBB197:
+ 210               	.LSM34:
+ 211 0052 9FB7      		in r25,__SREG__
+ 212               	.LVL11:
+ 213               	.LBB198:
+ 214               	.LBB199:
+ 215               	.LSM35:
+ 216               	/* #APP */
+ 217               	 ;  50 "/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/atomic.h" 1
+ 218 0054 F894      		cli
+ 219               	 ;  0 "" 2
+ 220               	.LVL12:
+ 221               	/* #NOAPP */
+ 222               	.LBE199:
+ 223               	.LBE198:
+ 224               	.LSM36:
+ 225 0056 8091 0000 		lds r24,USBtoUSART_Buffer+132
+ 226               	.LVL13:
+ 227               	.LBB200:
+ 228               	.LBB201:
+ 229               	.LSM37:
+ 230 005a 9FBF      		out __SREG__,r25
+ 231               	.LSM38:
+ 232               	.LBE201:
+ 233               	.LBE200:
+ 234               	.LBE197:
+ 235               	.LBE196:
+ 236               	.LBE195:
+ 237               	.LBE194:
+ 238               	.LSM39:
+ 239 005c 8038      		cpi r24,lo8(-128)
+ 240 005e 01F0      		breq .L3
+ 241               	.LBB202:
+ 242               	.LSM40:
+ 243 0060 80E0      		ldi r24,lo8(VirtualSerial_CDC_Interface)
+ 244 0062 90E0      		ldi r25,hi8(VirtualSerial_CDC_Interface)
+ 245 0064 0E94 0000 		call CDC_Device_ReceiveByte
+ 246               	.LVL14:
+ 247               	.LSM41:
+ 248 0068 97FD      		sbrc r25,7
+ 249 006a 00C0      		rjmp .L3
+ 250               	.LVL15:
+ 251               	.LBB184:
+ 252               	.LBB176:
+ 253               	.LSM42:
+ 254 006c E091 0000 		lds r30,USBtoUSART_Buffer+128
+ 255 0070 F091 0000 		lds r31,USBtoUSART_Buffer+128+1
+ 256               	.LBE176:
+ 257               	.LBE184:
+ 258               	.LSM43:
+ 259 0074 8083      		st Z,r24
+ 260               	.LBB185:
+ 261               	.LBB183:
+ 262               	.LSM44:
+ 263 0076 E091 0000 		lds r30,USBtoUSART_Buffer+128
+ 264 007a F091 0000 		lds r31,USBtoUSART_Buffer+128+1
+ 265 007e CF01      		movw r24,r30
+ 266               	.LVL16:
+ 267 0080 0196      		adiw r24,1
+ 268 0082 9093 0000 		sts USBtoUSART_Buffer+128+1,r25
+ 269 0086 8093 0000 		sts USBtoUSART_Buffer+128,r24
+ 270 008a 20E0      		ldi r18,hi8(USBtoUSART_Buffer+128)
+ 271 008c 8030      		cpi r24,lo8(USBtoUSART_Buffer+128)
+ 272 008e 9207      		cpc r25,r18
+ 273 0090 01F4      		brne .L4
+ 274               	.LSM45:
+ 275 0092 1183      		std Z+1,r17
+ 276 0094 0283      		std Z+2,r16
+ 277               	.L4:
+ 278               	.LBB178:
+ 279               	.LSM46:
+ 280 0096 9FB7      		in r25,__SREG__
+ 281               	.LVL17:
+ 282               	.LBB179:
+ 283               	.LBB180:
+ 284               	.LSM47:
+ 285               	/* #APP */
+ 286               	 ;  50 "/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/atomic.h" 1
+ 287 0098 F894      		cli
+ 288               	 ;  0 "" 2
+ 289               	.LVL18:
+ 290               	/* #NOAPP */
+ 291               	.LBE180:
+ 292               	.LBE179:
+ 293               	.LSM48:
+ 294 009a 8091 0000 		lds r24,USBtoUSART_Buffer+132
+ 295 009e 8F5F      		subi r24,lo8(-(1))
+ 296 00a0 8093 0000 		sts USBtoUSART_Buffer+132,r24
+ 297               	.LVL19:
+ 298               	.LBB181:
+ 299               	.LBB182:
+ 300               	.LSM49:
+ 301 00a4 9FBF      		out __SREG__,r25
+ 302               	.LSM50:
+ 303               	.LVL20:
+ 304               	.L3:
+ 305               	.LBE182:
+ 306               	.LBE181:
+ 307               	.LBE178:
+ 308               	.LBE183:
+ 309               	.LBE185:
+ 310               	.LBE202:
+ 311               	.LBB203:
+ 312               	.LBB204:
+ 313               	.LBB205:
+ 314               	.LSM51:
+ 315 00a6 8FB7      		in r24,__SREG__
+ 316               	.LVL21:
+ 317               	.LBB206:
+ 318               	.LBB207:
+ 319               	.LSM52:
+ 320               	/* #APP */
+ 321               	 ;  50 "/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/atomic.h" 1
+ 322 00a8 F894      		cli
+ 323               	 ;  0 "" 2
+ 324               	.LVL22:
+ 325               	/* #NOAPP */
+ 326               	.LBE207:
+ 327               	.LBE206:
+ 328               	.LSM53:
+ 329 00aa C090 0000 		lds r12,USARTtoUSB_Buffer+132
+ 330               	.LVL23:
+ 331               	.LBB208:
+ 332               	.LBB209:
+ 333               	.LSM54:
+ 334 00ae 8FBF      		out __SREG__,r24
+ 335               	.LSM55:
+ 336               	.LBE209:
+ 337               	.LBE208:
+ 338               	.LBE205:
+ 339               	.LBE204:
+ 340               	.LBE203:
+ 341               	.LSM56:
+ 342 00b0 A899      		sbic 53-32,0
+ 343 00b2 00C0      		rjmp .L5
+ 344               	.LSM57:
+ 345 00b4 8C2D      		mov r24,r12
+ 346               	.LVL24:
+ 347 00b6 8136      		cpi r24,lo8(97)
+ 348 00b8 00F4      		brsh .+2
+ 349 00ba 00C0      		rjmp .L6
+ 350               	.L5:
+ 351               	.LSM58:
+ 352 00bc A89A      		sbi 53-32,0
+ 353               	.LSM59:
+ 354 00be 8091 0000 		lds r24,USARTtoUSB_Buffer+132
+ 355 00c2 8823      		tst r24
+ 356 00c4 01F0      		breq .L17
+ 357               	.LVL25:
+ 358               	.LBB210:
+ 359               	.LBB211:
+ 360               	.LSM60:
+ 361 00c6 5D98      		cbi 43-32,5
+ 362               	.LBE211:
+ 363               	.LBE210:
+ 364               	.LSM61:
+ 365 00c8 F092 0000 		sts PulseMSRemaining,r15
+ 366 00cc 00C0      		rjmp .L17
+ 367               	.LVL26:
+ 368               	.L10:
+ 369               	.LBB212:
+ 370               	.LBB193:
+ 371               	.LSM62:
+ 372 00ce E091 0000 		lds r30,USARTtoUSB_Buffer+130
+ 373 00d2 F091 0000 		lds r31,USARTtoUSB_Buffer+130+1
+ 374 00d6 6191      		ld r22,Z+
+ 375               	.LVL27:
+ 376               	.LSM63:
+ 377 00d8 F093 0000 		sts USARTtoUSB_Buffer+130+1,r31
+ 378 00dc E093 0000 		sts USARTtoUSB_Buffer+130,r30
+ 379 00e0 20E0      		ldi r18,hi8(USARTtoUSB_Buffer+128)
+ 380 00e2 E030      		cpi r30,lo8(USARTtoUSB_Buffer+128)
+ 381 00e4 F207      		cpc r31,r18
+ 382 00e6 01F4      		brne .L9
+ 383               	.LSM64:
+ 384 00e8 E092 0000 		sts USARTtoUSB_Buffer+130,r14
+ 385 00ec D092 0000 		sts USARTtoUSB_Buffer+131,r13
+ 386               	.L9:
+ 387               	.LBB188:
+ 388               	.LSM65:
+ 389 00f0 9FB7      		in r25,__SREG__
+ 390               	.LVL28:
+ 391               	.LBB189:
+ 392               	.LBB190:
+ 393               	.LSM66:
+ 394               	/* #APP */
+ 395               	 ;  50 "/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/atomic.h" 1
+ 396 00f2 F894      		cli
+ 397               	 ;  0 "" 2
+ 398               	.LVL29:
+ 399               	/* #NOAPP */
+ 400               	.LBE190:
+ 401               	.LBE189:
+ 402               	.LSM67:
+ 403 00f4 8091 0000 		lds r24,USARTtoUSB_Buffer+132
+ 404 00f8 8150      		subi r24,lo8(-(-1))
+ 405 00fa 8093 0000 		sts USARTtoUSB_Buffer+132,r24
+ 406               	.LVL30:
+ 407               	.LBB191:
+ 408               	.LBB192:
+ 409               	.LSM68:
+ 410 00fe 9FBF      		out __SREG__,r25
+ 411               	.LSM69:
+ 412               	.LBE192:
+ 413               	.LBE191:
+ 414               	.LBE188:
+ 415               	.LBE193:
+ 416               	.LBE212:
+ 417               	.LSM70:
+ 418 0100 80E0      		ldi r24,lo8(VirtualSerial_CDC_Interface)
+ 419 0102 90E0      		ldi r25,hi8(VirtualSerial_CDC_Interface)
+ 420 0104 0E94 0000 		call CDC_Device_SendByte
+ 421               	.LVL31:
+ 422 0108 CA94      		dec r12
+ 423               	.LVL32:
+ 424               	.L17:
+ 425               	.LSM71:
+ 426 010a CC20      		tst r12
+ 427 010c 01F4      		brne .L10
+ 428               	.LSM72:
+ 429 010e 8091 0000 		lds r24,PulseMSRemaining
+ 430 0112 8823      		tst r24
+ 431 0114 01F0      		breq .L11
+ 432               	.LSM73:
+ 433 0116 8091 0000 		lds r24,PulseMSRemaining
+ 434 011a 8150      		subi r24,lo8(-(-1))
+ 435 011c 8093 0000 		sts PulseMSRemaining,r24
+ 436 0120 8091 0000 		lds r24,PulseMSRemaining
+ 437 0124 8823      		tst r24
+ 438 0126 01F4      		brne .L11
+ 439               	.LVL33:
+ 440               	.LBB213:
+ 441               	.LBB214:
+ 442               	.LSM74:
+ 443 0128 5D9A      		sbi 43-32,5
+ 444               	.LVL34:
+ 445               	.L11:
+ 446               	.LBE214:
+ 447               	.LBE213:
+ 448               	.LSM75:
+ 449 012a 8091 0000 		lds r24,PulseMSRemaining+1
+ 450 012e 8823      		tst r24
+ 451 0130 01F0      		breq .L6
+ 452               	.LSM76:
+ 453 0132 8091 0000 		lds r24,PulseMSRemaining+1
+ 454 0136 8150      		subi r24,lo8(-(-1))
+ 455 0138 8093 0000 		sts PulseMSRemaining+1,r24
+ 456 013c 8091 0000 		lds r24,PulseMSRemaining+1
+ 457 0140 8823      		tst r24
+ 458 0142 01F4      		brne .L6
+ 459               	.LVL35:
+ 460               	.LBB215:
+ 461               	.LBB216:
+ 462               	.LSM77:
+ 463 0144 5C9A      		sbi 43-32,4
+ 464               	.LVL36:
+ 465               	.L6:
+ 466               	.LBE216:
+ 467               	.LBE215:
+ 468               	.LBB217:
+ 469               	.LBB218:
+ 470               	.LBB219:
+ 471               	.LBB220:
+ 472               	.LSM78:
+ 473 0146 9FB7      		in r25,__SREG__
+ 474               	.LVL37:
+ 475               	.LBB221:
+ 476               	.LBB222:
+ 477               	.LSM79:
+ 478               	/* #APP */
+ 479               	 ;  50 "/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/atomic.h" 1
+ 480 0148 F894      		cli
+ 481               	 ;  0 "" 2
+ 482               	.LVL38:
+ 483               	/* #NOAPP */
+ 484               	.LBE222:
+ 485               	.LBE221:
+ 486               	.LSM80:
+ 487 014a 8091 0000 		lds r24,USBtoUSART_Buffer+132
+ 488               	.LVL39:
+ 489               	.LBB223:
+ 490               	.LBB224:
+ 491               	.LSM81:
+ 492 014e 9FBF      		out __SREG__,r25
+ 493               	.LSM82:
+ 494               	.LBE224:
+ 495               	.LBE223:
+ 496               	.LBE220:
+ 497               	.LBE219:
+ 498               	.LBE218:
+ 499               	.LBE217:
+ 500               	.LSM83:
+ 501 0150 8823      		tst r24
+ 502 0152 01F0      		breq .L12
+ 503               	.LVL40:
+ 504               	.LBB225:
+ 505               	.LBB226:
+ 506               	.LSM84:
+ 507 0154 E091 0000 		lds r30,USBtoUSART_Buffer+130
+ 508 0158 F091 0000 		lds r31,USBtoUSART_Buffer+130+1
+ 509 015c 9191      		ld r25,Z+
+ 510               	.LVL41:
+ 511               	.LSM85:
+ 512 015e F093 0000 		sts USBtoUSART_Buffer+130+1,r31
+ 513 0162 E093 0000 		sts USBtoUSART_Buffer+130,r30
+ 514 0166 80E0      		ldi r24,hi8(USBtoUSART_Buffer+128)
+ 515 0168 E030      		cpi r30,lo8(USBtoUSART_Buffer+128)
+ 516 016a F807      		cpc r31,r24
+ 517 016c 01F4      		brne .L13
+ 518               	.LSM86:
+ 519 016e 1093 0000 		sts USBtoUSART_Buffer+130,r17
+ 520 0172 0093 0000 		sts USBtoUSART_Buffer+131,r16
+ 521               	.L13:
+ 522               	.LBB227:
+ 523               	.LSM87:
+ 524 0176 2FB7      		in r18,__SREG__
+ 525               	.LVL42:
+ 526               	.LBB228:
+ 527               	.LBB229:
+ 528               	.LSM88:
+ 529               	/* #APP */
+ 530               	 ;  50 "/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/atomic.h" 1
+ 531 0178 F894      		cli
+ 532               	 ;  0 "" 2
+ 533               	.LVL43:
+ 534               	/* #NOAPP */
+ 535               	.LBE229:
+ 536               	.LBE228:
+ 537               	.LSM89:
+ 538 017a 8091 0000 		lds r24,USBtoUSART_Buffer+132
+ 539 017e 8150      		subi r24,lo8(-(-1))
+ 540 0180 8093 0000 		sts USBtoUSART_Buffer+132,r24
+ 541               	.LVL44:
+ 542               	.LBB230:
+ 543               	.LBB231:
+ 544               	.LSM90:
+ 545 0184 2FBF      		out __SREG__,r18
+ 546               	.LSM91:
+ 547               	.LVL45:
+ 548               	.L14:
+ 549               	.LBE231:
+ 550               	.LBE230:
+ 551               	.LBE227:
+ 552               	.LBE226:
+ 553               	.LBE225:
+ 554               	.LBB232:
+ 555               	.LBB233:
+ 556               	.LSM92:
+ 557 0186 8091 C800 		lds r24,200
+ 558 018a 85FF      		sbrs r24,5
+ 559 018c 00C0      		rjmp .L14
+ 560               	.LSM93:
+ 561 018e 9093 CE00 		sts 206,r25
+ 562               	.LVL46:
+ 563               	.LBE233:
+ 564               	.LBE232:
+ 565               	.LBB234:
+ 566               	.LBB235:
+ 567               	.LSM94:
+ 568 0192 5C98      		cbi 43-32,4
+ 569               	.LBE235:
+ 570               	.LBE234:
+ 571               	.LSM95:
+ 572 0194 F092 0000 		sts PulseMSRemaining+1,r15
+ 573               	.LVL47:
+ 574               	.L12:
+ 575               	.LSM96:
+ 576 0198 80E0      		ldi r24,lo8(VirtualSerial_CDC_Interface)
+ 577 019a 90E0      		ldi r25,hi8(VirtualSerial_CDC_Interface)
+ 578 019c 0E94 0000 		call CDC_Device_USBTask
+ 579               	.LVL48:
+ 580               	.LSM97:
+ 581 01a0 0E94 0000 		call USB_USBTask
+ 582               	.LBE173:
+ 583               	.LSM98:
+ 584 01a4 00C0      		rjmp .L15
+ 585               	.LFE83:
+ 587               		.section	.text.EVENT_USB_Device_ConfigurationChanged,"ax",@progbits
+ 588               	.global	EVENT_USB_Device_ConfigurationChanged
+ 590               	EVENT_USB_Device_ConfigurationChanged:
+ 591               	.LFB85:
+ 592               	.LSM99:
+ 593               	/* prologue: function */
+ 594               	/* frame size = 0 */
+ 595               	/* stack size = 0 */
+ 596               	.L__stack_usage = 0
+ 597               	.LSM100:
+ 598 0000 80E0      		ldi r24,lo8(VirtualSerial_CDC_Interface)
+ 599 0002 90E0      		ldi r25,hi8(VirtualSerial_CDC_Interface)
+ 600 0004 0E94 0000 		call CDC_Device_ConfigureEndpoints
+ 601               	/* epilogue start */
+ 602               	.LSM101:
+ 603 0008 0895      		ret
+ 604               	.LFE85:
+ 606               		.section	.text.EVENT_USB_Device_UnhandledControlRequest,"ax",@progbits
+ 607               	.global	EVENT_USB_Device_UnhandledControlRequest
+ 609               	EVENT_USB_Device_UnhandledControlRequest:
+ 610               	.LFB86:
+ 611               	.LSM102:
+ 612               	/* prologue: function */
+ 613               	/* frame size = 0 */
+ 614               	/* stack size = 0 */
+ 615               	.L__stack_usage = 0
+ 616               	.LSM103:
+ 617 0000 80E0      		ldi r24,lo8(VirtualSerial_CDC_Interface)
+ 618 0002 90E0      		ldi r25,hi8(VirtualSerial_CDC_Interface)
+ 619 0004 0E94 0000 		call CDC_Device_ProcessControlRequest
+ 620               	/* epilogue start */
+ 621               	.LSM104:
+ 622 0008 0895      		ret
+ 623               	.LFE86:
+ 625               		.section	.text.EVENT_CDC_Device_LineEncodingChanged,"ax",@progbits
+ 626               	.global	EVENT_CDC_Device_LineEncodingChanged
+ 628               	EVENT_CDC_Device_LineEncodingChanged:
+ 629               	.LFB87:
+ 630               	.LSM105:
+ 631               	.LVL49:
+ 632 0000 1F93      		push r17
+ 633 0002 CF93      		push r28
+ 634 0004 DF93      		push r29
+ 635               	/* prologue: function */
+ 636               	/* frame size = 0 */
+ 637               	/* stack size = 3 */
+ 638               	.L__stack_usage = 3
+ 639 0006 EC01      		movw r28,r24
+ 640               	.LVL50:
+ 641               	.LSM106:
+ 642 0008 EC89      		ldd r30,Y+20
+ 643 000a E150      		subi r30,lo8(-(-1))
+ 644 000c E230      		cpi r30,lo8(2)
+ 645 000e 00F4      		brsh .L29
+ 646 0010 F0E0      		ldi r31,lo8(0)
+ 647 0012 E050      		subi r30,lo8(-(CSWTCH.18))
+ 648 0014 F040      		sbci r31,hi8(-(CSWTCH.18))
+ 649 0016 1081      		ld r17,Z
+ 650 0018 00C0      		rjmp .L21
+ 651               	.L29:
+ 652 001a 10E0      		ldi r17,lo8(0)
+ 653               	.L21:
+ 654               	.LVL51:
+ 655               	.LSM107:
+ 656 001c 8B89      		ldd r24,Y+19
+ 657               	.LVL52:
+ 658 001e 8230      		cpi r24,lo8(2)
+ 659 0020 01F4      		brne .L22
+ 660               	.LSM108:
+ 661 0022 1860      		ori r17,lo8(8)
+ 662               	.LVL53:
+ 663               	.L22:
+ 664               	.LSM109:
+ 665 0024 8D89      		ldd r24,Y+21
+ 666 0026 8730      		cpi r24,lo8(7)
+ 667 0028 01F0      		breq .L25
+ 668 002a 8830      		cpi r24,lo8(8)
+ 669 002c 01F0      		breq .L26
+ 670 002e 8630      		cpi r24,lo8(6)
+ 671 0030 01F4      		brne .L23
+ 672               	.LSM110:
+ 673 0032 1260      		ori r17,lo8(2)
+ 674               	.LVL54:
+ 675               	.LSM111:
+ 676 0034 00C0      		rjmp .L23
+ 677               	.L25:
+ 678               	.LSM112:
+ 679 0036 1460      		ori r17,lo8(4)
+ 680               	.LVL55:
+ 681               	.LSM113:
+ 682 0038 00C0      		rjmp .L23
+ 683               	.L26:
+ 684               	.LSM114:
+ 685 003a 1660      		ori r17,lo8(6)
+ 686               	.LVL56:
+ 687               	.L23:
+ 688               	.LSM115:
+ 689 003c 1092 C900 		sts 201,__zero_reg__
+ 690               	.LSM116:
+ 691 0040 1092 C800 		sts 200,__zero_reg__
+ 692               	.LSM117:
+ 693 0044 1092 CA00 		sts 202,__zero_reg__
+ 694               	.LSM118:
+ 695 0048 2F85      		ldd r18,Y+15
+ 696 004a 3889      		ldd r19,Y+16
+ 697 004c 4989      		ldd r20,Y+17
+ 698 004e 5A89      		ldd r21,Y+18
+ 699 0050 2030      		cpi r18,lo8(57600)
+ 700 0052 81EE      		ldi r24,hi8(57600)
+ 701 0054 3807      		cpc r19,r24
+ 702 0056 80E0      		ldi r24,hlo8(57600)
+ 703 0058 4807      		cpc r20,r24
+ 704 005a 80E0      		ldi r24,hhi8(57600)
+ 705 005c 5807      		cpc r21,r24
+ 706 005e 01F0      		breq .L30
+ 707               	.LSM119:
+ 708 0060 CA01      		movw r24,r20
+ 709 0062 B901      		movw r22,r18
+ 710 0064 9695      		lsr r25
+ 711 0066 8795      		ror r24
+ 712 0068 7795      		ror r23
+ 713 006a 6795      		ror r22
+ 714 006c 6058      		subi r22,lo8(-(2000000))
+ 715 006e 7B47      		sbci r23,hi8(-(2000000))
+ 716 0070 814E      		sbci r24,hlo8(-(2000000))
+ 717 0072 9F4F      		sbci r25,hhi8(-(2000000))
+ 718 0074 0E94 0000 		call __udivmodsi4
+ 719               	.LSM120:
+ 720 0078 2150      		subi r18,lo8(-(-1))
+ 721 007a 3040      		sbci r19,hi8(-(-1))
+ 722 007c 00C0      		rjmp .L27
+ 723               	.L30:
+ 724               	.LSM121:
+ 725 007e 20E1      		ldi r18,lo8(16)
+ 726 0080 30E0      		ldi r19,hi8(16)
+ 727               	.L27:
+ 728               	.LSM122:
+ 729 0082 3093 CD00 		sts 204+1,r19
+ 730 0086 2093 CC00 		sts 204,r18
+ 731               	.LSM123:
+ 732 008a 1093 CA00 		sts 202,r17
+ 733               	.LSM124:
+ 734 008e 8F85      		ldd r24,Y+15
+ 735 0090 9889      		ldd r25,Y+16
+ 736 0092 A989      		ldd r26,Y+17
+ 737 0094 BA89      		ldd r27,Y+18
+ 738 0096 8030      		cpi r24,lo8(57600)
+ 739 0098 21EE      		ldi r18,hi8(57600)
+ 740 009a 9207      		cpc r25,r18
+ 741 009c 20E0      		ldi r18,hlo8(57600)
+ 742 009e A207      		cpc r26,r18
+ 743 00a0 20E0      		ldi r18,hhi8(57600)
+ 744 00a2 B207      		cpc r27,r18
+ 745 00a4 01F4      		brne .L31
+ 746               	.LSM125:
+ 747 00a6 80E0      		ldi r24,lo8(0)
+ 748 00a8 00C0      		rjmp .L28
+ 749               	.L31:
+ 750 00aa 82E0      		ldi r24,lo8(2)
+ 751               	.L28:
+ 752               	.LSM126:
+ 753 00ac 8093 C800 		sts 200,r24
+ 754               	.LSM127:
+ 755 00b0 88E9      		ldi r24,lo8(-104)
+ 756 00b2 8093 C900 		sts 201,r24
+ 757               	/* epilogue start */
+ 758               	.LSM128:
+ 759 00b6 DF91      		pop r29
+ 760 00b8 CF91      		pop r28
+ 761               	.LVL57:
+ 762 00ba 1F91      		pop r17
+ 763               	.LVL58:
+ 764 00bc 0895      		ret
+ 765               	.LFE87:
+ 767               		.section	.text.__vector_23,"ax",@progbits
+ 768               	.global	__vector_23
+ 770               	__vector_23:
+ 771               	.LFB88:
+ 772               	.LSM129:
+ 773 0000 1F92      		push __zero_reg__
+ 774 0002 0F92      		push r0
+ 775 0004 0FB6      		in r0,__SREG__
+ 776 0006 0F92      		push r0
+ 777 0008 1124      		clr __zero_reg__
+ 778 000a 2F93      		push r18
+ 779 000c 8F93      		push r24
+ 780 000e 9F93      		push r25
+ 781 0010 EF93      		push r30
+ 782 0012 FF93      		push r31
+ 783               	/* prologue: Signal */
+ 784               	/* frame size = 0 */
+ 785               	/* stack size = 8 */
+ 786               	.L__stack_usage = 8
+ 787               	.LSM130:
+ 788 0014 8091 CE00 		lds r24,206
+ 789               	.LVL59:
+ 790               	.LSM131:
+ 791 0018 9EB3      		in r25,62-32
+ 792 001a 9430      		cpi r25,lo8(4)
+ 793 001c 01F4      		brne .L32
+ 794               	.LVL60:
+ 795               	.LBB236:
+ 796               	.LBB237:
+ 797               	.LSM132:
+ 798 001e E091 0000 		lds r30,USARTtoUSB_Buffer+128
+ 799 0022 F091 0000 		lds r31,USARTtoUSB_Buffer+128+1
+ 800 0026 8083      		st Z,r24
+ 801               	.LSM133:
+ 802 0028 E091 0000 		lds r30,USARTtoUSB_Buffer+128
+ 803 002c F091 0000 		lds r31,USARTtoUSB_Buffer+128+1
+ 804 0030 CF01      		movw r24,r30
+ 805               	.LVL61:
+ 806 0032 0196      		adiw r24,1
+ 807 0034 9093 0000 		sts USARTtoUSB_Buffer+128+1,r25
+ 808 0038 8093 0000 		sts USARTtoUSB_Buffer+128,r24
+ 809 003c 20E0      		ldi r18,hi8(USARTtoUSB_Buffer+128)
+ 810 003e 8030      		cpi r24,lo8(USARTtoUSB_Buffer+128)
+ 811 0040 9207      		cpc r25,r18
+ 812 0042 01F4      		brne .L34
+ 813               	.LSM134:
+ 814 0044 80E0      		ldi r24,lo8(USARTtoUSB_Buffer)
+ 815 0046 90E0      		ldi r25,hi8(USARTtoUSB_Buffer)
+ 816 0048 9283      		std Z+2,r25
+ 817 004a 8183      		std Z+1,r24
+ 818               	.L34:
+ 819               	.LBB238:
+ 820               	.LSM135:
+ 821 004c 9FB7      		in r25,__SREG__
+ 822               	.LVL62:
+ 823               	.LBB239:
+ 824               	.LBB240:
+ 825               	.LSM136:
+ 826               	/* #APP */
+ 827               	 ;  50 "/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/atomic.h" 1
+ 828 004e F894      		cli
+ 829               	 ;  0 "" 2
+ 830               	.LVL63:
+ 831               	/* #NOAPP */
+ 832               	.LBE240:
+ 833               	.LBE239:
+ 834               	.LSM137:
+ 835 0050 8091 0000 		lds r24,USARTtoUSB_Buffer+132
+ 836 0054 8F5F      		subi r24,lo8(-(1))
+ 837 0056 8093 0000 		sts USARTtoUSB_Buffer+132,r24
+ 838               	.LVL64:
+ 839               	.LBB241:
+ 840               	.LBB242:
+ 841               	.LSM138:
+ 842 005a 9FBF      		out __SREG__,r25
+ 843               	.LSM139:
+ 844               	.LVL65:
+ 845               	.L32:
+ 846               	/* epilogue start */
+ 847               	.LBE242:
+ 848               	.LBE241:
+ 849               	.LBE238:
+ 850               	.LBE237:
+ 851               	.LBE236:
+ 852               	.LSM140:
+ 853 005c FF91      		pop r31
+ 854 005e EF91      		pop r30
+ 855 0060 9F91      		pop r25
+ 856 0062 8F91      		pop r24
+ 857 0064 2F91      		pop r18
+ 858 0066 0F90      		pop r0
+ 859 0068 0FBE      		out __SREG__,r0
+ 860 006a 0F90      		pop r0
+ 861 006c 1F90      		pop __zero_reg__
+ 862 006e 1895      		reti
+ 863               	.LFE88:
+ 865               		.section	.text.EVENT_CDC_Device_ControLineStateChanged,"ax",@progbits
+ 866               	.global	EVENT_CDC_Device_ControLineStateChanged
+ 868               	EVENT_CDC_Device_ControLineStateChanged:
+ 869               	.LFB89:
+ 870               	.LSM141:
+ 871               	.LVL66:
+ 872               	/* prologue: function */
+ 873               	/* frame size = 0 */
+ 874               	/* stack size = 0 */
+ 875               	.L__stack_usage = 0
+ 876               	.LSM142:
+ 877 0000 FC01      		movw r30,r24
+ 878 0002 8585      		ldd r24,Z+13
+ 879               	.LVL67:
+ 880               	.LSM143:
+ 881 0004 80FF      		sbrs r24,0
+ 882 0006 00C0      		rjmp .L36
+ 883               	.LSM144:
+ 884 0008 5F98      		cbi 43-32,7
+ 885 000a 0895      		ret
+ 886               	.L36:
+ 887               	.LSM145:
+ 888 000c 5F9A      		sbi 43-32,7
+ 889 000e 0895      		ret
+ 890               	.LFE89:
+ 892               	.global	VirtualSerial_CDC_Interface
+ 893               		.data
+ 896               	VirtualSerial_CDC_Interface:
+ 897 0000 00        		.byte	0
+ 898 0001 03        		.byte	3
+ 899 0002 4000      		.word	64
+ 900 0004 00        		.byte	0
+ 901 0005 04        		.byte	4
+ 902 0006 4000      		.word	64
+ 903 0008 00        		.byte	0
+ 904 0009 02        		.byte	2
+ 905 000a 0800      		.word	8
+ 906 000c 00        		.byte	0
+ 907 000d 0000 0000 		.skip 9,0
+ 907      0000 0000 
+ 907      00
+ 908               		.comm USBtoUSART_Buffer,133,1
+ 909               		.comm USARTtoUSB_Buffer,133,1
+ 910               		.comm PulseMSRemaining,3,1
+ 913               	CSWTCH.18:
+ 914 0016 30        		.byte	48
+ 915 0017 20        		.byte	32
+ 988               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 Arduino-usbserial.c
+     /tmp/ccgu7ZaC.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccgu7ZaC.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccgu7ZaC.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccgu7ZaC.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccgu7ZaC.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccgu7ZaC.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccgu7ZaC.s:19     .text.SetupHardware:0000000000000000 SetupHardware
+     /tmp/ccgu7ZaC.s:92     .text.main:0000000000000000 main
+                            *COM*:0000000000000085 USBtoUSART_Buffer
+                            *COM*:0000000000000085 USARTtoUSB_Buffer
+     /tmp/ccgu7ZaC.s:896    .data:0000000000000000 VirtualSerial_CDC_Interface
+                            *COM*:0000000000000003 PulseMSRemaining
+     /tmp/ccgu7ZaC.s:590    .text.EVENT_USB_Device_ConfigurationChanged:0000000000000000 EVENT_USB_Device_ConfigurationChanged
+     /tmp/ccgu7ZaC.s:609    .text.EVENT_USB_Device_UnhandledControlRequest:0000000000000000 EVENT_USB_Device_UnhandledControlRequest
+     /tmp/ccgu7ZaC.s:628    .text.EVENT_CDC_Device_LineEncodingChanged:0000000000000000 EVENT_CDC_Device_LineEncodingChanged
+     /tmp/ccgu7ZaC.s:913    .data:0000000000000016 CSWTCH.18
+     /tmp/ccgu7ZaC.s:770    .text.__vector_23:0000000000000000 __vector_23
+     /tmp/ccgu7ZaC.s:868    .text.EVENT_CDC_Device_ControLineStateChanged:0000000000000000 EVENT_CDC_Device_ControLineStateChanged
+
+UNDEFINED SYMBOLS
+USB_Init
+CDC_Device_ReceiveByte
+CDC_Device_SendByte
+CDC_Device_USBTask
+USB_USBTask
+CDC_Device_ConfigureEndpoints
+CDC_Device_ProcessControlRequest
+__udivmodsi4
+__do_copy_data
+__do_clear_bss

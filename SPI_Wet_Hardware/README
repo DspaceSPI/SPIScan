@@ -1,0 +1,17 @@
+All this is from Paul - paul@taniwha.com
+
+Wet end SPI board and software:
+
+spi1.1.sch		- rev 1.1 eagle files
+spi1.1.brd
+
+gerbers/...		- what I taped out with
+
+avr162write.cmd 	- shell script to init the serial USB chip
+arduino-16usb/ 		- code it was inited with
+
+main.cmd 		- shell script to init the main cpu
+stk500boot_v2_mega2560.hex - code to init it with
+
+
+
