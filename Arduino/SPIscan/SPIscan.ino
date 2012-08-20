@@ -35,24 +35,32 @@ const char kSysInfoStr[] = "SPIScan " __DATE__ __TIME__ ;
 //====================== Predefined pins  ======================
 
 enum {
+  kPredefIn,
+  kPredefDigOut,
+  kPredefAnaOut
+};
+
+struct KnownPin {
+  byte pinNum;
+  byte outDir;
+  byte outState;
+};
+
+//------------------- Configurable ----------------
+
+enum {
   kOnboardLEDPin = 13,
   kPump1Pin = 16,
   kPump2Pin = 17
   
 };
 
-struct KnownPin {
-  byte pinNum;
-  bool outDir;
-  bool outState;
-};
-
 const KnownPin gPredefinedPins[] = {
-  { kOnboardLEDPin, OUTPUT, LOW },    // Onboard LED
-  { kPump1Pin, OUTPUT, LOW },    // PH0(RXD2) pump drive
-  { kPump2Pin, OUTPUT, LOW },    // PH1(TXD2) pump drive
-  { 7,  OUTPUT, LOW },    // PH4 LED drive (PWM)
-  { 22, OUTPUT, LOW }     // PA0 laser enable
+  { kOnboardLEDPin, kPredefDigOut, LOW },    // Onboard LED
+  { kPump1Pin, kPredefDigOut, LOW },    // PH0(RXD2) pump drive
+  { kPump2Pin, kPredefDigOut, LOW },    // PH1(TXD2) pump drive
+  { 7,  kPredefAnaOut, 128 },    // PH4 LED drive (PWM)
+  { 22, kPredefDigOut, LOW }     // PA0 laser enable
 };
 
 enum { kNPredefs = sizeof(gPredefinedPins)/sizeof(KnownPin) };
@@ -300,8 +308,14 @@ void setup()
    
    // Setup predefined state
    for (i=0 ; i<kNPredefs; i++) {
-     pinMode(gPredefinedPins[i].pinNum, gPredefinedPins[i].outDir);
-     digitalWrite(gPredefinedPins[i].pinNum, gPredefinedPins[i].outState);
+     const KnownPin* pinP = &gPredefinedPins[i];
+     if (pinP->outDir == kPredefIn)
+       pinMode(pinP->pinNum, INPUT);
+     else {
+       pinMode(pinP->pinNum, OUTPUT);
+       if (pinP->outDir == kPredefDigOut) digitalWrite(pinP->pinNum, pinP->outState);
+                                     else analogWrite(pinP->pinNum, pinP->outState);
+     }
    }
    // Turn on serial port
    gInWrIdx = 0;
