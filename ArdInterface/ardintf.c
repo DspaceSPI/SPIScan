@@ -15,8 +15,17 @@
 #include <stdlib.h>
 #include <termios.h>
 #include <string.h>
+#include <pthread.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+static void declare_ard_error(void);
 
 #include "ardintf.h"
+
+static pthread_mutex_t ard_mutex = PTHREAD_MUTEX_INITIALIZER;
+static pthread_cond_t ard_cond = PTHREAD_COND_INITIALIZER;
+static unsigned char ard_running=0, ard_error=0;
 
 #define qLogUART
 #define qLogMsgs
@@ -50,7 +59,8 @@ void ard_init(int serFile)
 {
     struct termios options;
     uint8_t syncBuffer[56];
-        
+    int err;
+
     gFile = serFile;
     grdex = 0;
     gwdex = 0;
@@ -73,7 +83,9 @@ void ard_init(int serFile)
     // Synchronise with Arduino in unknown state by sending a burst of 01 01 01...
     // This should help ensure it is looking for sync
     memset(syncBuffer,1,sizeof(syncBuffer));
-    write(serFile,syncBuffer,sizeof(syncBuffer));
+    err = write(serFile,syncBuffer,sizeof(syncBuffer));
+    if (err < 0 && errno != EAGAIN)
+	  declare_ard_error();
     #ifdef qLogUART
         printf("Tx: resync burst\n");
     #endif
@@ -101,8 +113,10 @@ void LoadBuffer()
         gwdex += nbytes;
         if (gwdex >= kRdBuffSize) gwdex = 0;
     } else if (nbytes < 0) {
-        if (errno != EAGAIN)    // EAGAIN is normal, means no data
+        if (errno != EAGAIN) {    // EAGAIN is normal, means no data
+	    declare_ard_error();
             errstr("read failed",errno);
+	}
     }
 }
 
@@ -129,8 +143,11 @@ void SendMsg(Sp_Command cmd, uint8_t transID, const void* p, uint8_t len)
      write(gFile,bp,len);
   }
   err = write(gFile,&cksum,1);
-  if (err<0)
+  if (err<0) {
+    if (errno != EAGAIN)
+	  declare_ard_error();
     printf("write failed %d\n",errno);
+  }
   
   #ifdef qLogUART
     printf("Tx: ");
@@ -184,7 +201,7 @@ bool GetMsg(InMsg* msg)
             //Yes, return the message
             uint8_t sum = NextByte();  
             
-            msg->cmd = NextByte();
+            msg->cmd = (Sp_Command)NextByte();
             sum += msg->cmd;
             msg->id = NextByte();
             sum += msg->id;
@@ -259,6 +276,7 @@ void Push(MsgQItem* item)
         gQFront = item;
         gQBack = item;
         item->next = NULL;
+	pthread_cond_signal(&ard_cond);
     } else {
         item->next = gQBack;
         gQBack->prev = item;
@@ -308,22 +326,28 @@ MsgQItem* ReadMsgQ(uint8_t targID)
 void Waiting()
 // Gets called repeatedly while API is waiting for a synchronous reply
 {
+    while (ard_running && !ard_error && !gQFront)
+		pthread_cond_wait(&ard_cond, &ard_mutex);
 }
 
 void GetAck(uint8_t id)
 // Synchronous: wait for a kCCNoErr or kCCError response to ID
 {
-    MsgQItem* answer;
+    MsgQItem* answer = 0;
     
-    while ( (answer = ReadMsgQ(id)) == NULL )
+    pthread_mutex_lock(&ard_mutex);
+    while (ard_running && (answer = ReadMsgQ(id)) == NULL )
         Waiting();
-    if (answer->msg.cmd != kCCNoErr) {
-        if (answer->msg.cmd == kCCError)
-            errstr("Command failed ",answer->msg.data[0]);
-        else 
-            errstr("Unexpected response type",answer->msg.cmd);
+    if (answer) {
+    	if (answer->msg.cmd != kCCNoErr) {
+        	if (answer->msg.cmd == kCCError)
+            		errstr("Command failed ",answer->msg.data[0]);
+        	else 
+            		errstr("Unexpected response type",answer->msg.cmd);
+    	}
+    	FreeItem(answer);
     }
-    FreeItem(answer);
+    pthread_mutex_unlock(&ard_mutex);
 }
 
 void GetResponse(uint8_t id, InMsg* msgP)
@@ -331,10 +355,14 @@ void GetResponse(uint8_t id, InMsg* msgP)
 {
      MsgQItem* answer;
     
-    while ( (answer = ReadMsgQ(id)) == NULL )
+    pthread_mutex_lock(&ard_mutex);
+    while (ard_running && (answer = ReadMsgQ(id)) == NULL )
         Waiting();
-    *msgP = answer->msg;
-    FreeItem(answer);
+    if (answer) {
+    	*msgP = answer->msg;
+    	FreeItem(answer);
+    }
+    pthread_mutex_unlock(&ard_mutex);
 }
 
 
@@ -400,13 +428,17 @@ bool HasMessageFor(uint8_t targID)
 {
     MsgQItem* scan;
     
+    pthread_mutex_lock(&ard_mutex);
     ReadToQ();
     scan = gQFront;
     while (scan != NULL) {
-        if (scan->msg.id == targID)
-                    return true;
+        if (scan->msg.id == targID) {
+    		pthread_mutex_unlock(&ard_mutex);
+                return true;
+	}
         scan = scan->prev;
     }
+    pthread_mutex_unlock(&ard_mutex);
     return false;
 }
 
@@ -414,11 +446,68 @@ void ReadMessageFor(uint8_t ID, Sp_Command* outCmd, void* outBuffP, uint8_t* ioB
 {
     MsgQItem* answer;
     
+    pthread_mutex_lock(&ard_mutex);
     while ( (answer = ReadMsgQ(ID)) == NULL )
         Waiting();
     *outCmd = answer->msg.cmd;
     *ioBuffSize = answer->msg.dataLen;
     memcpy(outBuffP,&answer->msg.data,answer->msg.dataLen);
     FreeItem(answer);
+    pthread_mutex_unlock(&ard_mutex);
 }
 
+static void
+declare_ard_error()
+{
+	pthread_mutex_lock(&ard_mutex);
+	ard_error = 1;
+	ard_running = 0;
+	pthread_cond_broadcast(&ard_cond);
+	pthread_mutex_unlock(&ard_mutex);
+}
+
+// ---------------------- added by Paul - should fork off a thread to:
+//
+//	(we need to be able to handle the USB being unplugged and plugged in again
+//
+//	- open /dev/ttysomething
+//	- if it fails delay, retry until 
+//	- call ard_init
+//	- monitor state, if the tty gets an error (usb is unplugged) 
+//
+
+#define ARDUINO_TTY	"/dev/ttyUSB0"
+
+void *
+ard_thread(void*pp)
+{
+	pthread_detach(pthread_self());
+	ard_running = 0;
+	for (;;) {
+		int fd;
+
+		pthread_mutex_lock(&ard_mutex);
+		fd = open(ARDUINO_TTY, O_RDWR);
+		if (fd < 0) {
+			pthread_mutex_unlock(&ard_mutex);
+			sleep(1);
+			continue;
+		}
+		ard_error = 0;
+		ard_init(fd);
+		ard_running = 1;
+		while (ard_running && !ard_error)
+			pthread_cond_wait(&ard_cond, &ard_mutex);
+		ard_running = 0;
+		pthread_mutex_unlock(&ard_mutex);
+		close(fd);
+	}
+	return 0;
+}
+
+void
+ard_startup()	// called from the generic dspace library startup
+{
+	pthread_t tid;
+	pthread_create(&tid, 0, ard_thread, 0); 
+}

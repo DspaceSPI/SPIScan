@@ -6,6 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <pthread.h>
+#include <termios.h>
+#include <errno.h>
+#include <fcntl.h>
 
 static pthread_mutex_t gps_mutex = PTHREAD_MUTEX_INITIALIZER;
 bool gps_lock=0;      // gps is locked
@@ -196,8 +199,26 @@ fail:
 static void *
 gps_thread(void *p)
 {
-	FILE *f = fopen(GPS_TTY, "r");
+	int fd;
+	FILE *f=0;
 	pthread_detach(pthread_self());
+	fd = open(GPS_TTY, O_RDONLY); 
+	if (fd >= 0) {
+    		struct termios options;
+
+    		tcgetattr(fd, &options);
+    		cfmakeraw(&options);
+    		cfsetspeed(&options, 19200);  	// Baud rate
+    		options.c_cflag &= ~CSIZE;
+    		options.c_cflag |= CS8;         // 8 bits
+    		options.c_cflag &= ~PARENB;     // No parity
+    		options.c_cflag &= ~CSTOPB;     // One stop bit
+    		options.c_cc[VMIN] = 1;         // Minimum number of chars to read
+    		options.c_cc[VTIME] = 0;        // Timeout in 1/10 second units
+    		if ( tcsetattr(fd, TCSANOW, &options) < 0 )
+			fprintf(stderr, "GPS setup failed - '%s'\n", GPS_TTY);
+		f = fdopen(fd, "r");
+	}
 	if (!f) {
 		fprintf(stderr, "Cannot open GPS - '%s'\n", GPS_TTY);
 		return 0;

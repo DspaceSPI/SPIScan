@@ -4,10 +4,8 @@
 #include <stdio.h>
 #include "../ArdInterface/ardintf.h"
 
-#define ARDUINO_TTY	"/dev/ttyUSB0"	  // change to whatever we discover it should really be
-#define GPS_TTY		"/dev/tty0"	  // change to whatever we discover it should really be
-
 extern void startup_scan(void);
+extern void gps_startup(void);
 void
 startup_dspace(void)
 {
@@ -15,4 +13,5 @@ startup_dspace(void)
 
 	startup_scan();
 	ard_startup();
+	gps_startup();
 }

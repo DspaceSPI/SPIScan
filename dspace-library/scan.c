@@ -1,3 +1,6 @@
+//
+//  (C) Paul Campbell paul@taniwha.com 2012
+//
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -269,12 +272,10 @@ done:
 }
 
 void
-scan_start(int type)
+startup_scan()
 {
 	static unsigned char thread_running=0;
 
-	if (type < 0 || type  > 2)
-		type = 0;
 	pthread_mutex_lock(&scan_mutex);
 	if (!thread_running) {
 		pthread_t tid;
@@ -282,6 +283,17 @@ scan_start(int type)
 		pthread_create(&tid, 0, scan_thread, 0);
 		pthread_create(&tid, 0, jpeg_thread, 0);
 	}
+	pthread_mutex_unlock(&scan_mutex);
+}
+
+void
+scan_start(int type)
+{
+
+	if (type < 0 || type  > 2)
+		type = 0;
+	startup_scan();
+	pthread_mutex_lock(&scan_mutex);
 	while (scan_running) 
 		pthread_cond_wait(&scan_cond_done, &scan_mutex);
 	scan_request = 1;

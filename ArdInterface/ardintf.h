@@ -16,6 +16,7 @@ extern "C" {
 typedef unsigned char uint8_t;
 
 void ard_init(int serFile);
+void ard_startup(void);
 
 // SPIscan known pins
 enum {
@@ -43,6 +44,7 @@ void analogWrite(uint8_t pin, int value);
 void SendMsg(Sp_Command cmd, uint8_t transID, const void* p, uint8_t len);
 bool HasMessageFor(uint8_t targID);
 void ReadMessageFor(uint8_t ID, Sp_Command* outCmd, void* outBuffP, uint8_t* ioBuffSize);
+
 
 
 #ifdef __cplusplus
