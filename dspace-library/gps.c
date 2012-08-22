@@ -11,8 +11,20 @@
 #include <fcntl.h>
 
 static pthread_mutex_t gps_mutex = PTHREAD_MUTEX_INITIALIZER;
-bool gps_lock=0;      // gps is locked
-double vlat, vlong;
+static bool gps_lock=0;      // gps is locked
+static double vlat, vlong;
+
+double gps_long(void)
+{
+	return vlong;
+}
+
+double gps_lat(void)
+{
+	return vlat;
+}
+
+int gps_locked(void) { return gps_lock?1:0; }
 
 double
 cvt_gps_to_frac(char *cp)
