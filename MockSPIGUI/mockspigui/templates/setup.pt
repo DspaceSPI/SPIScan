@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Setup | SPI-Scan Surveyor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GUI SPI-Scan Surveyor">
+    <meta name="author" content="Benthic Science Limited">
+	<!-- Version 0.1.0 21 April 2012 D-Space/Benthic Science Limited --!>
+	<!-- Open-source under the Apache License Version 2.0, January 2004 http://www.apache.org/licenses/ --!>
+	<!-- Based on the Twitter Bootstrap --!>
+
+    <!-- Le styles -->
+    <link href="static/docs/assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="static/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="static/docs/assets/ico/SPIfavicon2.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="static/docs/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/docs/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="static/docs/assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <a class="brand" href="#">SPI-Scan Surveyor</a>
+          <div class="nav-collapse">
+            <ul class="nav">
+	      <li><a href="/spiscansurveyor.html">deploy</a>
+              <li class="active"><a href="/setup.html">SETUP</a></li>
+              <li><a href="/io.html">input/output</a></li>
+              <li><a href="/files.html">files</a></li>
+            </ul>
+ 		<p align="right"><font color="green">GPS Lock &nbsp;</font><font color="red">Sys Temp XX &deg;C</font><img src="static/docs/assets/img/SPIscanlogo.png" width="125px" height="40px"></p>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+<div class="container">
+ <div class="row">
+        <div class="span12">
+            <h2>Scanner</h2>
+			<form class="well">
+			<table border="0">
+				
+				<tr><td><label class="control-label" for="select01"><h3>Device</h3></label>
+					<div class="controls">
+						<select id="scandevice">
+						<option>found device 1</option>
+						<option>found device 2</option>
+						<option>found device 3</option>
+						<option>found device 4</option>		
+					</div>
+				<tr align="left" valign="middle"><td><label class="control-label" for="select01"><h3>Margins</h3></label>
+				<table>
+				<tr  align="center" valign="middle"><td colspan="3">Top (mm)<nbsp><nbsp><input type="text" class="input-small"><td rowspan="3">
+				<tr  align="center" valign="middle"><td>End (mm)<nbsp><nbsp><input type="text" class="input-small"><td><img src="static/docs/assets/img/marginfig.png"><td>Start (mm)<nbsp><nbsp><input type="text" class="input-small">
+				<tr  align="center" valign="middle"><td colspan="3">Bottom (mm)<nbsp><nbsp><input type="text" class="input-small">
+				</table>
+			<tr><TD><label class="control-label" for="input01"><h3>Autoscan Interval</h3></label>
+			<div class="controls"><input type=text" class="input-small" id="autoscaninterval"><p class="help-block">Period (minutes) between scans when Autoscan is active for time-lapse imagery</p>
+			</div>
+			</table>
+			</form>
+        
+		</div>
+</div>
+<div class="row">
+        <div class="span12">
+            <h2>Information Overlay</h2>
+			<form class="well">
+			<table border="0">
+				<tr><TD><label class="control-label" for="select01"><h3>Information to include</h3></label>
+				<div class="controls"><input type=text" class="input-large" id="overlaytext"><p class="help-block">%time = GPS or computer time, %date = computer date, %lat = GPS latitude, %long = GPS longitude, %deg = &deg;, text = user text</p>
+			</div>
+		<tr align="left" valign="middle"><TD><label class="control-label" for="select01"><h3>Margins</h3></label>
+		<div class="controls"><b>Top</b><nbsp><input type=text" class="input-small" id="overlaytopmargin"><p class="help-block">Distance (mm) from top of scan</p>
+			</div>
+			<div class="controls"><b>Start</b><nbsp><input type=text" class="input-small" id="overlaytopmargin"><p class="help-block">Distance (mm) from start of scan</p>
+			</div>
+			</table>
+			</form>
+        
+		</div>
+</div>
+<div class="row">
+	<div class="span12">
+            <h2>GPS</h2>
+			<form class="well">
+			<table border="0">
+				
+				<tr><TD><label class="control-label" for="select01"><h3>Port?</h3></label>
+				<div class="controls"><input type=text" class="input-large" id="overlaytext"><p class="help-block">put in any control options required</p>
+				</div>
+			</table>
+			</form>
+	</div>
+</div>
+<div class="row">
+	<div class="span12">
+            <h2>File Directory</h2>
+			<form class="well">
+			<table border="0">
+			
+			<tr><td>All files will be saved <strong>within</strong> this directory. Scans will be in a 'scan' subdirectory, still captures from the deployment camera will be in the 'capture' subdirectory, data files (.csv format) will be saved in the 'log' subdirectory, and any comments in the memo field from each scan will be stored in the 'notes' subdirectory. <br>
+			<br>
+			Files will be saved with the format: userprefix_DAYMONTHYEARHOURMINUTESECOND_filtype.suffix (e.g. site1_28072012163045_scan.tif)  
+			<tr><td>
+				<div class="controls"><input type="file" class="input-file" id="parentpath">
+				</div>
+			</table>
+			</form>
+    </div>
+</div>
+      
+<div class="row">
+	<div class="span12">
+            <h2>Screen Resolution</h2>
+			<form class="well">
+			<table border="0">
+			
+			<tr><td>
+				<div class="controls"><input type="text" class="input-small" id="screenres"><p class="help-block">This is required to ensure proper pixel to pixel mapping for scans.</p>
+				</div>
+			</table>
+			</form>
+    </div>
+</div>
+<div class="row">
+	<div class="span12">
+            <h2>Deployment Camera</h2>
+			<form class="well">
+			<table border="0">
+			
+			<tr><td>
+				<div class="controls">
+						<select id="camdevice">
+						<option>found device 1</option>
+						<option>found device 2</option>
+						<option>found device 3</option>
+						<option>found device 4</option>		
+					</div>
+			</table>
+			</form>
+    </div>
+</div>  
+<footer>
+        <p align="right"><a class="btn" href="/spiscanmanual.html" target="blank">Manual <i class="icon-question-sign"></i></a></p>
+</footer>
+</div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="static/docs/assets/js/jquery.js"></script>
+    <script src="static/docs/assets/js/bootstrap-transition.js"></script>
+    <script src="static/docs/assets/js/bootstrap-alert.js"></script>
+    <script src="static/docs/assets/js/bootstrap-modal.js"></script>
+    <script src="static/docs/assets/js/bootstrap-dropdown.js"></script>
+    <script src="static/docs/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="static/docs/assets/js/bootstrap-tab.js"></script>
+    <script src="static/docs/assets/js/bootstrap-tooltip.js"></script>
+    <script src="static/docs/assets/js/bootstrap-popover.js"></script>
+    <script src="static/docs/assets/js/bootstrap-button.js"></script>
+    <script src="static/docs/assets/js/bootstrap-collapse.js"></script>
+    <script src="static/docs/assets/js/bootstrap-carousel.js"></script>
+    <script src="static/docs/assets/js/bootstrap-typeahead.js"></script>
+
+  </body>
+</html>
