@@ -1,7 +1,9 @@
 CC = gcc
 C++ = g++
-_dspace.so:	scan.o dspace_wrap.o ardintf.o startup.o gps.o
-	$(C++) -shared scan.o ardintf.o startup.o gps.o  dspace_wrap.o -o _dspace.so -lpthread -lsane -ljpeg
+OBJ = scan.o dspace_wrap.o ardintf.o startup.o gps.o savetiff.o 
+
+_dspace.so:	$(OBJ)
+	$(C++) -shared $(OBJ) -o _dspace.so -lpthread -lsane -ljpeg -ltiff
 
 test:	test.o scan.o
 	$(CC) -o test test.o scan.o -lpthread -lsane -ljpeg -g
@@ -18,10 +20,12 @@ test.o:	test.c
 	$(C++) -c test.c -g
 startup.o:	scan.c
 	$(C++) -c startup.c -g  -fPIC -I ../ArdInterface -I ../Arduino
-gps.o:	gps.c
+gps.o:	gps.c savetiff.h
 	$(C++) -c gps.c -g  -fPIC
-scan.o:	scan.c
+scan.o:	scan.c savetiff.h
 	$(C++) -c scan.c -g  -fPIC
+savetiff.o:	savetiff.cpp savetiff.h
+	$(C++) -c savetiff.cpp -g  -fPIC
 ardintf.o:	../ArdInterface/ardintf.c ../ArdInterface/ardintf.h ../Arduino/SPIproto.h
 	$(C++) -c ../ArdInterface/ardintf.c -I ../ArdInterface -I ../Arduino -g -fPIC
 

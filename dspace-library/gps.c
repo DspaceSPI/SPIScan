@@ -9,10 +9,11 @@
 #include <termios.h>
 #include <errno.h>
 #include <fcntl.h>
+#include "savetiff.h"
 
 static pthread_mutex_t gps_mutex = PTHREAD_MUTEX_INITIALIZER;
-static bool gps_lock=0;      // gps is locked
-static double vlat, vlong;
+static bool gps_lock=1;      // gps is locked
+static double vlat=123, vlong=-123;
 
 double gps_long(void)
 {
@@ -202,6 +203,7 @@ process_gps(char *g)
     pthread_mutex_lock(&gps_mutex);
     vlong = newlong;
     vlat = newlat;
+    setLatLon(vlat, vlong);
     gps_lock = 1;
     pthread_mutex_unlock(&gps_mutex);
 fail:
@@ -247,7 +249,7 @@ gps_thread(void *p)
 	return 0;
 }
 void
-gps_start(void)
+gps_startup(void)
 {
 	pthread_t tid;
 	pthread_create(&tid, 0, gps_thread, 0);

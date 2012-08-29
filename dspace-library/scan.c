@@ -7,6 +7,7 @@
 #include <sane/sane.h>
 #include <pthread.h>
 #include <jpeglib.h>
+#include "savetiff.h"
 
 #define TMP_FILE "/tmp/scan.jpg"
 
@@ -46,6 +47,7 @@ static unsigned long scan_size = 0;
 static unsigned char this_scan_type = 0;
 static unsigned char jpeg_active=0, jpeg_start=0, jpeg_cancel=0, jpeg_done = 0;
 static long scan_width, scan_height;
+static unsigned char saving_tiff=0;
 
 void *
 scan_thread(void *v)
@@ -176,6 +178,7 @@ printf("setting options handle=%lx\n", (long)handle);
 			if (res != SANE_STATUS_GOOD)
 				fprintf(stderr, "SANE set length %d failed '%s'\n", val,  sane_strstatus(res));
 		}
+		setScanner((char*)"Canon", (char*)"700F");
 printf("start\n");
 		if (sane_start(handle) != SANE_STATUS_GOOD)
 			goto retry;
@@ -299,6 +302,7 @@ scan_start(int type)
 	scan_request = 1;
 	this_scan_type = type;
 	req_scan_cancel = 0;
+	saving_tiff = (type == 2);
 	pthread_cond_broadcast(&scan_cond);
 	pthread_mutex_unlock(&scan_mutex);
 }
@@ -332,14 +336,17 @@ jpeg_thread(void*x)
 
 	pthread_mutex_lock(&image_mutex);
 	for (;;) {
-		while (!jpeg_start && !jpeg_cancel && !jpeg_done && !last_scan_valid)
+		while (!jpeg_start && !(jpeg_cancel&&jpeg_active) && !jpeg_done && !last_scan_valid)
 			pthread_cond_wait(&image_cond, &image_mutex);
-		if (jpeg_cancel) {
+		if (jpeg_cancel && jpeg_active) {
 printf("jpeg cancel\n");
+			pthread_mutex_unlock(&image_mutex);
 			if (jpeg_active) {
 				pthread_mutex_unlock(&image_mutex);
 				fclose(outfile);
 				jpeg_destroy_compress(&cinfo);
+				if (saving_tiff)
+					EndSaveTIFF();
 			}
 			pthread_mutex_lock(&image_mutex);
 			jpeg_done = 0;
@@ -372,6 +379,10 @@ printf("set quality\n");
 printf("start compress\n");
 				jpeg_start_compress(&cinfo, TRUE);
 				stride = 3*scan_width;
+				if (saving_tiff) {
+					setResolution(st[this_scan_type].dpi);
+					StartSaveTIFF("/tmp/scan.tiff", scan_width, scan_height);
+				}
 			}
 printf("jpeg start done\n");
 			pthread_mutex_lock(&image_mutex);
@@ -381,8 +392,12 @@ printf("jpeg start done\n");
 			pthread_mutex_unlock(&image_mutex);
 			if (jpeg_active) {
 				count = 0;
-				for (i = 0; i < last_scan_size; i += stride)
-					row_pointer[count++] = &last_scan[i];
+				for (i = 0; i < last_scan_size; i += stride) {
+					row_pointer[count] = &last_scan[i];
+					if (saving_tiff) 
+						LineSaveTIFF(row_pointer[count]);
+					count++;
+				}
 				jpeg_write_scanlines(&cinfo, &row_pointer[0], count);
 			}
 			pthread_mutex_lock(&image_mutex);
@@ -396,6 +411,8 @@ printf("jpeg done\n");
 				jpeg_finish_compress(&cinfo);
 				fclose(outfile);
 				jpeg_destroy_compress(&cinfo);
+				if (saving_tiff)
+					EndSaveTIFF();
 			}
 			pthread_mutex_lock(&image_mutex);
 			jpeg_done = 0;
@@ -406,3 +423,5 @@ printf("jpeg done\n");
 	pthread_mutex_unlock(&image_mutex);
 	return 0;
 }
+
+void scan_description(char *v) { extern void setDescription(char *); setDescription(v); }

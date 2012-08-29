@@ -7,6 +7,7 @@
  extern int gps_locked(void);
  extern double gps_long(void);
  extern double gps_lat(void);
+ extern void scan_description(char *v);
 #include "../ArdInterface/ardintf.h"
 %}
 
@@ -17,4 +18,5 @@ extern void startup_dspace();
 extern int gps_locked(void);
 extern double gps_long(void);
 extern double gps_lat(void);
+extern void scan_description(char *v);
 #include "../ArdInterface/ardintf.h"
