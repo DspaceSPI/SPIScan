@@ -10,6 +10,7 @@
 #include "savetiff.h"
 
 #define TMP_FILE "/tmp/scan.jpg"
+static char tiff_file[512] = "/tmp/scan.tiff";
 
 
 typedef struct scan_type {
@@ -49,6 +50,13 @@ static unsigned char jpeg_active=0, jpeg_start=0, jpeg_cancel=0, jpeg_done = 0;
 static long scan_width, scan_height;
 static unsigned char saving_tiff=0;
 
+void
+tiff_name(char *v)
+{
+        strncpy(tiff_file, v, sizeof(tiff_file));
+        tiff_file[sizeof(tiff_file)-1] = 0;
+}
+
 void *
 scan_thread(void *v)
 {
@@ -60,7 +68,7 @@ scan_thread(void *v)
 	SANE_Handle handle;
 	SANE_Parameters p;
 	int i;
-	long len, l, off;
+	long err, len, l, off;
 	unsigned char done=0;
 	int num_dev_options;
 
@@ -254,9 +262,11 @@ printf("start done\n");
 		pthread_mutex_lock(&image_mutex);
 		if (done && !req_scan_cancel) {
 			jpeg_done = 1;
+			err = 0;
 		} else {
 			// jpeg cancel
 			jpeg_cancel = 1;
+			err = 1;
 		}
 		pthread_cond_broadcast(&image_cond);
 		while (jpeg_active)
@@ -267,6 +277,7 @@ cls:
 done:
 		pthread_mutex_lock(&scan_mutex);
 		scan_running = 0;
+			
 		pthread_cond_broadcast(&scan_cond_done);
 	}
 	pthread_mutex_unlock(&scan_mutex);
@@ -324,6 +335,16 @@ scan_wait(void)
 	pthread_mutex_unlock(&scan_mutex);
 }
 
+int
+scan_done(void)
+{
+        int res;
+	pthread_mutex_lock(&scan_mutex);
+        res = (scan_running || scan_request ? 0:1);
+	pthread_mutex_unlock(&scan_mutex);
+        return res;
+}
+
 static void *
 jpeg_thread(void*x)
 {
@@ -379,9 +400,9 @@ printf("set quality\n");
 printf("start compress\n");
 				jpeg_start_compress(&cinfo, TRUE);
 				stride = 3*scan_width;
-				if (saving_tiff) {
+				if (saving_tiff && tiff_file[0]) {
 					setResolution(st[this_scan_type].dpi);
-					StartSaveTIFF("/tmp/scan.tiff", scan_width, scan_height);
+					StartSaveTIFF(tiff_file, scan_width, scan_height);
 				}
 			}
 printf("jpeg start done\n");

@@ -9,6 +9,8 @@
 #include <termios.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <time.h>
+#include <sys/time.h>
 #include "savetiff.h"
 
 static pthread_mutex_t gps_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -75,7 +77,10 @@ process_gps(char *g)
     char *cp, *cp2;
     unsigned char sum;
     int i, vs, gps_off;
-    double newlong, newlat;
+    double newlong, newlat, seconds, dec;
+    time_t now, t;
+    struct tm tm;
+    int secs, minutes, hours, day, month, year;
     unsigned char north, east;     // GPS location
     char value[20]; 
 
@@ -134,10 +139,32 @@ process_gps(char *g)
        cp++;
     }
     cp++;
-    while (*cp != ',') {// skip time
-       if (*cp == '*') 
+    seconds=0;
+    secs = 0;
+    dec = -1;
+    while (*cp != ',') {
+       if (*cp >= '0' && *cp <= '9') {
+	  if (dec > 0) {
+		seconds += ((double)(*cp-'0'))/dec;
+		dec = dec/10.0;
+	  } else {
+		secs = (secs*10)+(*cp-'0');
+	  }
+       } else 
+       if (*cp == '.')  {
+		dec = 10.0;
+		hours = secs/10000;
+		minutes = (secs/100)%100;
+		seconds = secs = secs%100;
+       } else {
          goto fail;
+       }
        cp++;
+    }
+    if (dec < 0) {
+	hours = secs/10000;
+	minutes = (secs/100)%100;
+	seconds = secs = secs%100;
     }
     cp++;
     if (*cp != 'A') {// locked?
@@ -200,7 +227,52 @@ process_gps(char *g)
     if (*cp == 'W') {
         east = 0;
     } else goto fail;
+    while (*cp != ',') {// skip e/w
+       if (*cp == '*') 
+         goto fail;
+       cp++;
+    }
+    cp++;
+    while (*cp != ',') {// skip bearing
+       if (*cp == '*') 
+         goto fail;
+       cp++;
+    }
+    cp++;
+    day=0;
+    while (*cp != ',') {// parse date
+       if (*cp >= '0' && *cp <= '9') {
+	day = (day*10)+(*cp-'0');
+       } else {
+         goto fail;
+       }
+       cp++;
+    }
+    year = (day%100)+2000;
+    month = (day/100)%100;
+    day = day/10000;
+    cp++;
+    tm.tm_sec = secs;
+    tm.tm_min = minutes;
+    tm.tm_hour = hours;
+    tm.tm_mday = day;
+    tm.tm_mon = month-1;
+    tm.tm_year = year-1900;
+    t = mktime(&tm);
+    t -= timezone;
+    now = time(0);
     pthread_mutex_lock(&gps_mutex);
+    if (t != now) {
+	if ((t < now && (now-t) > 120) ||
+	    (t > now && (t-now) > 120)) {
+		stime(&t);
+	} else {
+		struct timeval delta;
+		delta.tv_sec = t-now;
+		delta.tv_usec = 0;
+		adjtime(&delta, 0);
+	}
+    }
     vlong = newlong;
     vlat = newlat;
     setLatLon(vlat, vlong);
