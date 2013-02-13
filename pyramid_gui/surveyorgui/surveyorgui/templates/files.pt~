@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>SPI-Scan Surveyor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GUI SPI-Scan Surveyor">
+    <meta name="author" content="Benthic Science Limited">
+	<!-- Version 0.1.0 21 April 2012 D-Space/Benthic Science Limited --!>
+	<!-- Open-source under the Apache License Version 2.0, January 2004 http://www.apache.org/licenses/ --!>
+	<!-- Based on the Twitter Bootstrap --!>
+
+    <!-- Le styles -->
+    <link href="static/docs/assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="static/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="static/docs/assets/ico/SPIfavicon2.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="static/docs/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/docs/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="static/docs/assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>   
+	<p align="right"><img src="static/docs/assets/img/SPIscanlogo.png" width="125px" height="40px"><a class="brand" href="/spiscansurveyor.html">SPI-Scan Surveyor</a></p>
+          <div class="nav-collapse">
+            <ul class="nav">
+	      <li><a href="/spiscansurveyor.html">deploy</a>
+              <li><a href="/setup.html">setup</a></li>
+              <li><a href="/io.html">input/output</a></li>
+              <li class="active"><a href="#">FILES</a></li>
+            </ul>
+ 		
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+<div class="row">
+	<div class="span12">
+            <h2>File Directory</h2>
+			<form class="well">
+			<table border="0">
+			
+			<tr><td>All files will be saved <strong>within</strong> this directory. Scans will be in a 'scan' subdirectory, still captures from the deployment camera will be in the 'capture' subdirectory, data files (.csv format) will be saved in the 'log' subdirectory, and any comments in the memo field from each scan will be stored in the 'notes' subdirectory. <br>
+			<br>
+			Files will be saved with the format: userprefix_DAYMONTHYEARHOURMINUTESECOND_filtype.suffix (e.g. site1_28072012163045_scan.tif)  
+			<tr><td>
+				<div class="controls"><input type="file" class="input-file" id="parentpath">
+				</div>
+			</table>
+			</form>
+    </div>
+</div>
+<Center>
+            <h2>Image carousel</h2>
+            <p>Click on left and right arrows to browse images in the scan directory.</p>
+            <div class="bs-docs-example">
+              <div id="myCarousel" class="carousel slide">
+                <div class="carousel-inner">
+
+                  <div class="item active">
+                    <img align="center" height="20" src="static/srvrscans/20120919173500.jpg" alt="">
+                    <div class="carousel-caption">
+                      <h4>20120919173500.jpg</h4>
+                    </div>
+                  </div>
+
+                  <div class="item">
+                    <img align="center" height="20"  src="static/srvrscans/20120919173130.jpg" alt="">
+                    <div class="carousel-caption">
+
+                      <h4>2012091917313.jpg</h4>
+                      </div>
+                  </div>
+
+                  <div class="item">
+                    <img align="center" height="20"  src="static/srvrscans/20120919172955.jpg" alt="">
+                    <div class="carousel-caption">
+
+                      <h4>20120919172955.jpg</h4>
+                      </div>
+                  </div>
+
+                  <div class="item">
+                    <img align="center" "height="20"  src="static/srvrscans/20120919172930.jpg" alt="">
+                    <div class="carousel-caption">
+
+                      <h4>20120919172930.jpg</h4>
+                      </div>
+                  </div>
+
+                </div>
+                <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
+              </div>
+          </div>
+<center/>
+            <div class="alert alert-warning">
+              <strong>Heads up!</strong>
+             Text here.
+            </div>
+
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="static/docs/assets/js/jquery.js"></script>
+    <script src="static/docs/assets/js/bootstrap-transition.js"></script>
+    <script src="static/docs/assets/js/bootstrap-alert.js"></script>
+    <script src="static/docs/assets/js/bootstrap-modal.js"></script>
+    <script src="static/docs/assets/js/bootstrap-dropdown.js"></script>
+    <script src="static/docs/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="static/docs/assets/js/bootstrap-tab.js"></script>
+    <script src="static/docs/assets/js/bootstrap-tooltip.js"></script>
+    <script src="static/docs/assets/js/bootstrap-popover.js"></script>
+    <script src="static/docs/assets/js/bootstrap-button.js"></script>
+    <script src="static/docs/assets/js/bootstrap-collapse.js"></script>
+    <script src="static/docs/assets/js/bootstrap-carousel.js"></script>
+    <script src="static/docs/assets/js/bootstrap-typeahead.js"></script>
+
+  </body>
+</html>

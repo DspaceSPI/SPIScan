@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>I/O | SPI-Scan Surveyor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GUI SPI-Scan Surveyor">
+    <meta name="author" content="Benthic Science Limited">
+	<!-- Version 0.1.0 21 April 2012 D-Space/Benthic Science Limited --!>
+	<!-- Open-source under the Apache License Version 2.0, January 2004 http://www.apache.org/licenses/ --!>
+	<!-- Based on the Twitter Bootstrap --!>
+
+    <!-- Le styles -->
+    <link href="static/docs/assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+    <link href="static/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="static/docs/assets/ico/SPIfavicon2.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="static/docs/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/docs/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="static/docs/assets/ico/apple-touch-icon-57-precomposed.png">
+  </head>
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <p align="right"><img src="static/docs/assets/img/SPIscanlogo.png" width="125px" height="40px"><a class="brand" href="/spiscansurveyor.html">SPI-Scan Surveyor</a></p>
+          <div class="nav-collapse">
+            <ul class="nav">
+	      <li><a href="/spiscansurveyor.html">deploy</a>
+              <li><a href="/setup.html">setup</a></li>
+              <li class="active"><a href="/io.html">INPUT / OUTPUT</a></li>
+              <li><a href="/files.html">files</a></li>
+            </ul>
+ 		
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+ <div class="row">
+        <div class="span8">
+          <h3>User-configurable Pins</h3>
+           <form class="table">
+		   <table border="0">
+		   <thead><strong><td>Pin<td>Use<td>Data type<td>Value (if output)<td>Active?</strong>
+		   </thead>
+		   <tr><td>1<td><div class="btn-group" data-toggle="buttons-radio" id="1io"><button class="btn btn-mini" id="pin1in">Input</button><button class="btn btn-mini" id="pin1out">Output</button></div><td><div id="1da" class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin1a">Analog</button><button class="btn btn-mini" id="pin1d">Digital</button></div><td><input type="text" class="input-small" id="pin1val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin1active"></div>
+		   <tr><td>2<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin2in">Input</button><button class="btn btn-mini" id="pin2out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin2a">Analog</button><button class="btn btn-mini" id="pin2d">Digital</button></div><td><input type="text" class="input-small" id="pin2val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin2active"></div>											   
+		   <tr><td>3<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin3in">Input</button><button class="btn btn-mini" id="pin3out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin3a">Analog</button><button class="btn btn-mini" id="pin3d">Digital</button></div><td><input type="text" class="input-small" id="pin3val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin3active"></div>
+		   <tr><td>4<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin4in">Input</button><button class="btn btn-mini" id="pin4out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin4a">Analog</button><button class="btn btn-mini" id="pin4d">Digital</button></div><td><input type="text" class="input-small" id="pin4val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin4active"></div>
+		   <tr><td>5<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin5in">Input</button><button class="btn btn-mini" id="pin5out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin5a">Analog</button><button class="btn btn-mini" id="pin5d">Digital</button></div><td><input type="text" class="input-small" id="pin5val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin5active"></div>
+		   <tr><td>6<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin6in">Input</button><button class="btn btn-mini" id="pin6out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin6a">Analog</button><button class="btn btn-mini" id="pin6d">Digital</button></div><td><input type="text" class="input-small" id="pin6val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin6active"></div>
+		   <tr><td>7<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin7in">Input</button><button class="btn btn-mini" id="pin7out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin7a">Analog</button><button class="btn btn-mini" id="pin7d">Digital</button></div><td><input type="text" class="input-small" id="pin7val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin7active"></div>
+		   <tr><td>8<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin8in">Input</button><button class="btn btn-mini" id="pin8out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin8a">Analog</button><button class="btn btn-mini" id="pin8d">Digital</button></div><td><input type="text" class="input-small" id="pin8val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin8active"></div>
+		   <tr><td>9<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin9in">Input</button><button class="btn btn-mini" id="pin9out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin9a">Analog</button><button class="btn btn-mini" id="pin9d">Digital</button></div><td><input type="text" class="input-small" id="pin9val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin9active"></div>
+		   <tr><td>10<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin10in">Input</button><button class="btn btn-mini" id="pin10out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin10a">Analog</button><button class="btn btn-mini" id="pin10d">Digital</button></div><td><input type="text" class="input-small" id="pin10val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin10active"></div>
+		   <tr><td>11<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin11in">Input</button><button class="btn btn-mini" id="pin11out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin11a">Analog</button><button class="btn btn-mini" id="pin11d">Digital</button></div><td><input type="text" class="input-small" id="pin11val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin11active"></div>
+		   <tr><td>12<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin12in">Input</button><button class="btn btn-mini" id="pin12out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin12a">Analog</button><button class="btn btn-mini" id="pin12d">Digital</button></div><td><input type="text" class="input-small" id="pin12val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin12active"></div>
+		   <tr><td>13<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin13in">Input</button><button class="btn btn-mini" id="pin13out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin13a">Analog</button><button class="btn btn-mini" id="pin13d">Digital</button></div><td><input type="text" class="input-small" id="pin13val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin13active"></div>
+		   <tr><td>14<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin14in">Input</button><button class="btn btn-mini" id="pin14out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin14a">Analog</button><button class="btn btn-mini" id="pin14d">Digital</button></div><td><input type="text" class="input-small" id="pin14val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin14active"></div>
+		   <tr><td>15<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin15in">Input</button><button class="btn btn-mini" id="pin15out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin15a">Analog</button><button class="btn btn-mini" id="pin15d">Digital</button></div><td><input type="text" class="input-small" id="pin15val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin15active"></div>
+		   <tr><td>16<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin16in">Input</button><button class="btn btn-mini" id="pin16out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin16a">Analog</button><button class="btn btn-mini" id="pin16d">Digital</button></div><td><input type="text" class="input-small" id="pin16val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin16active"></div>
+		   <tr><td>17<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin17in">Input</button><button class="btn btn-mini" id="pin17out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin17a">Analog</button><button class="btn btn-mini" id="pin17d">Digital</button></div><td><input type="text" class="input-small" id="pin17val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin17active"></div>
+
+		   
+		   </table>
+		   </form>
+        </div>
+        <div class="span4">
+<form class="well">          
+<table border="0" align="center">
+<TBODY>
+	<TR><TD align="center" colspan="2"><font color="red">Sys Temp 16&deg;C</font><TD align="center" colspan="2">GPS Locked
+	<TR><TD align="center" colspan="2">LAT
+	<TD align="center" colspan="2">LON
+	<TR><TD align="center" colspan="2">latvalue&deg;</TD>
+	<TD align="center" colspan="2">longvalue&deg;</TD>
+	<TR><TD align="center" colspan="4"><h3>Deployment Camera View</h3>
+        <TR><TD align="center" colspan="4">
+	<iframe marginheight="0px" marginwidth="0" frameborder="0" width="200px" height="150px" src="http://127.0.0.1:8090/?action=stream" scrolling="no" name="deploycam" >i-frame not permitted</iframe>
+<TR><TD align="right"><a class="btn" href="#">Lasers<i class="icon-asterisk"></i></a>
+	<TD align="left"><TD align="center"><TD align="left"><a class="btn" href="#">Capture<i class="icon-camera"></i></a>
+
+<TR><TD align="left" colspan="4"><label class="control-label" for="select01"><H3>Logging</H3></label>
+<TR><TD colspan="4"><div class="btn-group" data-toggle="buttons-radio">
+			<button type="button" class="btn btn-success">Start Logging<i class="icon-ok"></i></button>	
+			<button type="button" class="btn btn-danger">Stop Logging<i class="icon-remove"></i></button>
+		</div>
+
+	<TR><TD align="left" colspan="4">Log Interval (seconds, >1)<nbsp><nbsp><input type="text" class="input-small">
+	<tr><TD colspan="4">Data file will be named in the form YearMonDaHrMiSe.log (.csv format), starting time, in the log subdirectory.
+	
+</table>
+</form>
+       </div>
+      </div>
+<HR>
+      <footer>
+        <p align="right"><a class="btn" href="/spiscanmanual.html" target="blank">Manual <i class="icon-question-sign"></i></a></p>
+      </footer>
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="static/docs/assets/js/jquery.js"></script>
+    <script src="static/docs/assets/js/bootstrap-transition.js"></script>
+    <script src="static/docs/assets/js/bootstrap-alert.js"></script>
+    <script src="static/docs/assets/js/bootstrap-modal.js"></script>
+    <script src="static/docs/assets/js/bootstrap-dropdown.js"></script>
+    <script src="static/docs/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="static/docs/assets/js/bootstrap-tab.js"></script>
+    <script src="static/docs/assets/js/bootstrap-tooltip.js"></script>
+    <script src="static/docs/assets/js/bootstrap-popover.js"></script>
+    <script src="static/docs/assets/js/bootstrap-button.js"></script>
+    <script src="static/docs/assets/js/bootstrap-collapse.js"></script>
+    <script src="static/docs/assets/js/bootstrap-carousel.js"></script>
+    <script src="static/docs/assets/js/bootstrap-typeahead.js"></script>
+    <script src="static/docs/assets/js/jquery-1.9.1.js"></script>
+  </body>
+</html>
