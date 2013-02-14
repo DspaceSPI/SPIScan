@@ -11,13 +11,13 @@
 	<!-- Based on the Twitter Bootstrap --!>
 
     <!-- Le styles -->
-    <link href="static/docs/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="static/bootstrap/css/bootstrap.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
-    <link href="static/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -58,57 +58,49 @@
 <div class="container-fluid">
  <div class="row">
         <div class="span12">
-            <h2>Scanner</h2>
-			<form class="well">
-			<table border="0">
-				<tr align="left" valign="middle"><td><label class="control-label" for="select01"><h3>Margins</h3></label>
-				<table>
-				<tr  align="center" valign="middle"><td colspan="3">Top (mm)<nbsp><nbsp><input type="text" class="input-small"><td rowspan="3">
-				<tr  align="center" valign="middle"><td>End (mm)<nbsp><nbsp><input type="text" class="input-small"><td><img src="static/docs/assets/img/marginfig.png"><td>Start (mm)<nbsp><nbsp><input type="text" class="input-small">
-				<tr  align="center" valign="middle"><td colspan="3">Bottom (mm)<nbsp><nbsp><input type="text" class="input-small">
-				</table>
-			<tr><TD><label class="control-label" for="input01"><h3>Autoscan Interval</h3></label>
-			<div class="controls"><input type=text" class="input-small" id="autoscaninterval"><p class="help-block">Period (minutes) between scans when Autoscan is active for time-lapse imagery</p>
-			</div>
-			</table>
-			</form>
-        
-		</div>
-</div>
+		<form class="well">
+		<h2>Scanner</h2>
+		<h3>Margins</h3>
+		<p style="text-align:center">Top (mm)<input type="text" class="input-small" value="0">
+		<p style="text-align:middle; text-align:center">End (mm)<input type="text" class="input-small" value="15"><img src="static/docs/assets/img/marginfig.png">Start (mm)<input type="text" class="input-small" value="0">
+		<p style="text-align:center">Bottom (mm)<input type="text" class="input-small" value="0">
+		<label class="control-label" for="input01"><h3>Autoscan Interval</h3></label>
+		<div class="controls"><input type=text" class="input-small" id="autoscaninterval" value="1"><p class="help-block">Period (minutes) between scans when Autoscan is active for time-lapse imagery</p>
+		</form>
+	</div>
+ </div>
+
 <div class="row">
         <div class="span12">
-            <h2>Information Overlay</h2>
-			<form class="well">
-			<table border="0">
-				<tr><TD><label class="control-label" for="select01"><h3>Information to include</h3></label>
-				<div class="controls"><input type=text" class="input-large" id="overlaytext"><p class="help-block">%time = GPS or computer time, %date = computer date, %lat = GPS latitude, %long = GPS longitude, %deg = &deg;, text = user text</p>
+            	<form class="well">
+			<h2>Information Overlay</h2>
+			<label class="control-label" for="select01"><h3>Information to include</h3></label>
+			<div class="controls"><input type=text" class="input-large" id="overlaytext"><p class="help-block">%time = GPS or computer time, %date = computer date, %lat = GPS latitude, %long = GPS longitude, %deg = &deg;, text = user text</p>
 			</div>
-		<tr align="left" valign="middle"><TD><label class="control-label" for="select01"><h3>Margins</h3></label>
-		<div class="controls"><b>Top</b><nbsp><input type=text" class="input-small" id="overlaytopmargin"><p class="help-block">Distance (mm) from top of scan</p>
+		<label class="control-label" for="select01"><h3>Margins</h3></label>
+		<div class="controls"><b>Top</b><nbsp><input type=text" class="input-small" id="overlaytopmargin" value="1">
+		<p class="help-block">Distance (mm) from top of scan</p>
 			</div>
-			<div class="controls"><b>Start</b><nbsp><input type=text" class="input-small" id="overlaytopmargin"><p class="help-block">Distance (mm) from start of scan</p>
+			<div class="controls"><b>Start</b><nbsp><input type=text" class="input-small" id="overlaytopmargin" value="Sample %date %time %lat %long %deg WGS84"><p class="help-block">Distance (mm) from start of scan</p>
 			</div>
-			</table>
-			</form>
+		
+		</form>
         
-		</div>
+	</div>
 </div>
       
 <div class="row">
 	<div class="span12">
-            <h2>Deployment Camera</h2>
-			<form class="well">
-			<table border="0">
-			
-			<tr><td>
-				<div class="controls">
-						<select id="camdevice">
-						<option>found device 1</option>
-						<option>found device 2</option>	
-					</div>
-			</table>
-			</form>
-    </div>
+            	<form class="well">
+            	<h2>Deployment Camera</h2>
+		<div class="controls">
+		<select id="camdevice">
+		<option>video device 0</option>
+		<option>video device 1</option>	
+		<option>video device 2</option>
+		</div>
+		</form>
+    	</div>
 </div>  
 <footer>
         <p align="right"><a class="btn" href="/spiscanmanual.html" target="blank">Manual <i class="icon-question-sign"></i></a></p>
@@ -119,18 +111,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="static/docs/assets/js/jquery.js"></script>
-    <script src="static/docs/assets/js/bootstrap-transition.js"></script>
-    <script src="static/docs/assets/js/bootstrap-alert.js"></script>
-    <script src="static/docs/assets/js/bootstrap-modal.js"></script>
-    <script src="static/docs/assets/js/bootstrap-dropdown.js"></script>
-    <script src="static/docs/assets/js/bootstrap-scrollspy.js"></script>
-    <script src="static/docs/assets/js/bootstrap-tab.js"></script>
-    <script src="static/docs/assets/js/bootstrap-tooltip.js"></script>
-    <script src="static/docs/assets/js/bootstrap-popover.js"></script>
-    <script src="static/docs/assets/js/bootstrap-button.js"></script>
-    <script src="static/docs/assets/js/bootstrap-collapse.js"></script>
-    <script src="static/docs/assets/js/bootstrap-carousel.js"></script>
-    <script src="static/docs/assets/js/bootstrap-typeahead.js"></script>
-
+    <script src="static/bootstrap/js/bootstrap.js"></script>
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
+    <script src="static/docs/assets/js/jquery-1.9.1.js"></script>
+    <script src="static/docs/assets/js/global_layout.js"></script>
   </body>
 </html>

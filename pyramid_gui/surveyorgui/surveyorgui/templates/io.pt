@@ -11,13 +11,13 @@
 	<!-- Based on the Twitter Bootstrap --!>
 
     <!-- Le styles -->
-    <link href="static/docs/assets/css/bootstrap.css" rel="stylesheet">
+    <link href="static/bootstrap/css/bootstrap.css" rel="stylesheet">
     <style>
       body {
         padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
-    <link href="static/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    <link href="static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
@@ -57,11 +57,10 @@
     <div class="container-fluid">
  <div class="row">
         <div class="span8">
-          <h3>User-configurable Pins</h3>
-           <form class="table">
+           	<form class="table">
+           	<br/><h1>User-configurable Pins</h1>
 		   <table border="0">
-		   <thead><strong><td>Pin<td>Use<td>Data type<td>Value (if output)<td>Active?</strong>
-		   </thead>
+		   <thead><th>Pin</th><th>Use</th><th>Data type</th><th>Value (if output)</th><th>Active?</th></thead>
 		   <tr><td>1<td><div class="btn-group" data-toggle="buttons-radio" id="1io"><button class="btn btn-mini" id="pin1in">Input</button><button class="btn btn-mini" id="pin1out">Output</button></div><td><div id="1da" class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin1a">Analog</button><button class="btn btn-mini" id="pin1d">Digital</button></div><td><input type="text" class="input-small" id="pin1val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin1active"></div>
 		   <tr><td>2<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin2in">Input</button><button class="btn btn-mini" id="pin2out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin2a">Analog</button><button class="btn btn-mini" id="pin2d">Digital</button></div><td><input type="text" class="input-small" id="pin2val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin2active"></div>											   
 		   <tr><td>3<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin3in">Input</button><button class="btn btn-mini" id="pin3out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin3a">Analog</button><button class="btn btn-mini" id="pin3d">Digital</button></div><td><input type="text" class="input-small" id="pin3val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin3active"></div>
@@ -79,37 +78,41 @@
 		   <tr><td>15<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin15in">Input</button><button class="btn btn-mini" id="pin15out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin15a">Analog</button><button class="btn btn-mini" id="pin15d">Digital</button></div><td><input type="text" class="input-small" id="pin15val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin15active"></div>
 		   <tr><td>16<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin16in">Input</button><button class="btn btn-mini" id="pin16out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin16a">Analog</button><button class="btn btn-mini" id="pin16d">Digital</button></div><td><input type="text" class="input-small" id="pin16val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin16active"></div>
 		   <tr><td>17<td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin17in">Input</button><button class="btn btn-mini" id="pin17out">Output</button></div><td><div class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin17a">Analog</button><button class="btn btn-mini" id="pin17d">Digital</button></div><td><input type="text" class="input-small" id="pin17val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin17active"></div>
-
-		   
-		   </table>
-		   </form>
+   		   </table>
+		</form>
         </div>
+        
         <div class="span4">
-<form class="well">          
-<table border="0" align="center">
-<TBODY>
-	<TR><TD align="center" colspan="2"><font color="red">Sys Temp 16&deg;C</font><TD align="center" colspan="2">GPS Locked
-	<TR><TD align="center" colspan="2">LAT
-	<TD align="center" colspan="2">LON
-	<TR><TD align="center" colspan="2">latvalue&deg;</TD>
-	<TD align="center" colspan="2">longvalue&deg;</TD>
-	<TR><TD align="center" colspan="4"><h3>Deployment Camera View</h3>
-        <TR><TD align="center" colspan="4">
-	<iframe marginheight="0px" marginwidth="0" frameborder="0" width="200px" height="150px" src="http://127.0.0.1:8090/?action=stream" scrolling="no" name="deploycam" >i-frame not permitted</iframe>
-<TR><TD align="right"><a class="btn" href="#">Lasers<i class="icon-asterisk"></i></a>
-	<TD align="left"><TD align="center"><TD align="left"><a class="btn" href="#">Capture<i class="icon-camera"></i></a>
+		<form class="well">                    
+			<br/>
+			<p style="color:red;text-align:center";>Sys Temp 16&deg<nbsp style="color:green;text-align:center" id="gpslock">GPS Locked<br/>
+			<p style="color:black";> LAT: <nbsp> latvalue&deg;
+			<br/>LONG: <nbsp> longvalue&deg;
+			<p style="text-align:center";>Deployment Camera View
+			<br/><iframe marginheight="0px" marginwidth="0" frameborder="1" width="200px" height="150px" src="http://127.0.0.1:8090/?action=stream" scrolling="no" name="deploycam" >i-frame not permitted</iframe>
+			<p style="text-align:center";><a class="btn" href="#" id="laserbtn">Lasers<i class="icon-asterisk"></i></a><nbsp><a class="btn" href="#" id="capturebtn">Capture<i class="icon-camera"></i></a>
+			<p align="center"><a class="btn btn-warning" href="#" id="acquire">Acquire</a><nbsp><a class="btn btn-success" href="#">Placement</a>
+			<p><a class="btn btn-block btn-primary">Preview</a>
+			<p style="text-align:center";><a class="btn btn-inverse" href="#" data-toggle="button">Pump 1</a><a class="btn btn-inverse" href="#" data-toggle="button">Pump 2</a>
+			<p><label class="control-label" for="select01">LED Brightness</label>
+				<div class="btn-group" data-toggle="buttons-radio">
+				<button type="button" class="btn btn-small">Off</button>	
+				<button type="button" class="btn btn-small">10%</button>	
+				<button type="button" class="btn btn-small">25%</button>	
+				<button type="button" class="btn btn-small">50%</button>	
+				<button type="button" class="btn btn-small">75%</button>	
+				<button type="button" class="btn btn-small">Full</button>	
+				</div>
+			<label class="control-label" for="select01"><H3>Logging</H3></label>
+				<div class="btn-group" data-toggle="buttons-radio">
+				<button type="button" class="btn btn-success">Start Logging<i class="icon-ok"></i></button>	
+				<button type="button" class="btn btn-danger">Stop Logging<i class="icon-remove"></i></button>
+				</div>
 
-<TR><TD align="left" colspan="4"><label class="control-label" for="select01"><H3>Logging</H3></label>
-<TR><TD colspan="4"><div class="btn-group" data-toggle="buttons-radio">
-			<button type="button" class="btn btn-success">Start Logging<i class="icon-ok"></i></button>	
-			<button type="button" class="btn btn-danger">Stop Logging<i class="icon-remove"></i></button>
-		</div>
-
-	<TR><TD align="left" colspan="4">Log Interval (seconds, >1)<nbsp><nbsp><input type="text" class="input-small">
-	<tr><TD colspan="4">Data file will be named in the form YearMonDaHrMiSe.log (.csv format), starting time, in the log subdirectory.
+		<p>Log Interval (seconds, >1)<nbsp><nbsp><input type="text" class="input-small" value="1">
+		<br/>Data file will be named in the form YearMonDaHrMiSe.log (.csv format), starting time, in the log subdirectory.
 	
-</table>
-</form>
+	</form>
        </div>
       </div>
 <HR>
@@ -122,18 +125,9 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="static/docs/assets/js/jquery.js"></script>
-    <script src="static/docs/assets/js/bootstrap-transition.js"></script>
-    <script src="static/docs/assets/js/bootstrap-alert.js"></script>
-    <script src="static/docs/assets/js/bootstrap-modal.js"></script>
-    <script src="static/docs/assets/js/bootstrap-dropdown.js"></script>
-    <script src="static/docs/assets/js/bootstrap-scrollspy.js"></script>
-    <script src="static/docs/assets/js/bootstrap-tab.js"></script>
-    <script src="static/docs/assets/js/bootstrap-tooltip.js"></script>
-    <script src="static/docs/assets/js/bootstrap-popover.js"></script>
-    <script src="static/docs/assets/js/bootstrap-button.js"></script>
-    <script src="static/docs/assets/js/bootstrap-collapse.js"></script>
-    <script src="static/docs/assets/js/bootstrap-carousel.js"></script>
-    <script src="static/docs/assets/js/bootstrap-typeahead.js"></script>
+    <script src="static/bootstrap/js/bootstrap.js"></script>
+    <script src="static/bootstrap/js/bootstrap.min.js"></script>
     <script src="static/docs/assets/js/jquery-1.9.1.js"></script>
+    <script src="static/docs/assets/js/global_layout.js"></script>
   </body>
 </html>

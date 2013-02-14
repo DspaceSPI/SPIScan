@@ -1,0 +1,175 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Deploy | SPI-Scan Surveyor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GUI SPI-Scan Surveyor">
+    <meta name="author" content="Benthic Science Limited">
+	<!-- Version 0.1.0 14 February 2013 Benthic Science Limited --!>
+	<!-- Open-source under the Apache License Version 2.0, January 2004 http://www.apache.org/licenses/ --!>
+	<!-- Based on the Twitter Bootstrap --!>
+
+    <!-- Le styles -->
+    <link href="static/docs/assets/css/bootstrap.css" rel="stylesheet">
+    <style>
+      body {
+        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+
+    <link href="static/docs/assets/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="static/docs/assets/ico/SPIfavicon2.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="static/docs/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/docs/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="static/docs/assets/ico/apple-touch-icon-57-precomposed.png">
+    <script src="static/docs/assets/js/brian.js"></script>
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <p><img align="right" src="static/docs/assets/img/SPIscanlogo.png" width="125px" height="40px"><a class="brand" href="#">SPI-Scan Surveyor</a></p>
+          <div class="nav-collapse">
+            <ul class="nav">
+	      <li class="active"><a href="/spiscansurveyor.html">DEPLOY</a>
+              <li><a href="/setup.html">setup</a></li>
+              <li><a href="/io.html">input/output</a></li>
+              <li><a href="/files.html">files</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+
+    <div class="container-fluid">
+ 	
+        	<div class="span9">
+		<iframe frameborder="1" name="mainscan" scrolling="auto" height="800px" width="100%" src="static/img/lastscan.jpg">i-frame not permitted</iframe>
+       	 	</div><br>
+
+        <div class="span3">
+<form method="get">          
+<table border="0" align="center">
+<TBODY>
+	<TR><TD align="center" colspan="2"><font color="red">Sys Temp 16&deg;C</font><TD align="center" colspan="2">GPS Locked
+	<TR><TD align="center" colspan="2">LAT
+	<TD align="center" colspan="2">LON
+	<TR><TD align="center" colspan="2">latvalue&deg;</TD>
+	<TD align="center" colspan="2">longvalue&deg;</TD>
+	<TR><TD align="center" colspan="4"><h3>Deployment Camera View</h3>
+        <TR><TD align="center" colspan="4">
+	<iframe marginheight="0px" marginwidth="0" frameborder="0" width="200px" height="150px" src="http://127.0.0.1:8090/?action=stream" scrolling="no" name="deploycam" >i-frame not permitted</iframe>
+<TR><TD align="right"><a class="btn" href="#">Lasers<i class="icon-asterisk"></i></a>
+	<TD align="left"><TD align="center"><TD align="left"><a class="btn" href="#">Capture<i class="icon-camera"></i></a>
+	<TR><TD align="center" colspan="4"><label class="control-label" for="select01">Acquire Scan Resolution</label>
+		<div class="controls">
+		<select id="scanresolution">
+		<option> 75 dpi</option>
+		<option>125 dpi</option>
+		<option>300 dpi</option>
+		<option>600 dpi</option>		
+		</div>
+	<TR><TD align="center" colspan="2"><a class="btn btn-warning btn-large" name="acquire" id="acquire" alt="Save scan and write info to database">Acquire</a>
+	<TD align="center" colspan="2"><a class="btn btn-primary btn-large">Placement</a>
+	<TR><TD align="center" colspan="4"><a class="btn btn-primary btn-large">Preview</a>
+	<!--<TD align="center" colspan="2"><a class="btn btn-primary btn-large">Acquire</a> -->
+	<TR><TD align="center" colspan="2"><button class="btn btn-inverse btn-large" data-toggle="button">Pump 1</button><TD align="center" colspan="2"><button class="btn btn-inverse btn-large" data-toggle="button">Pump 2</button>
+	<TR><TD align="left" colspan="4">File Prefix<nbsp><nbsp><input type="text" class="input-small" id="fileprefixfield">
+	<TR><TD align="left" colspan="4"><label class="control-label" for="textarea">Scan Memo</label><textarea class="input-xlarge" id="memo" rows="3"></textarea>
+	<TR><TD align="center" colspan="4"><label class="control-label" for="select01">LED Brightness</label>
+			<div class="btn-group" data-toggle="buttons-radio">
+			<button type="button" class="btn">Off</button>	
+			<button type="button" class="btn">10%</button>	
+			<button type="button" class="btn">25%</button>	
+			<button type="button" class="btn">50%</button>	
+			<button type="button" class="btn">75%</button>	
+			<button type="button" class="btn">Full</button>	
+		</div>
+	<TR><TD colspan="2"><label class="checkbox"><input type="checkbox">Autoscan</label>
+<TD><TD align="right"><a class="btn" href="/manual.html" target="blank">Manual <i class="icon-question-sign"></i></a>
+
+</TBODY>
+</table>
+</form>
+       </div>
+      </div>
+<table border="0">
+
+      <tr>
+        <td><form method="POST" name="t">
+          <table border="0" cellpadding="2">
+            <tr>
+              <td>width</td> <td>height</td><td>availWidth</td><td>availHeight</td><td>colorDepth</td><td>pixelDepth</td>
+			</tr>
+			<tr>
+              <td><input class="span1" type="text" name="t1" placeholder=".span1" disabled="disabled"></td>
+              <td><input class="span1" type="text" name="t2" placeholder=".span1" disabled="disabled"></td>            
+              <td><input class="span1" type="text" name="t5" placeholder=".span1" disabled="disabled"></td>    
+              <td><input class="span1" type="text" name="t6" placeholder=".span1" disabled="disabled"></td>              
+              <td><input class="span1" type="text" name="t3" placeholder=".span1" disabled="disabled"></td>           
+              <td><input class="span1" type="text" name="t4" placeholder=".span1" disabled="disabled"></td>
+            </tr>
+          </table>
+<p id="test">This is some <b>bold</b> text in a paragraph.</p>
+<button id="acquire2">Acquire2</button>
+<script>
+<!--
+$(document).ready(function(){
+  $("#acquire").click(function(){
+    alert("Memo field contains " + $("#test").text());
+  });
+});
+
+function show(){
+if (!document.all&&!document.layers&&!document.getElementById)
+return
+document.t.t1.value=screen.width
+document.t.t2.value=screen.height
+document.t.t3.value=screen.colorDepth
+document.t.t4.value=screen.pixelDepth
+document.t.t5.value=screen.availWidth
+document.t.t6.value=screen.availHeight
+}
+show()
+-->
+</script>
+
+    </div> <!-- /container -->
+
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="static/docs/assets/js/jquery.js"></script>
+    <script src="static/docs/assets/js/bootstrap-transition.js"></script>
+    <script src="static/docs/assets/js/bootstrap-alert.js"></script>
+    <script src="static/docs/assets/js/bootstrap-modal.js"></script>
+    <script src="static/docs/assets/js/bootstrap-dropdown.js"></script>
+    <script src="static/docs/assets/js/bootstrap-scrollspy.js"></script>
+    <script src="static/docs/assets/js/bootstrap-tab.js"></script>
+    <script src="static/docs/assets/js/bootstrap-tooltip.js"></script>
+    <script src="static/docs/assets/js/bootstrap-popover.js"></script>
+    <script src="static/docs/assets/js/bootstrap-button.js"></script>
+    <script src="static/docs/assets/js/bootstrap-collapse.js"></script>
+    <script src="static/docs/assets/js/bootstrap-carousel.js"></script>
+    <script src="static/docs/assets/js/bootstrap-typeahead.js"></script>
+    <script src="static/docs/assets/js/jquery-1.9.1.js"></script>
+    <script src="static/docs/assets/js/global_layout.js"></script>
+
+  </body>
+</html>
