@@ -32,10 +32,18 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/docs/assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="static/docs/assets/ico/apple-touch-icon-57-precomposed.png">
     <script src="static/docs/assets/js/vidstreamstuff.js"></script>
+    <script src="static/js/jquery-1.9.1.min.js"></script>
+<script>
+$(document).ready(function(){
+  $(#stopstreambtn).click(function(){
+    $(#deploycam).hide();
+  });
+});
+</script>
+
   </head>
 
   <body>
-
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
@@ -63,17 +71,18 @@
 		<iframe frameborder="1" name="mainscan" scrolling="auto" height="800px" width="100%" src="static/img/lastscan.jpg">i-frame not permitted</iframe>
        	 	</div><br>
         <div class="span3">
-		<form method="get">          
-			<p style="color:red;text-align:center";>Sys Temp 16&deg<nbsp style="color:green;text-align:center" id="gpslock">GPS Locked<br/>
-			<p style="color:black";> LAT: <nbsp> latvalue&deg;
-			<br/>LONG: <nbsp> longvalue&deg;
-			<p style="text-align:center";>Deployment Camera View
-			<br/><iframe marginheight="0px" marginwidth="0" frameborder="1" width="200px" height="150px" src="http://127.0.0.1:8090/?action=stream" scrolling="no" name="deploycam" >i-frame not permitted</iframe>
-			<p style="text-align:center";><a class="btn" href="#" id="laserbtn">Lasers<i class="icon-asterisk"></i></a><nbsp><a class="btn" href="#" id="capturebtn">Capture<i class="icon-camera"></i></a>
-			<p align="center"><a class="btn btn-warning" href="#" id="acquire">Acquire</a><nbsp><a class="btn btn-success" href="#">Placement</a>
-			<p><a class="btn btn-block btn-primary" onclick="alert('Welcome!')">Preview</a>
-			<p style="text-align:center";><a class="btn btn-inverse" href="#" data-toggle="button">Pump 1</a><a class="btn btn-inverse" href="#" data-toggle="button">Pump 2</a>
-			<p><nbsp><input type="text" class="input-small" id="fileprefixfield" value="File Prefix">
+		<form method="post">     
+			<p style="color:red;text-align:center";>Sys Temp <textbody id="systemp">00</textbody>&deg;
+			<img id="gpslock" onclick="changeGPSLock()" src="static/img/gpslockoff.png" width="100" height="50">
+			<p style="color:black";> LAT: <textbody id="latvalue">0</textbody>&deg;
+			<br/>LONG: <textbody id="longvalue">0</textbody>&deg;
+			<br/><iframe marginheight="0px" marginwidth="0" frameborder="0" width="200px" height="150px" src="http://127.0.0.1:8090/?action=stream" scrolling="no" id="deploycam">i-frame not permitted</iframe>
+			<p style="text-align:center";>Deploy Camera <nbsp><a class="btn btn-mini" href="#" id="streambtn" onclick="startCamView()"><i class="icon-play"></i></a><nbsp><a class="btn btn-mini" href="#" id="stopstreambtn"><i class="icon-stop"></i></a>
+			<br/><textbody style="text-align:center";><a class="btn" href="#" id="laserbtn">Lasers<i class="icon-asterisk"></i></a><nbsp><a class="btn" href="#" id="capturebtn">Capture<i class="icon-camera"></i></a>
+			<p align="center"><a class="btn btn-warning" href="#" id="acqbtn" onclick="alert('Scan saving to file and db')">Acquire</a><nbsp><a class="btn btn-success" href="#" id="plcbtn">Placement</a>
+			<p><a id="prebtn" class="btn btn-block btn-primary" onclick="alert('Scan without saving')">Preview</a>
+			<p style="text-align:center";><a class="btn btn-inverse" href="#" data-toggle="button" id="pump1btn">Pump 1</a><a class="btn btn-inverse" href="#" data-toggle="button" id="pump2btn">Pump 2</a>
+			<p><input type="text" class="input-small" id="prefixfld" value="File Prefix">
 			<br/><textarea class="input-xlarge" id="memo" rows="3" value="Scan memo">Scan memo</textarea>
 			<p><label class="control-label" for="select01">LED Brightness</label>
 				<div class="btn-group" data-toggle="buttons-radio">
@@ -84,7 +93,7 @@
 				<button type="button" class="btn btn-small">75%</button>	
 				<button type="button" class="btn btn-small">Full</button>	
 				</div>
-			<p><label class="control-label" for="select01">Acquire Scan Resolution</label>
+			<p><label class="control-label" for="select02">Acquire Scan Resolution</label>
 				<div class="controls">
 				<select id="scanresolution">
 				<option> 75 dpi</option>
@@ -92,8 +101,8 @@
 				<option>300 dpi</option>
 				<option>600 dpi</option>		
 				</div>
-			<p style="text-align:center";><label class="checkbox"><input type="checkbox">Autoscan</label>
-			<p style="text-align:right";><a class="btn" href="/manual.html" target="blank">Manual <i class="icon-question-sign"></i></a>
+			<p style="text-align:center";><label class="checkbox"><input type="checkbox" id="autoscan">Autoscan</label>
+			<p style="text-align:right";><a class="btn" href="/manual.html" target="blank" id="manbtn">Manual <i class="icon-question-sign"></i></a>
 
 		</form>
        </div>
@@ -117,9 +126,65 @@
           </table>
 	</div>
 	</div>
-	<button tyep="button" onclick="alert('Welcome!')">click here</button>
+<!-- 
+Scripts/functions/elements below for testing purposes
+++++++++++++++++++++++++++++++++++++++++++++
+-->
+<button onclick="changeTemp()">changeTemp</button>
+<button onclick="setPosition()">setPosition</button>
 <script>
-<!--
+var latitude;
+var longitude;
+latitude = 10;
+longitude = 10;
+
+function startCamView()
+{
+document.getElementById('deploycam').src="http://127.0.0.1:8090/?action=stream"
+}
+
+function stopCamView()
+{
+document.getElementById('deploycam').src="static/docs/stopcammsg.html"
+}
+
+function changeGPSLock()
+{
+element=document.getElementById('gpslock')
+if (element.src.match("static/img/gpslockon.png"))
+  {
+  element.src="static/img/gpslockoff.png";
+  }
+else
+  {
+  element.src="static/img/gpslockon.png";
+  }
+}
+
+function changeTemp()
+{
+element=document.getElementById('systemp').innerHTML="99";
+if (element.innerHTML="99")
+	{
+	element.innerHTML="00";
+	}
+else
+	{
+	element.innerHTML="99";
+	}
+}
+
+function setPosition()
+{
+document.getElementById('longvalue').innerHTML=longitude;
+document.getElementById('latvalue').innerHTML=latitude;
+}
+</script>
+<!-- 
+++++++++++++++++++++++++++++++++++++++++++++
+Scripts/functions above for testing purposes
+-->
+<script>
 function show(){
 if (!document.all&&!document.layers&&!document.getElementById)
 return
@@ -131,7 +196,6 @@ document.t.t5.value=screen.availWidth
 document.t.t6.value=screen.availHeight
 }
 show()
--->
 </script>
 
     </div> <!-- /container -->

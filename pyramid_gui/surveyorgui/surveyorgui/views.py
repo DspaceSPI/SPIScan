@@ -1,6 +1,7 @@
 from pyramid.response import Response
 from pyramid.view import view_config
 from time import time, strftime
+from random import randint
 from sqlalchemy.exc import DBAPIError
 from layouts import Layouts
 from dummy_data import COMPANY

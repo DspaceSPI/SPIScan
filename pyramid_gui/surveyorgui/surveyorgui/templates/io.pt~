@@ -58,7 +58,7 @@
  <div class="row">
         <div class="span8">
            	<form class="table">
-           	<h1>User-configurable Pins</h1>
+           	<br/><h1>User-configurable Pins</h1>
 		   <table border="0">
 		   <thead><th>Pin</th><th>Use</th><th>Data type</th><th>Value (if output)</th><th>Active?</th></thead>
 		   <tr><td>1<td><div class="btn-group" data-toggle="buttons-radio" id="1io"><button class="btn btn-mini" id="pin1in">Input</button><button class="btn btn-mini" id="pin1out">Output</button></div><td><div id="1da" class="btn-group" data-toggle="buttons-radio"><button class="btn btn-mini" id="pin1a">Analog</button><button class="btn btn-mini" id="pin1d">Digital</button></div><td><input type="text" class="input-small" id="pin1val"><td><div class="control-group"><div class="controls"><input type="checkbox" id="pin1active"></div>

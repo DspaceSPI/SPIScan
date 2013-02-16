@@ -1,6 +1,7 @@
 from pyramid.response import Response
 from pyramid.view import view_config
 from time import time, strftime
+from random import randint
 from sqlalchemy.exc import DBAPIError
 from layouts import Layouts
 from dummy_data import COMPANY
@@ -31,10 +32,6 @@ class ProjectorViews(Layouts):
     @view_config(renderer="templates/io.pt", name="io.html")
     def about_view(self):
         return {"page_title": "Input / Output"}
-        
-    @view_config(renderer="templates/spiscansurveyor2.pt", name="try2.html")
-    def about_view(self):
-        return {"page_title": "trial page"}
 
     @view_config(renderer="templates/files.pt", name="files.html")
     def about_view(self):
