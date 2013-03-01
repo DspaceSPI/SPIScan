@@ -137,6 +137,10 @@ The code below is for testing purposes
 -->
 
 <script>
+var JSONOBJECTdefaultValues [
+{"topmarg":0,"startmarg":0,"endmarg":15,"botmarg":0,"pretopmarg":0,"prestartmarg":0}
+];
+
 var endmargdefault;
 var emax;
 var emin;

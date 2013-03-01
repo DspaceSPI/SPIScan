@@ -14,7 +14,7 @@ dspace_wrap.o:	dspace_wrap.c
 
 
 dspace_wrap.c:	dspace.i ../ArdInterface/ardintf.h  
-	swig -python -I../Arduino  -I../ArdInterface -includeall dspace.i 
+	swig2.0 -python -I../Arduino  -I../ArdInterface -includeall dspace.i 
 	
 test.o:	test.c
 	$(C++) -c test.c -g

@@ -32,6 +32,14 @@ surveyorgui/static/pylons.css
 surveyorgui/static/pyramid-small.png
 surveyorgui/static/pyramid.png
 surveyorgui/static/transparent.gif
+surveyorgui/static/bootstrap/css/bootstrap-responsive.css
+surveyorgui/static/bootstrap/css/bootstrap-responsive.min.css
+surveyorgui/static/bootstrap/css/bootstrap.css
+surveyorgui/static/bootstrap/css/bootstrap.min.css
+surveyorgui/static/bootstrap/img/glyphicons-halflings-white.png
+surveyorgui/static/bootstrap/img/glyphicons-halflings.png
+surveyorgui/static/bootstrap/js/bootstrap.js
+surveyorgui/static/bootstrap/js/bootstrap.min.js
 surveyorgui/static/docs/base-css.html
 surveyorgui/static/docs/components.html
 surveyorgui/static/docs/download.html
@@ -40,6 +48,7 @@ surveyorgui/static/docs/index.html
 surveyorgui/static/docs/javascript.html
 surveyorgui/static/docs/less.html
 surveyorgui/static/docs/scaffolding.html
+surveyorgui/static/docs/stopcammsg.html
 surveyorgui/static/docs/upgrading.html
 surveyorgui/static/docs/assets/css/bootstrap-responsive.css
 surveyorgui/static/docs/assets/css/bootstrap.css
@@ -145,6 +154,10 @@ surveyorgui/static/docs/examples/hero.html
 surveyorgui/static/docs/examples/starter-template.html
 surveyorgui/static/img/glyphicons-halflings-white.png
 surveyorgui/static/img/glyphicons-halflings.png
+surveyorgui/static/img/gpslockoff.gif
+surveyorgui/static/img/gpslockoff.png
+surveyorgui/static/img/gpslockon.gif
+surveyorgui/static/img/gpslockon.png
 surveyorgui/static/img/lastscan.jpg
 surveyorgui/static/js/bootstrap-alert.js
 surveyorgui/static/js/bootstrap-button.js
@@ -158,9 +171,10 @@ surveyorgui/static/js/bootstrap-tab.js
 surveyorgui/static/js/bootstrap-tooltip.js
 surveyorgui/static/js/bootstrap-transition.js
 surveyorgui/static/js/bootstrap-typeahead.js
-surveyorgui/static/js/brian.js
 surveyorgui/static/js/global_layout.js
 surveyorgui/static/js/jquery-1.9.1.js
+surveyorgui/static/js/jquery-1.9.1.min.js
+surveyorgui/static/js/vidstreamstuff.js
 surveyorgui/static/js/tests/index.html
 surveyorgui/static/js/tests/unit/bootstrap-alert.js
 surveyorgui/static/js/tests/unit/bootstrap-button.js
@@ -191,3 +205,4 @@ surveyorgui/templates/mytemplate.pt
 surveyorgui/templates/people.pt
 surveyorgui/templates/setup.pt
 surveyorgui/templates/spiscansurveyor.pt
+surveyorgui/templates/spiscansurveyor2.pt

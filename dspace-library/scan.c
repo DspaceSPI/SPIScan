@@ -23,9 +23,9 @@ typedef struct scan_type {
 #define SCAN_TYPE(dpi, degrees) {dpi, CIRC*(double)degrees/360.0}
 
 static const scan_type st[] = {
-	SCAN_TYPE(75, 75),		// preview
-	SCAN_TYPE(300, 360),		// scan
-	SCAN_TYPE(600, 360),		// HQ scan
+	SCAN_TYPE(75,75),		// preview
+	SCAN_TYPE(300,300),		// scan
+	SCAN_TYPE(600,600),		// HQ scan
 };
 
 static pthread_mutex_t scan_mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -50,13 +50,14 @@ static unsigned char jpeg_active=0, jpeg_start=0, jpeg_cancel=0, jpeg_done = 0;
 static long scan_width, scan_height;
 static unsigned char saving_tiff=0;
 
+// purpose
 void
 tiff_name(char *v)
 {
         strncpy(tiff_file, v, sizeof(tiff_file));
         tiff_file[sizeof(tiff_file)-1] = 0;
 }
-
+// purpose
 void *
 scan_thread(void *v)
 {
@@ -119,6 +120,7 @@ printf("s5\n");
 					fprintf(stderr, "SANE can't find a genesys scanner\n");
 					goto retry;
 				}
+			        fprintf(stderr, "SANE searching '%s'\n", list[i]->name);
 				if (strstr(list[i]->name, "genesys") != 0)
 					break;
 			}
@@ -176,16 +178,18 @@ printf("setting options handle=%lx\n", (long)handle);
 			if (res != SANE_STATUS_GOOD)
 				fprintf(stderr, "SANE set resolution=%d failed '%s'\n", val,  sane_strstatus(res));
 		}
+
 		if (br_y_option < 0) {
 			fprintf(stderr, "no SANE br-y parameter found\n");
 		} else {
-			SANE_Fixed val = SANE_FIX(st[this_scan_type].length);
+			SANE_Fixed val = st[this_scan_type].length;// altered from SANE_Fixed val = SANE_FIX(st[this_scan_type].length)
 			//if (o->unit != SANE_UNIT_MM)
 			//	val = val*st[this_scan_type].dpi/25.4;
 			res = sane_control_option(handle, i, SANE_ACTION_SET_VALUE, &val, 0);
 			if (res != SANE_STATUS_GOOD)
-				fprintf(stderr, "SANE set length %d failed '%s'\n", val,  sane_strstatus(res));
+				fprintf(stderr, "SANE set length %d/%d failed '%s'\n", val, SANE_FIX(st[this_scan_type].length), sane_strstatus(res));
 		}
+
 		setScanner((char*)"Canon", (char*)"700F");
 printf("start\n");
 		if (sane_start(handle) != SANE_STATUS_GOOD)
@@ -274,6 +278,7 @@ printf("start done\n");
 		pthread_mutex_unlock(&image_mutex);
 cls:
 		sane_cancel(handle);
+		sane_close(handle);//added bp
 done:
 		pthread_mutex_lock(&scan_mutex);
 		scan_running = 0;
@@ -284,7 +289,7 @@ done:
 	sane_exit();
 	return 0;
 }
-
+// purpose
 void
 startup_scan()
 {
@@ -299,7 +304,7 @@ startup_scan()
 	}
 	pthread_mutex_unlock(&scan_mutex);
 }
-
+// purpose
 void
 scan_start(int type)
 {
@@ -317,6 +322,7 @@ scan_start(int type)
 	pthread_cond_broadcast(&scan_cond);
 	pthread_mutex_unlock(&scan_mutex);
 }
+// purpose
 void
 scan_cancel(void)
 {
@@ -325,7 +331,7 @@ scan_cancel(void)
 		req_scan_cancel = 1;
 	pthread_mutex_unlock(&scan_mutex);
 }
-
+// purpose
 void
 scan_wait(void)
 {
@@ -344,7 +350,7 @@ scan_done(void)
 	pthread_mutex_unlock(&scan_mutex);
         return res;
 }
-
+// purpose
 static void *
 jpeg_thread(void*x)
 {
@@ -382,7 +388,7 @@ printf("jpeg start\n");
 			cinfo.err = jpeg_std_error(&jerr);
 printf("jpeg create compress\n");
 			jpeg_create_compress(&cinfo);
-			outfile = fopen(TMP_FILE, "w");
+			outfile = fopen(TMP_FILE, "w"); // opens file for jpg version of last scan
 			if (!outfile) {
 printf("open failed\n");
 				jpeg_active = 0;
@@ -430,7 +436,7 @@ printf("jpeg done\n");
 			pthread_mutex_unlock(&image_mutex);
 			if (jpeg_active) {
 				jpeg_finish_compress(&cinfo);
-				fclose(outfile);
+				fclose(outfile); // closes file for jpg version of last scan
 				jpeg_destroy_compress(&cinfo);
 				if (saving_tiff)
 					EndSaveTIFF();
@@ -444,5 +450,5 @@ printf("jpeg done\n");
 	pthread_mutex_unlock(&image_mutex);
 	return 0;
 }
-
+// purpose
 void scan_description(char *v) { extern void setDescription(char *); setDescription(v); }
