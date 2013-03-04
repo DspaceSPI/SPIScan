@@ -15,16 +15,11 @@
     <link href="static/bootstrap/css/bootstrap.css" rel="stylesheet">
     <style>
       body {
-        padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+        padding-top: 90px; /* 60px to make the container go all the way to the bottom of the topbar */
       }
     </style>
 
     <link href="static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-
-    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
-      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
 
     <!-- Le fav and touch icons -->
     <link rel="shortcut icon" href="static/docs/assets/ico/SPIfavicon2.ico">
@@ -70,8 +65,6 @@ xmlhttp.open("POST","ajax_info.txt",true);
 xmlhttp.send();
 }
 </script>
-
-
 // AJAX goes above
 // +++++++++++++++++++++++++
 -->
@@ -86,7 +79,7 @@ xmlhttp.send();
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </a>
-          <p><img align="right" src="static/docs/assets/img/SPIscanlogo.png" width="125px" height="40px"><a class="brand" href="#">SPI-Scan Surveyor</a></p>
+          <p align="right"><img src="static/docs/assets/img/SPIscanlogo.png" width="125px" height="40px"><a class="brand" href="#">SPI-Scan Surveyor</a></p>
           <div class="nav-collapse">
             <ul class="nav">
 	      <li class="active"><a href="/spiscansurveyor.html">DEPLOY</a>
@@ -106,19 +99,19 @@ xmlhttp.send();
        	 	</div><br>
         <div class="span3">
 		<form method="post">     
-			<p style="color:red;text-align:center";>Sys Temp <span id="systemp"></span>&deg;
+			<p style="color:red;text-align:center";>Sys Temp <span id="systemp">var here</span>&deg;
 			<img id="gpslock" onclick="changeGPSLock()" src="static/img/gpslockoff.png" width="100" height="50">
-			<p style="color:black";> LAT: <span id="latvalue"></span>&deg;
-			<br/>LONG: <span id="longvalue"></span>&deg;
+			<p style="color:black";> LAT: <span id="latvalue">var here</span>&deg;
+			<br/>LONG: <span id="longvalue">var here</span>&deg;
 			<br/><iframe marginheight="0px" marginwidth="0" frameborder="0" width="200px" height="150px" src="http://127.0.0.1:8090/?action=stream" scrolling="no" id="deploycam">i-frame not permitted</iframe>
 			<p style="text-align:center";>Deploy Camera <nbsp><a class="btn btn-mini" href="#" id="streambtn" onclick="startCamView()"><i class="icon-play"></i></a><nbsp><a class="btn btn-mini" href="#" id="stopstreambtn" onclick="stopCamView()"><i class="icon-stop"></i></a>
 			<br/><textbody style="text-align:center";><a class="btn" href="#" id="laserbtn">Lasers<i class="icon-asterisk"></i></a><nbsp><a class="btn" href="#" id="capturebtn">Capture<i class="icon-camera"></i></a>
-			<p align="center"><a class="btn btn-warning" href="#" id="acqbtn" onclick="alert('Scan saving to file and db')">Acquire</a><nbsp><a class="btn btn-success" href="#" id="plcbtn">Placement</a>
+			<p align="center"><a class="btn btn-warning" href="#" id="acqbtn" onclick="stampTime()">Acquire</a><nbsp><a class="btn btn-success" href="#" id="plcbtn">Placement</a>
 			<p><a id="prebtn" class="btn btn-block btn-primary" onclick="alert('Scan without saving')">Preview</a>
 			<p style="text-align:center";><a class="btn btn-inverse" href="#" data-toggle="button" id="pump1btn">Pump 1</a><a class="btn btn-inverse" href="#" data-toggle="button" id="pump2btn">Pump 2</a>
 			<p><input type="text" class="input-small" id="prefixfld" value="File Prefix">
 			<br/><textarea class="input-xlarge" id="memo" rows="3" value="Scan memo">Scan memo</textarea>
-			<p><label class="control-label" for="select01">LED Brightness</label>
+			<p><label class="control-label" for="select01">LED Brightness (var here)</label>
 				<div class="btn-group" data-toggle="buttons-radio">
 				<button type="button" class="btn btn-small">Off</button>	
 				<button type="button" class="btn btn-small">10%</button>	
@@ -165,11 +158,23 @@ xmlhttp.send();
           </table>
 	</div>
 	</div>
+
 <!-- 
 Scripts/functions/elements below for testing purposes
 ++++++++++++++++++++++++++++++++++++++++++++
 -->
 <script>
+function stampTime()
+{
+  jQuery.ajax({
+       url: '/update',
+       dataType:"json",
+       type: 'POST',
+       data: "teststring",
+   });
+alert("You pressed the button");
+}
+
 function startCamView()
 {
 document.getElementById('deploycam').src="http://127.0.0.1:8090/?action=stream"

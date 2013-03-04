@@ -19,6 +19,7 @@ surveyorgui.egg-info/not-zip-safe
 surveyorgui.egg-info/requires.txt
 surveyorgui.egg-info/top_level.txt
 surveyorgui/scripts/__init__.py
+surveyorgui/scripts/brianconnect.py
 surveyorgui/scripts/initializedb.py
 surveyorgui/static/bootstrap.css
 surveyorgui/static/favicon.ico
@@ -159,6 +160,7 @@ surveyorgui/static/img/gpslockoff.png
 surveyorgui/static/img/gpslockon.gif
 surveyorgui/static/img/gpslockon.png
 surveyorgui/static/img/lastscan.jpg
+surveyorgui/static/img/scan.jpg
 surveyorgui/static/js/bootstrap-alert.js
 surveyorgui/static/js/bootstrap-button.js
 surveyorgui/static/js/bootstrap-carousel.js

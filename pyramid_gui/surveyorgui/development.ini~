@@ -15,7 +15,7 @@ pyramid.includes =
     pyramid_debugtoolbar
     pyramid_tm
 
-sqlalchemy.url = sqlite:///%(here)s/surveyorgui.sqlite
+sqlalchemy.url = "postgresql://spiscan:spiscan@localhost:5432/spiscan"
 
 # By default, the toolbar only appears for clients from IP addresses
 # '127.0.0.1' and '::1'.
@@ -27,8 +27,8 @@ sqlalchemy.url = sqlite:///%(here)s/surveyorgui.sqlite
 
 [server:main]
 use = egg:waitress#main
-host = 0.0.0.0
-port = 6543
+host = 127.0.0.1
+port = 8080
 
 ###
 # logging configuration
