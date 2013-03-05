@@ -1,0 +1,16 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
+import datetime
+import subprocess
+
+try:
+
+#now = datetime.datetime.now()
+# capture image
+    SnapImage = "/home/brian/DspaceSPI/SPIScan/mjpg_streamer/captures/"
+    subprocess.Popen(["/usr/bin/wget","-O",SnapImage,"http://127.0.0.1:1090/?action=snapshot"])
+    return {}
+
+# create a stamp image file
+#StampImage = "Time_" + now.strftime("%Y_%m_%d_%H_%M_%S") + (".jpg")

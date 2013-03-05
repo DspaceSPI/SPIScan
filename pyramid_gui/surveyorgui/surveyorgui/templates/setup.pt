@@ -81,8 +81,11 @@
 		Preview scans are at low resolution (75 dpi)
 		<p style="text-align:middle; text-align:center">End (12-200 mm)<input type="text" class="input-small" id="plcendmargin" onchange="validateSetup()"><nbsp>Start (mm)<input type="text" class="input-small" value="0">
 		
-		<label class="control-label" for="input01"><h3>Autoscan Interval</h3></label>
-		<div class="controls"><input type=text" class="input-small" id="autoscaninterval" value="1"><p class="help-block">Period (minutes) between scans when Autoscan is active for time-lapse imagery</p>
+		<label class="control-label" for="input01"><h3>Autoscan</h3></label>
+		<p class="help-block">Period (minutes) between scans when Autoscan is active<input type=text" class="input-small" id="autoscaninterval" value="1">
+		<br/>
+		Capture simultaneous seabed images? <input type="checkbox" id="autopiccapture"> 
+		</p>
 		</form>
 	</div>
  </div>

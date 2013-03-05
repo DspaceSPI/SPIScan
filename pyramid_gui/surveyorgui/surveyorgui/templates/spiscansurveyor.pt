@@ -67,6 +67,13 @@ var t=d.toUTCString();
 document.getElementById("sysclock").innerHTML=t;
 }
 
+var framereset=setInterval(function(){reloadFrame()},5000);
+
+function reloadFrame() 
+{
+     document.getElementById('deploycam').src = "http://127.0.0.1:8090/?action=stream";
+}
+
 </script>
 </head>
 
@@ -107,9 +114,9 @@ document.getElementById("sysclock").innerHTML=t;
 			<br/>Last Event: <span id="lastevent"></span>
 			<br/> LAT: <span id="latvalue">var here</span>&deg;
 			<br/>LONG: <span id="longvalue">var here</span>&deg;
-			<br/><iframe marginheight="0px" marginwidth="0" frameborder="0" width="200px" height="150px" src="http://127.0.0.1:8090/?action=stream" scrolling="no" id="deploycam">i-frame not permitted</iframe>
+			<br/><iframe marginheight="0px" name="deploycam" marginwidth="0" frameborder="0" width="176px" height="144px" src="http://127.0.0.1:8090/?action=stream" scrolling="no" id="deploycam">i-frame not permitted</iframe>
 			</p><p style="text-align:center";>Deploy Camera <nbsp><a class="btn btn-mini" href="#" id="streambtn" onclick="startCamView()"><i class="icon-play"></i></a><nbsp><a class="btn btn-mini" href="#" id="stopstreambtn" onclick="stopCamView()"><i class="icon-stop"></i></a>
-			<br/><textbody style="text-align:center";><a class="btn" href="#" id="laserbtn">Lasers<i class="icon-asterisk"></i></a><nbsp><a class="btn" href="#" id="capturebtn">Capture<i class="icon-camera"></i></a>
+			<br/><textbody style="text-align:center";><a class="btn" href="#" id="laserbtn">Lasers<i class="icon-asterisk"></i></a><nbsp><a class="btn" href="#" id="capturebtn" onclick="camCapture()">Capture<i class="icon-camera"></i></a>
 			<p align="center"><a class="btn btn-warning" href="#" id="acqbtn" onclick="stampTime()">Acquire</a><nbsp><a class="btn btn-success" href="#" id="plcbtn">Placement</a>
 			<p><a id="prebtn" class="btn btn-block btn-primary" onclick="alert('Scan without saving')">Preview</a>
 			<p style="text-align:center";><a class="btn btn-inverse" href="#" data-toggle="button" id="pump1btn">Pump 1</a><a class="btn btn-inverse" href="#" data-toggle="button" id="pump2btn">Pump 2</a>
@@ -156,6 +163,18 @@ var t=d.toUTCString();
 document.getElementById("lastevent").innerHTML=t;
 }
 
+function camCapture()
+{
+jQuery.ajax({
+       url: '/camcapture',
+       dataType:"json",
+       type: 'POST',
+       data: "teststring",
+   });
+lastEvent();
+stopCamView();
+}
+
 function stampTime()
 {
   jQuery.ajax({
@@ -165,7 +184,6 @@ function stampTime()
        data: "teststring",
    });
 lastEvent();
-alert("Simulated Scan Activated");
 }
 
 function startCamView()

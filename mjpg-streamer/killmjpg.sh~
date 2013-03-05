@@ -1,0 +1,3 @@
+#!/bin/bash
+echo
+killall -9 -w mjpg_streamer
