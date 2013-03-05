@@ -47,11 +47,13 @@ class myView(object):
             
     @view_config(renderer="json", name="update")
     def update_view(self):
-    	open("/tmp/hit-update","a").write("update hit on %s\n" % datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+#    	open("/tmp/hit-update","a").write("update hit on %s\n" % datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
+	open("/tmp/hit-update","a").write("scan on %s\n" % datetime.datetime.utcnow())
         e = Event()
         e.spirecord=None
-        e.spifileprefix="testing prefix"
-        e.spidate=datetime.datetime.now()
+        e.spifileprefix="modtest"
+        e.spidate=datetime.datetime.utcnow()
+        e.type="scan"
         DBSession.add(e)
         return [
             randint(0,100),

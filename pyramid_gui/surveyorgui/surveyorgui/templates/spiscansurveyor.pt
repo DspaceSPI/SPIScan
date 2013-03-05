@@ -7,12 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="GUI SPI-Scan Surveyor">
     <meta name="author" content="Benthic Science Limited">
+    
 	<!-- Version 0.1.0 14 February 2013 Benthic Science Limited --!>
 	<!-- Open-source under the Apache License Version 2.0, January 2004 http://www.apache.org/licenses/ --!>
 	<!-- Based on the Twitter Bootstrap --!>
 
     <!-- Le styles -->
     <link href="static/bootstrap/css/bootstrap.css" rel="stylesheet">
+    
     <style>
       body {
         padding-top: 90px; /* 60px to make the container go all the way to the bottom of the topbar */
@@ -29,29 +31,20 @@
     <script src="static/docs/assets/js/vidstreamstuff.js"></script>
     <script src="static/js/jquery-1.9.1.min.js"></script>
 
-<!-- 
-// jquery methods go below
-// ++++++++++++++++++++++++
-
 <script>
-$(document).ready(function(){
-  $(#stopstreambtn).click(function(){
-    $(#deploycam).hide();
-  });
-});
 
-</script>
+//$(document).ready(function(){
+//  $(stopstreambtn).click(function(){
+//    $(deploycam).hide();
+//  });
+//});
 
-// jquery method go above
-// ++++++++++++++++++++++++
-// AJAX goes below
-// ++++++++++++++++++++++++
-<script>
+// APPLICATION SUPPORTS ONLY for IE7+, Firefox, Chrome, Opera, Safari
 function loadXMLDoc()
 {
 var xmlhttp;
 if (window.XMLHttpRequest)
-  {// APPLICATION SUPPORTS ONLY for IE7+, Firefox, Chrome, Opera, Safari
+  {
   xmlhttp=new XMLHttpRequest();
   }
 xmlhttp.onreadystatechange=function()
@@ -64,13 +57,22 @@ xmlhttp.onreadystatechange=function()
 xmlhttp.open("POST","ajax_info.txt",true);
 xmlhttp.send();
 }
-</script>
-// AJAX goes above
-// +++++++++++++++++++++++++
--->
-  </head>
 
-  <body onload="loadXMLDoc()">
+var myVar=setInterval(function(){myTimer()},1000);
+
+function myTimer()
+{
+var d=new Date();
+var t=d.toUTCString();
+document.getElementById("sysclock").innerHTML=t;
+}
+
+</script>
+</head>
+
+
+
+<body>
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
@@ -101,10 +103,12 @@ xmlhttp.send();
 		<form method="post">     
 			<p style="color:red;text-align:center";>Sys Temp <span id="systemp">var here</span>&deg;
 			<img id="gpslock" onclick="changeGPSLock()" src="static/img/gpslockoff.png" width="100" height="50">
-			<p style="color:black";> LAT: <span id="latvalue">var here</span>&deg;
+			<p style="font-size:10px;color:black;text-align:left">Sys: <span id="sysclock"></span>
+			<br/>Last Event: <span id="lastevent"></span>
+			<br/> LAT: <span id="latvalue">var here</span>&deg;
 			<br/>LONG: <span id="longvalue">var here</span>&deg;
 			<br/><iframe marginheight="0px" marginwidth="0" frameborder="0" width="200px" height="150px" src="http://127.0.0.1:8090/?action=stream" scrolling="no" id="deploycam">i-frame not permitted</iframe>
-			<p style="text-align:center";>Deploy Camera <nbsp><a class="btn btn-mini" href="#" id="streambtn" onclick="startCamView()"><i class="icon-play"></i></a><nbsp><a class="btn btn-mini" href="#" id="stopstreambtn" onclick="stopCamView()"><i class="icon-stop"></i></a>
+			</p><p style="text-align:center";>Deploy Camera <nbsp><a class="btn btn-mini" href="#" id="streambtn" onclick="startCamView()"><i class="icon-play"></i></a><nbsp><a class="btn btn-mini" href="#" id="stopstreambtn" onclick="stopCamView()"><i class="icon-stop"></i></a>
 			<br/><textbody style="text-align:center";><a class="btn" href="#" id="laserbtn">Lasers<i class="icon-asterisk"></i></a><nbsp><a class="btn" href="#" id="capturebtn">Capture<i class="icon-camera"></i></a>
 			<p align="center"><a class="btn btn-warning" href="#" id="acqbtn" onclick="stampTime()">Acquire</a><nbsp><a class="btn btn-success" href="#" id="plcbtn">Placement</a>
 			<p><a id="prebtn" class="btn btn-block btn-primary" onclick="alert('Scan without saving')">Preview</a>
@@ -139,31 +143,19 @@ xmlhttp.send();
 		</form>
        </div>
        </div>
-       <div class="row">
-       <div class="span12">
-		<table border="0">
-     		<tr><td><form method="POST" name="t">
- 		<table border="0" cellpadding="2">
-            	<tr>
-              		<th>Width</th> <th>Height</th><th>AvailW</th><th>AvailH</th><th>ColorDepth</th><th>PixelDepth</th>
-		</tr>
-		<tr>
-              		<td><input class="span1" type="text" name="t1" placeholder=".span1" disabled="disabled"></td>
-              		<td><input class="span1" type="text" name="t2" placeholder=".span1" disabled="disabled"></td>            
-              		<td><input class="span1" type="text" name="t5" placeholder=".span1" disabled="disabled"></td>    
-              		<td><input class="span1" type="text" name="t6" placeholder=".span1" disabled="disabled"></td>              
-              		<td><input class="span1" type="text" name="t3" placeholder=".span1" disabled="disabled"></td>           
-              		<td><input class="span1" type="text" name="t4" placeholder=".span1" disabled="disabled"></td>
-            	</tr>
-          </table>
-	</div>
-	</div>
 
 <!-- 
 Scripts/functions/elements below for testing purposes
 ++++++++++++++++++++++++++++++++++++++++++++
 -->
 <script>
+function lastEvent()
+{
+var d=new Date();
+var t=d.toUTCString();
+document.getElementById("lastevent").innerHTML=t;
+}
+
 function stampTime()
 {
   jQuery.ajax({
@@ -172,7 +164,8 @@ function stampTime()
        type: 'POST',
        data: "teststring",
    });
-alert("You pressed the button");
+lastEvent();
+alert("Simulated Scan Activated");
 }
 
 function startCamView()
@@ -213,19 +206,6 @@ document.getElementById("latvalue").innerHTML=JSONObject.lat
 ++++++++++++++++++++++++++++++++++++++++++++
 Scripts/functions above for testing purposes
 -->
-<script>
-function show(){
-if (!document.all&&!document.layers&&!document.getElementById)
-return
-document.t.t1.value=screen.width
-document.t.t2.value=screen.height
-document.t.t3.value=screen.colorDepth
-document.t.t4.value=screen.pixelDepth
-document.t.t5.value=screen.availWidth
-document.t.t6.value=screen.availHeight
-}
-show()
-</script>
 
     </div> <!-- /container -->
 
