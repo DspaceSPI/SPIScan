@@ -294,7 +294,7 @@ gps_thread(void *p)
 
     		tcgetattr(fd, &options);
     		cfmakeraw(&options);
-    		cfsetspeed(&options, 19200);  	// Baud rate
+    		cfsetspeed(&options, 9600);  	// Baud rate
     		options.c_cflag &= ~CSIZE;
     		options.c_cflag |= CS8;         // 8 bits
     		options.c_cflag &= ~PARENB;     // No parity
@@ -309,6 +309,9 @@ gps_thread(void *p)
 		fprintf(stderr, "Cannot open GPS - '%s'\n", GPS_TTY);
 		return 0;
 	}
+	//
+	// loop reading data
+	//
 	for (;;) {
 		char s[256];
 		char *cp = fgets(&s[0], sizeof(s), f);

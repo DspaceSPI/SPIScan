@@ -50,7 +50,7 @@ class myView(object):
     @view_config(renderer="json", name="update")
     def update_view(self):
     	now = datetime.datetime.utcnow()
-    	outfile = ("/home/brian/%s" % now.strftime("SPI_%Y%m%d%H%M%S") + ".jpg")
+    	outfile = ("/home/spiscan/scan/%s" % now.strftime("SPI_%Y%m%d%H%M%S") + ".jpg")
 #    	open("/tmp/hit-update","a").write("update hit on %s\n" % datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
 #	open("/tmp/hit-update","a").write("scan on %s\n" % datetime.datetime.utcnow())
         e = Event()
@@ -72,19 +72,19 @@ class myView(object):
     @view_config(renderer="json", name="stopcam")
     def stopcam_view(self):
 	cmdkill = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/killmjpg.sh"
-	subprocess.check_call(cmdkill, shell=True)
+	subprocess.call(cmdkill, shell=True)
  	return []
  	
     @view_config(renderer="json", name="startcam")
     def startcam_view(self):
 	cmdlostart = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/lostart.sh"
-	subprocess.check_call(cmdlostart,shell=True)
+	subprocess.call(cmdlostart,shell=True)
  	return []
         
     @view_config(renderer="json", name="camcapture")
     def camcapture_view(self):
 	now = datetime.datetime.utcnow()
-	outfile = ("/home/brian/%s" % now.strftime("CAM_%Y%m%d%H%M%S") + ".jpg")
+	outfile = ("/home/spiscan/cam/%s" % now.strftime("CAM_%Y%m%d%H%M%S") + ".jpg")
 	e = Event()
         e.spirecord=None
         e.spifileprefix="desktest"
@@ -93,8 +93,8 @@ class myView(object):
         e.type="CAM"
         e.filename=outfile 
         DBSession.add(e)
-	cmdkill = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/killmjpg.sh"
-	cmdlostart = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/lostart.sh"
+#	cmdkill = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/killmjpg.sh"
+#	cmdlostart = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/lostart.sh"
 #	cmdhistart = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/histart.sh"
 #	cmdframegrab = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/framegrab.sh"
 #	subprocess.check_call(cmdkill, shell=True)
@@ -103,16 +103,15 @@ class myView(object):
 	cam = pygame.camera.Camera("/dev/video1",(1920,1080))
 	cam.start()
 	img = cam.get_image()
-	pygame.image.save(img,"/home/brian/capture.jpg")
+	pygame.image.save(img,"/tmp/capture.jpg")
 #	time.sleep(2)
 	cam.stop()
 #	time.sleep(2)
-#	subprocess.check_call(cmdlostart,shell=True)
+#	subprocess.call(cmdlostart,shell=True)
 #	open("/tmp/capture","a").write("frame grab on " + now)
-        inpfile = "/home/brian/capture.jpg"
-#        tfile = "/home/brian/runtime.conf"
+        inpfile = "/tmp/capture.jpg"
+        tfile = "/home/.spiscan/runtime.conf"
         label = ("SPIScan Surveyor SN7 %s" % now.strftime("%Y%m%d%H%M%S")) 
-#        outfile = ("/home/brian/%s" % now.strftime("CAM_%Y%m%d%H%M%S") + ".jpg")
 #        time.sleep(2)
         args = []
         args += ["-background", "White"]
@@ -120,10 +119,10 @@ class myView(object):
         args += ["label: "+ label]
         args += ["-gravity", "Center"]
         args += ["-append"]
-        subprocess.check_call(["convert",inpfile] + args + [outfile])
-#	time.sleep(5)
-#	imp = []
-#	imp += ["-dissolve", "25"]
-#	imp += ["-gravity", "South"]
-#	subprocess.check_call(["composite -dissolve 25"],["-gravity"],["South"],[tfile],[outfile],[outfile])
+        subprocess.call(["convert",inpfile] + args + [outfile])
+	time.sleep(5)
+	imp = []
+	imp += ["-dissolve", "25"]
+	imp += ["-gravity", "South"]
+	subprocess.call(["composite"] + imp + [tfile] + [outfile] + [outfile])
 	return []

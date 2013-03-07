@@ -159,8 +159,7 @@ document.getElementById("lastevent").innerHTML=t;
 function camCapture()
 {
 lastEvent();
-stopCamView();
-document.getElementById("projfld").value=proj
+//stopCamView();
 jQuery.ajax({
        url: '/camcapture',
        dataType:"json",

@@ -75,8 +75,8 @@ scan_thread(void *v)
 
 	pthread_detach(pthread_self());
 	pthread_mutex_lock(&scan_mutex);
-	for (;;) {
-		while (!scan_request)
+	for (;;) {					// loop forever
+		while (!scan_request)	// wait for a scan request
 			pthread_cond_wait(&scan_cond, &scan_mutex);
 		scan_request = 0;
 		scan_failed = 0;
@@ -85,12 +85,12 @@ scan_thread(void *v)
 		req_scan_cancel = 0;
 		pthread_mutex_unlock(&scan_mutex);
 printf("s1\n");
-		if (!initted) {
+		if (!initted) {		// initialise the first time
 			initted = 1;
 			not_retried = 1;
 retry:		
 printf("s2\n");
-			if (initted_already) {
+			if (initted_already) {	// close stuff if required
 				if (opened)
 					sane_close(handle);
 				sane_exit();
@@ -100,45 +100,45 @@ printf("s2\n");
 				br_y_option = -1;
 			}
 printf("s3\n");
-			if (!not_retried) {
+			if (!not_retried) {	// only retry open twice
 				initted = 0;
 				goto done;
 			}
 			not_retried = 0;
 printf("s4\n");
 
-			sane_init(0,0);
+			sane_init(0,0);		// init sane
 			initted_already=1;
-			res = sane_get_devices(&list, 1);
+			res = sane_get_devices(&list, 1);	// get te device list
 			if (!list || !list[0]) {
 				fprintf(stderr, "no scanners found '%s'\n", sane_strstatus(res));
 				goto retry;
 			}
 printf("s5\n");
-			for (i = 0; ; i++) {
-				if (!list[i]) {
+			for (i = 0; ; i++) {	// walk thru the list of devices ooking for ours
+				if (!list[i]) {		// end of list - genesys not found
 					fprintf(stderr, "SANE can't find a genesys scanner\n");
 					goto retry;
 				}
 			        fprintf(stderr, "SANE searching '%s'\n", list[i]->name);
-				if (strstr(list[i]->name, "genesys") != 0)
+				if (strstr(list[i]->name, "genesys") != 0)	// does its name contain "genesys"?
 					break;
 			}
 printf("opening '%s'\n", list[i]->name);
-			if ((res = sane_open(list[i]->name, &handle)) != SANE_STATUS_GOOD) {
+			if ((res = sane_open(list[i]->name, &handle)) != SANE_STATUS_GOOD) { // open the scanner
 				fprintf(stderr, "SANE open '%s' error '%s'\n", list[i]->name, sane_strstatus(res));
 				goto retry;
 			}
 			opened=1;
 printf("searching for options\n");
-			res = sane_control_option(handle, 0, SANE_ACTION_GET_VALUE, &num_dev_options, 0);
+			res = sane_control_option(handle, 0, SANE_ACTION_GET_VALUE, &num_dev_options, 0);	// get a list of options
   			if (res != SANE_STATUS_GOOD) {
       				fprintf (stderr, "Could not get value for option 0: %s\n", sane_strstatus(res));
       				goto retry;
     			}
 //printf("got %d\n",num_dev_options);
 
-			for (i = 1; i < num_dev_options ; i++) {
+			for (i = 1; i < num_dev_options ; i++) { // search the list for the options we care about
 				const SANE_Option_Descriptor *o = sane_get_option_descriptor(handle, i);
 				if (!o)
 					continue;
@@ -152,27 +152,30 @@ printf("%d: option size=%d\n", i, o->size);
 //printf("%d: option ct=%d\n", i, o->constraint_type);
 //printf("%d: option range=0x%lx\n", i, (long)o->constraint.range);
 fflush(stdout);
-				if (!SANE_OPTION_IS_SETTABLE (o->cap))
+				if (!SANE_OPTION_IS_SETTABLE (o->cap)) // ignore read only ones
 					continue;
-				if (strcmp(o->name, "mode") == 0) {
+				if (strcmp(o->name, "mode") == 0) { // set the mode to colour
 					sane_control_option(handle, i, SANE_ACTION_SET_VALUE, (char*)"Color", 0);
 				} else
-				if (strcmp(o->name, "depth") == 0) {
+				if (strcmp(o->name, "depth") == 0) { // set the pixel component size to 8
 					SANE_Word val = 8;
 					sane_control_option(handle, i, SANE_ACTION_SET_VALUE, &val, 0);
 				} else
-				if (strcmp(o->name, "br-y") == 0) {
+				if (strcmp(o->name, "br-y") == 0) { // remember the index for Y length
 					br_y_option = i;
 				} else
-				if (strcmp(o->name, "resolution") == 0) {
+				if (strcmp(o->name, "resolution") == 0) { // remember the index for the resolution
 					resolution_option = i;
 				}
 			}
 		}
 printf("setting options handle=%lx\n", (long)handle);
+		//
+		//	each time we san set up these options
+		//
 		if (resolution_option < 0) {
 			fprintf(stderr, "no SANE resolution parameter found\n");
-		} else {
+		} else {	// set resolution
 			SANE_Word val = st[this_scan_type].dpi;
 			res = sane_control_option(handle, resolution_option, SANE_ACTION_SET_VALUE, &val, 0);
 			if (res != SANE_STATUS_GOOD)
@@ -181,11 +184,11 @@ printf("setting options handle=%lx\n", (long)handle);
 
 		if (br_y_option < 0) {
 			fprintf(stderr, "no SANE br-y parameter found\n");
-		} else {
+		} else {	// set length
 			SANE_Fixed val = st[this_scan_type].length;// altered from SANE_Fixed val = SANE_FIX(st[this_scan_type].length)
 			//if (o->unit != SANE_UNIT_MM)
 			//	val = val*st[this_scan_type].dpi/25.4;
-			res = sane_control_option(handle, i, SANE_ACTION_SET_VALUE, &val, 0);
+			res = sane_control_option(handle, br_y_option, SANE_ACTION_SET_VALUE, &val, 0);
 			if (res != SANE_STATUS_GOOD)
 				fprintf(stderr, "SANE set length %d/%d failed '%s'\n", val, SANE_FIX(st[this_scan_type].length), sane_strstatus(res));
 		}
@@ -200,6 +203,10 @@ printf("start done\n");
 			sane_cancel(handle);
 			goto cls;
 		}
+
+		//
+		//	allocate our memory buffers and wake up the jpeg thread
+		//
 		len = p.bytes_per_line*p.lines;
 		pthread_mutex_lock(&image_mutex);
 		l = p.bytes_per_line*8;
@@ -233,36 +240,49 @@ printf("start done\n");
 		jpeg_done = 0;
 		pthread_cond_broadcast(&image_cond);
 		pthread_mutex_unlock(&image_mutex);
+		//
+		//	loop reading scan data
+		//
 		for (;;) {
 			SANE_Int l=0;
-			if (req_scan_cancel) {
+			if (req_scan_cancel) {	// if main has asked us to stop quit
 				sane_cancel(handle);
 				break;
 			}
-			res = sane_read(handle, &next_scan[0], 8*p.bytes_per_line, &l);
-			off += l;
-			if (l) {
+			res = sane_read(handle, &next_scan[0], 8*p.bytes_per_line, &l);	// read some data
+			off += l;	// l is number of bytes read 
+			if (l) {	// if we read any bytes
 				unsigned char *t;
-				pthread_mutex_lock(&image_mutex);
-				while (last_scan_valid) 
+				pthread_mutex_lock(&image_mutex);	// lock the image buffers
+				while (last_scan_valid) 		// wait for jpeg to finish last scan
 					pthread_cond_wait(&image_cond_done, &image_mutex);
+
+				//
+				// swap image buffers
+				//
 				t = last_scan;
 				last_scan = next_scan;
 				next_scan = t;
+				// 
+				// mark last scan valid and wake up jpeg side
+				//
 				last_scan_valid = 1;
 				last_scan_size = l;
 				pthread_cond_broadcast(&image_cond);
 				pthread_mutex_unlock(&image_mutex);
 			}
-			if (res != SANE_STATUS_GOOD || off >= len) {
+			if (res != SANE_STATUS_GOOD || off >= len) {	// handle error cases
 				if (res == SANE_STATUS_EOF || (res == SANE_STATUS_GOOD && off == len)) {
-					done = 1;
+					done = 1;	// EO is OK it means we're done
 					break;
 				}
 				fprintf(stderr, "SANE read failed '%s' count = %ld/%ld\n", sane_strstatus(res), off, len);
 				break;
 			}
 		}
+		//
+		//	loop waiting for jpeg to finish
+		//
 		pthread_mutex_lock(&image_mutex);
 		if (done && !req_scan_cancel) {
 			jpeg_done = 1;
@@ -276,12 +296,13 @@ printf("start done\n");
 		while (jpeg_active)
 			pthread_cond_wait(&image_cond_done, &image_mutex);
 		pthread_mutex_unlock(&image_mutex);
+		// close out scanner
 cls:
 		sane_cancel(handle);
 		sane_close(handle);//added bp
 done:
 		pthread_mutex_lock(&scan_mutex);
-		scan_running = 0;
+		scan_running = 0;	// tell python we're done
 			
 		pthread_cond_broadcast(&scan_cond_done);
 	}
@@ -296,7 +317,7 @@ startup_scan()
 	static unsigned char thread_running=0;
 
 	pthread_mutex_lock(&scan_mutex);
-	if (!thread_running) {
+	if (!thread_running) {		// if threads not running start them
 		pthread_t tid;
 		thread_running = 1;
 		pthread_create(&tid, 0, scan_thread, 0);
@@ -361,10 +382,15 @@ jpeg_thread(void*x)
 	int i, stride;
 	unsigned char *off;
 
-	pthread_mutex_lock(&image_mutex);
-	for (;;) {
+	pthread_detach(pthread_self());
+	pthread_mutex_lock(&image_mutex);	// lock
+	for (;;) {	
+		// wait for a command
 		while (!jpeg_start && !(jpeg_cancel&&jpeg_active) && !jpeg_done && !last_scan_valid)
 			pthread_cond_wait(&image_cond, &image_mutex);
+		//
+		//	if it's a start or cancel abandon anything we're currently doing
+		//
 		if (jpeg_cancel && jpeg_active) {
 printf("jpeg cancel\n");
 			pthread_mutex_unlock(&image_mutex);
@@ -380,21 +406,21 @@ printf("jpeg cancel\n");
 			jpeg_active = 0;
 			pthread_cond_broadcast(&image_cond_done);
 		} else
-		if (jpeg_start) {
+		if (jpeg_start) {	// start starts a new image
 printf("jpeg start\n");
 			jpeg_active = 1;
 			jpeg_start = 0;
 			pthread_mutex_unlock(&image_mutex);
 			cinfo.err = jpeg_std_error(&jerr);
 printf("jpeg create compress\n");
-			jpeg_create_compress(&cinfo);
+			jpeg_create_compress(&cinfo);	// start jpeg
 			outfile = fopen(TMP_FILE, "w"); // opens file for jpg version of last scan
 			if (!outfile) {
 printf("open failed\n");
 				jpeg_active = 0;
 				jpeg_destroy_compress(&cinfo);
 			} else {
-				jpeg_stdio_dest(&cinfo, outfile);
+				jpeg_stdio_dest(&cinfo, outfile);	// start up jpeg
 				cinfo.image_width = scan_width;
 				cinfo.image_height = scan_height;
 				cinfo.input_components = 3;
@@ -406,7 +432,7 @@ printf("set quality\n");
 printf("start compress\n");
 				jpeg_start_compress(&cinfo, TRUE);
 				stride = 3*scan_width;
-				if (saving_tiff && tiff_file[0]) {
+				if (saving_tiff && tiff_file[0]) { // and tiff too
 					setResolution(st[this_scan_type].dpi);
 					StartSaveTIFF(tiff_file, scan_width, scan_height);
 				}
@@ -414,12 +440,12 @@ printf("start compress\n");
 printf("jpeg start done\n");
 			pthread_mutex_lock(&image_mutex);
 		} else
-		if (last_scan_valid) {
+		if (last_scan_valid) {	// we got a new buffer
 			int count;
 			pthread_mutex_unlock(&image_mutex);
 			if (jpeg_active) {
 				count = 0;
-				for (i = 0; i < last_scan_size; i += stride) {
+				for (i = 0; i < last_scan_size; i += stride) {	// ouput TIFF
 					row_pointer[count] = &last_scan[i];
 					if (saving_tiff) 
 						LineSaveTIFF(row_pointer[count]);
@@ -434,6 +460,9 @@ printf("jpeg start done\n");
 		if (jpeg_done) {
 printf("jpeg done\n");
 			pthread_mutex_unlock(&image_mutex);
+			//
+			// close out jpeg and tiff files
+			// 
 			if (jpeg_active) {
 				jpeg_finish_compress(&cinfo);
 				fclose(outfile); // closes file for jpg version of last scan
