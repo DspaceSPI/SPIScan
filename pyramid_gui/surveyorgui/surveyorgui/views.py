@@ -14,7 +14,6 @@ import time
 import pygame
 import pygame.camera
 
-
 class myView(object):
 
     def __init__(self, request):
@@ -45,8 +44,14 @@ class myView(object):
 
     @view_config(renderer="templates/manual.pt", name="manual.html")
     def manual_view(request):
-        return {}        
-            
+        return {}       
+             
+    @view_config(route_name='lastscan')
+    def test_page(request):
+        response = Response(content_type='image/jpeg')
+        response.app_iter = open('/home/brian/scan/lastscan.jpg', 'rb')
+        return response             
+                
     @view_config(renderer="json", name="update")
     def update_view(self):
     	now = datetime.datetime.utcnow()
@@ -59,6 +64,8 @@ class myView(object):
         e.spidate=now
         e.type="SPI"
         e.filename= outfile
+        e.project="fake project" 
+        e.memo="fake memo"
         DBSession.add(e)
 #	 comtest=subprocess.Popen('', bufsize=0, executable=none, stdin=None, stdout=None, stderr=None, preexec_fn=None, close_fds=False, cwd=None, env=None, universal_newlines=False, startupinfo=None, creationflags=0)
  	return [
@@ -91,7 +98,9 @@ class myView(object):
         e.spidate= now
 #       e.spidate= now.strftime("Y%m%d%H%M%S")
         e.type="CAM"
-        e.filename=outfile 
+        e.filename=outfile
+        e.project="fake project" 
+        e.memo="fake memo"
         DBSession.add(e)
 #	cmdkill = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/killmjpg.sh"
 #	cmdlostart = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/lostart.sh"

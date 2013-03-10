@@ -4,6 +4,7 @@ from sqlalchemy import engine_from_config
 from .models import (
     DBSession,
     Base,
+    Event,
     )
 
 
@@ -17,5 +18,5 @@ def main(global_config, **settings):
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('home', '/')
     config.scan()
-#    print dir(config)  // puts all object to console
+#    print dir(config)  // prints all object to console
     return config.make_wsgi_app()

@@ -97,7 +97,7 @@ document.getElementById("sysclock").innerHTML=t;
     <div class="container-fluid">
  	<div class="row">
         	<div class="span9">
-		<iframe frameborder="1" name="mainscan" scrolling="auto" height="800px" width="100%" src="/static/img/lastscan.jpg">i-frame not permitted</iframe>
+		<iframe frameborder="1" name="mainscan" scrolling="auto" height="800px" width="100%" src="static/img/lastscan.jpg">i-frame not permitted</iframe>
        	 	</div><br>
         <div class="span3">
 		<form method="post">     
@@ -160,11 +160,12 @@ function camCapture()
 {
 lastEvent();
 //stopCamView();
+//projstring = document.getElementById('projfld').value;
 jQuery.ajax({
        url: '/camcapture',
        dataType:"json",
        type: 'POST',
-       data: "teststring",
+       data: "test",
    });
 }
 
