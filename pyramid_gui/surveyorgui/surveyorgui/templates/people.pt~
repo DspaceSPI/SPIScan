@@ -1,5 +1,7 @@
+
         <ul>
             <li tal:repeat="person people">
                 <a href="${person.name}">${person.title}</a>
             </li>
         </ul>
+

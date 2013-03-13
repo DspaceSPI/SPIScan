@@ -194,7 +194,11 @@ printf("setting options handle=%lx\n", (long)handle);
 		}
 
 		setScanner((char*)"Canon", (char*)"700F");
+//printf("SANE_STATUS_GOOD =" + SANE_STATUS_GOOD + "\n");
+//printf("SANE_UNIT_MM =" + SANE_UNIT_MM + "\n");
+//printf("unit variable =" + unit + "\n");
 printf("start\n");
+//printf("SANE_STATUS_GOOD =" + SANE_STATUS_GOOD + "\n");
 		if (sane_start(handle) != SANE_STATUS_GOOD)
 			goto retry;
 printf("start done\n");

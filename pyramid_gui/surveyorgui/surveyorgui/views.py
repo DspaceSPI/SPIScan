@@ -13,6 +13,16 @@ import subprocess
 import time
 import pygame
 import pygame.camera
+import psycopg2 
+import sys 
+
+
+
+PEOPLE = [
+        {'name': 'sstanton', 'title': 'Susan Stanton'},
+        {'name': 'bbarker', 'title': 'Bob Barker'},
+        {'name': 'bpaavo', 'title': 'Brian Paavo'}
+]
 
 class myView(object):
 
@@ -51,11 +61,40 @@ class myView(object):
         response = Response(content_type='image/jpeg')
         response.app_iter = open('/home/brian/scan/lastscan.jpg', 'rb')
         return response             
+        
+#    @view_config(renderer="templates/spifiles.pt", name="spifiles")
+#    def people_view(self):
+#        return {"page_title": "SPI Scans", "people": PEOPLE}    
+
+    @view_config(renderer="templates/spifiles.pt", name="spifiles")
+    def scanslist(self):
+        db = psycopg2.connect('dbname=spiscan user=spiscan')
+        kerser = db.cursor()
+        kerser.execute('SELECT event.record, event.filename FROM public.event')
+        id_data = kerser.fetchall()
+        print id_data
+        {'id_data': [dict(value=value, label=label) for value, label in id_data]}
+        print id_data
+#        for index in range (len(id_data)):
+#            id_list.append(id_data([index][0]))
+        return {"page_title": "SPI Scans", "people": PEOPLE, "list": id_data}
+    
+#    @view_config(route_name='scanslist', renderer='json')            
+#    def scanslist(request):     
+#        con = psycopg2.connect(database='spiscan', user='spiscan') 
+#        cur = con.cursor()
+#        cur.execute('SELECT version()')         
+#        rows = cur.fetchall()
+#        for row in rows:
+#             return [rows] 
+#        if con:
+#             con.close()                
+#        return []
                 
     @view_config(renderer="json", name="update")
     def update_view(self):
     	now = datetime.datetime.utcnow()
-    	outfile = ("/home/spiscan/scan/%s" % now.strftime("SPI_%Y%m%d%H%M%S") + ".jpg")
+    	outfile = ("/home/brian/scan/%s" % now.strftime("SPI_%Y%m%d%H%M%S") + ".jpg")
 #    	open("/tmp/hit-update","a").write("update hit on %s\n" % datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
 #	open("/tmp/hit-update","a").write("scan on %s\n" % datetime.datetime.utcnow())
         e = Event()

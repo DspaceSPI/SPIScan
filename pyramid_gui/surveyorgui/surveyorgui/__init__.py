@@ -18,6 +18,7 @@ def main(global_config, **settings):
     config.add_static_view('static', 'static', cache_max_age=3600)
     config.add_route('home', '/')
     config.add_route('lastscan', '/lastscan.jpg')  # added bp for serving dynamically from filesys
+    config.add_route('scanslist','/scanslist.html')
     config.scan()
 #    print dir(config)  // prints all object to console
     return config.make_wsgi_app()
