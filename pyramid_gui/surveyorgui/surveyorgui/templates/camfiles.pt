@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml""
+                xmlns:tal="http:://xml.zope.org/namespaces/tal"
+                xmlns:metal="http://xml.zope.org/namespaces/metal"
+                xmlns:i18n="http://xml.zope.org/namespaces/i18n">
+  <head>
+    <meta charset="utf-8">
+    <title>Deploy | SPI-Scan Surveyor</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="GUI SPI-Scan Surveyor">
+    <meta name="author" content="Benthic Science Limited">
+    
+	<!-- Version 0.1.0 14 March 2013 Benthic Science Limited --!>
+	<!-- Open-source under the Apache License Version 2.0, January 2004 http://www.apache.org/licenses/ --!>
+	<!-- Based on the Twitter Bootstrap --!>
+
+    <!-- Le styles -->
+    <link href="static/bootstrap/css/bootstrap.css" rel="stylesheet">
+    
+    <style>
+      body {
+        padding-top: 90px; /* 60px to make the container go all the way to the bottom of the topbar */
+      }
+    </style>
+
+    <link href="static/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+
+    <!-- Le fav and touch icons -->
+    <link rel="shortcut icon" href="static/docs/assets/ico/SPIfavicon2.ico">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="static/docs/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/docs/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="static/docs/assets/ico/apple-touch-icon-57-precomposed.png">
+    <script src="static/docs/assets/js/vidstreamstuff.js"></script>
+    <script src="static/js/jquery-1.9.1.min.js"></script>
+</head>
+
+<body>
+    <div class="navbar navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </a>
+          <p align="right"><img src="static/docs/assets/img/SPIscanlogo.png" width="125px" height="40px"><a class="brand" href="#">SPI-Scan Surveyor</a></p>
+          <div class="nav-collapse">
+            <ul class="nav">
+	      <li><a href="/spiscansurveyor.html">deploy</a>
+              <li><a href="/setup.html">setup</a></li>
+              <li><a href="/io.html">input/output</a></li>
+              <li class="active"><a href="/files.html">FILES</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+<H3>${page_title}</H3> Files available for browsing.  Must add paging and links to dynamic images.
+<hr>
+<table border="0">
+            <thead>
+              <th>Record</th>
+              <th>Project</th>
+              <th>File</th>
+              <th>Thumbnail</th>
+            </thead>
+            <tr tal:repeat="data data">
+              <td>${data.spirecord}</td>
+              <td>${data.project}</td>
+              <td>${data.filename}</td>
+              <td><img src="static/img/samplethumb.jpg" width="80px" height="80px"></td>
+            </tr>  
+</table>

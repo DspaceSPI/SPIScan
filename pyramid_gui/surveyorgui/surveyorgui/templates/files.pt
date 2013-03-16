@@ -59,68 +59,21 @@
     </div>
 <div class="row">
 	<div class="span12">
-            <br/><h2>File Directory</h2>
+            <br/><h2>File Directories</h2>
 			<form class="well">
-			<table border="0">
-			
-			<tr><td>All files will be saved <strong>within</strong> this directory. Scans will be in a 'scan' subdirectory, still captures from the deployment camera will be in the 'capture' subdirectory, data files (.csv format) will be saved in the 'log' subdirectory, and any comments in the memo field from each scan will be stored in the 'notes' subdirectory. <br>
+			All files are saved <strong>within</strong> the user home directory. Scans are in a 'scan' subdirectory, still captures from the deployment camera will be in the 'cam' subdirectory.
 			<br>
-			Files will be saved with the format: userprefix_DAYMONTHYEARHOURMINUTESECOND_filtype.suffix (e.g. site1_28072012163045_scan.tif)  
-			<tr><td>
-				<div class="controls"><input type="file" class="input-file" id="parentpath">
-				</div>
-			</table>
+			<br>
+			Files will be saved with the format: userprefix_filetype_YEARMODAHRMNSE.suffix (e.g. PernaFarm_SPI_20130326164436.tif)  
 			</form>
-    </div>
+			<br/>
+			<ul>
+			<li><a href="/spifiles">Browse Sediment Profile Images</a></li>
+			<li><a href="/camfiles">Browse Deployment Camera Captures</a></li>
+			<li><a href="/logfiles">Browse Memo Log</a></li>
+			</ul>
+       </div>
 </div>
-<Center>
-            <h2>Image carousel</h2>
-            <p>Click on left and right arrows to browse images in the scan directory.</p>
-            <div class="bs-docs-example">
-              <div id="myCarousel" class="carousel slide">
-                <div class="carousel-inner">
-
-                  <div class="item active">
-                    <img align="center" height="20" src="static/srvrscans/20120919173500.jpg" alt="">
-                    <div class="carousel-caption">
-                      <h4>20120919173500.jpg</h4>
-                    </div>
-                  </div>
-
-                  <div class="item">
-                    <img align="center" height="20"  src="static/srvrscans/20120919173130.jpg" alt="">
-                    <div class="carousel-caption">
-
-                      <h4>2012091917313.jpg</h4>
-                      </div>
-                  </div>
-
-                  <div class="item">
-                    <img align="center" height="20"  src="static/srvrscans/20120919172955.jpg" alt="">
-                    <div class="carousel-caption">
-
-                      <h4>20120919172955.jpg</h4>
-                      </div>
-                  </div>
-
-                  <div class="item">
-                    <img align="center" "height="20"  src="static/srvrscans/20120919172930.jpg" alt="">
-                    <div class="carousel-caption">
-
-                      <h4>20120919172930.jpg</h4>
-                      </div>
-                  </div>
-
-                </div>
-                <a class="left carousel-control" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-                <a class="right carousel-control" href="#myCarousel" data-slide="next">&rsaquo;</a>
-              </div>
-          </div>
-<center/>
-            <div class="alert alert-warning">
-              <strong>Heads up!</strong>
-             Text here.
-            </div>
 
 
     <!-- Le javascript

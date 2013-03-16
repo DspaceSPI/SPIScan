@@ -1,6 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
         "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml""
+                xmlns:tal="http:://xml.zope.org/namespaces/tal"
+                xmlns:metal="http://xml.zope.org/namespaces/metal"
+                xmlns:i18n="http://xml.zope.org/namespaces/i18n">
   <head>
     <meta charset="utf-8">
     <title>Deploy | SPI-Scan Surveyor</title>
@@ -53,12 +56,19 @@
         </div>
       </div>
     </div>
-<H1>${page_title}</H1>
-
-        <ul>
-            <li tal:repeat="person people">
-                <a href="${person.name}">${person.title}</a>
-            </li>
-        </ul>
-        <p>${list}</p>
-
+<H3>${page_title}</H3> Files available for browsing.  Must add paging and links to dynamic images.
+<hr>
+<table border="0">
+            <thead>
+              <th>Record</th>
+              <th>Project</th>
+              <th>File</th>
+              <th>Thumbnail</th>
+            </thead>
+            <tr tal:repeat="data data">
+              <td>${data.spirecord}</td>
+              <td>${data.project}</td>
+              <td>${data.filename}</td>
+              <td><img src="static/img/samplethumb.jpg" width="80px" height="80px"></td>
+            </tr>  
+</table>

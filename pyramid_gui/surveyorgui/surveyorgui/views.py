@@ -1,22 +1,16 @@
 from pyramid.response import Response
 from pyramid.view import view_config
 from random import randint
-from .models import Event, DBSession
-#from sqlalchemy.exc import DBAPIError
-#from .models import (
-#    DBSession,
-#    mymodel,
-#    )
-#from pyramid.renderers import get_renderer
+from .models import Event, DBSession, MyModel
+from sqlalchemy import *
+from sqlalchemy.orm import sessionmaker
 import datetime
 import subprocess
 import time
 import pygame
 import pygame.camera
-import psycopg2 
 import sys 
-
-
+import dspace
 
 PEOPLE = [
         {'name': 'sstanton', 'title': 'Susan Stanton'},
@@ -55,6 +49,12 @@ class myView(object):
     @view_config(renderer="templates/manual.pt", name="manual.html")
     def manual_view(request):
         return {}       
+       
+#    @view_config(route_name='add', renderer="templates/add.pt")
+#    def add_view(request):
+#        '''This is an add view. Here is where we define and pass any information to the template.'''
+        #Code here
+#        return {'project':'myapp'}
              
     @view_config(route_name='lastscan')
     def test_page(request):
@@ -66,54 +66,44 @@ class myView(object):
 #    def people_view(self):
 #        return {"page_title": "SPI Scans", "people": PEOPLE}    
 
-    @view_config(renderer="templates/spifiles.pt", name="spifiles")
-    def scanslist(self):
-        db = psycopg2.connect('dbname=spiscan user=spiscan')
-        kerser = db.cursor()
-        kerser.execute('SELECT event.record, event.filename FROM public.event')
-        id_data = kerser.fetchall()
-        print id_data
-        {'id_data': [dict(value=value, label=label) for value, label in id_data]}
-        print id_data
-#        for index in range (len(id_data)):
-#            id_list.append(id_data([index][0]))
-        return {"page_title": "SPI Scans", "people": PEOPLE, "list": id_data}
-    
-#    @view_config(route_name='scanslist', renderer='json')            
-#    def scanslist(request):     
-#        con = psycopg2.connect(database='spiscan', user='spiscan') 
-#        cur = con.cursor()
-#        cur.execute('SELECT version()')         
-#        rows = cur.fetchall()
-#        for row in rows:
-#             return [rows] 
-#        if con:
-#             con.close()                
-#        return []
+    @view_config(renderer="templates/spifiles.pt", route_name="spifiles")
+    def spifiles(request):
+        dbsession = DBSession()
+        data = dbsession.query(Event).order_by(Event.project).filter_by(eventtype='SPI').all()
+        print data
+        return {"page_title":"SPI Files", "data":data}
+        
+    @view_config(renderer="templates/camfiles.pt", route_name="camfiles")
+    def camfiles(request):
+        dbsession = DBSession()
+        data = dbsession.query(Event).order_by(Event.project).filter_by(eventtype='CAM').all()
+        print data
+        return {"page_title":"CAM Files", "data":data}
+        
+    @view_config(renderer="templates/logfiles.pt", route_name="logfiles")
+    def logfiles(request):
+        dbsession = DBSession()
+        data = dbsession.query(Event).order_by(Event.project).all()
+        print data
+        return {"page_title":"LOG Files", "data":data}
                 
     @view_config(renderer="json", name="update")
     def update_view(self):
     	now = datetime.datetime.utcnow()
     	outfile = ("/home/brian/scan/%s" % now.strftime("SPI_%Y%m%d%H%M%S") + ".jpg")
-#    	open("/tmp/hit-update","a").write("update hit on %s\n" % datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S"))
-#	open("/tmp/hit-update","a").write("scan on %s\n" % datetime.datetime.utcnow())
-        e = Event()
-        e.spirecord=None
-        e.spifileprefix="modtest"
-        e.spidate=now
-        e.type="SPI"
-        e.filename= outfile
-        e.project="fake project" 
-        e.memo="fake memo"
-        DBSession.add(e)
-#	 comtest=subprocess.Popen('', bufsize=0, executable=none, stdin=None, stdout=None, stderr=None, preexec_fn=None, close_fds=False, cwd=None, env=None, universal_newlines=False, startupinfo=None, creationflags=0)
- 	return [
- 	     randint(0,100),
- 	     randint(0,100),
- 	     randint(0,100),
- 	     randint(0,100),
- 	     888,
- 	]
+    	cam_event = Event('fileprefix',now,'SPI',outfile,'memoooo','projecto')
+	DBSession.add(cam_event)  #adds record of scan event to database
+    	done = 0  # Start actual scan
+        print "calling dspace.scan_description";
+        dspace.scan_description("test description");
+        print "called dspace.scan_description successfully";
+        while done==0:
+	    dspace.scan_start(1);
+        while dspace.scan_done()==0 :
+            time.sleep(1)
+        print "scan done"
+	done=1
+        return []
  	
     @view_config(renderer="json", name="stopcam")
     def stopcam_view(self):
@@ -131,36 +121,23 @@ class myView(object):
     def camcapture_view(self):
 	now = datetime.datetime.utcnow()
 	outfile = ("/home/brian/cam/%s" % now.strftime("CAM_%Y%m%d%H%M%S") + ".jpg")
-	e = Event()
-        e.spirecord=None
-        e.spifileprefix="desktest"
-        e.spidate= now
-#       e.spidate= now.strftime("Y%m%d%H%M%S")
-        e.type="CAM"
-        e.filename=outfile
-        e.project="fake project" 
-        e.memo="fake memo"
-        DBSession.add(e)
+	cam_event = Event('fileprefix',now,'CAM',outfile,'memooo','projecto')
+	DBSession.add(cam_event)
 #	cmdkill = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/killmjpg.sh"
 #	cmdlostart = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/lostart.sh"
 #	cmdhistart = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/histart.sh"
 #	cmdframegrab = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/framegrab.sh"
 #	subprocess.check_call(cmdkill, shell=True)
-#       time.sleep(2)
 	pygame.camera.init()
 	cam = pygame.camera.Camera("/dev/video1",(1920,1080))
 	cam.start()
 	img = cam.get_image()
 	pygame.image.save(img,"/tmp/capture.jpg")
-#	time.sleep(2)
 	cam.stop()
-#	time.sleep(2)
 #	subprocess.call(cmdlostart,shell=True)
-#	open("/tmp/capture","a").write("frame grab on " + now)
         inpfile = "/tmp/capture.jpg"
         tfile = "/home/.spiscan/runtime.conf"
         label = ("SPIScan Surveyor SN7 %s" % now.strftime("%Y%m%d%H%M%S")) 
-#        time.sleep(2)
         args = []
         args += ["-background", "White"]
   	args += ["-pointsize","42"]
@@ -170,7 +147,11 @@ class myView(object):
         subprocess.call(["convert",inpfile] + args + [outfile])
 	time.sleep(5)
 	imp = []
-	imp += ["-dissolve", "25"]
+	imp += ["-dissolve", "45"]
 	imp += ["-gravity", "South"]
 	subprocess.call(["composite"] + imp + [tfile] + [outfile] + [outfile])
+	thmbfile = ("/home/brian/cam/thumbs/%s" % now.strftime("CAM_%Y%m%d%H%M%S") + ".jpg")
+	thmb = []
+	thmb += ["-resize","80x80"]
+	subprocess.call(["convert",outfile] + thmb + [thmbfile])
 	return []

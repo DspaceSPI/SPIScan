@@ -1,0 +1,5 @@
+These files build the dspace shared library - it's intended to be used with
+python - 'make' makes the shared library and pythion bindings, it builds the scan code from here,
+Michael's arduino interface library, and will eventually include gps and stuff fr manipulating 
+mpeg/etc
+

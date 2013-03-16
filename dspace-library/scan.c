@@ -88,11 +88,14 @@ printf("s1\n");
 		if (!initted) {		// initialise the first time
 			initted = 1;
 			not_retried = 1;
+printf("initted");
 retry:		
 printf("s2\n");
 			if (initted_already) {	// close stuff if required
 				if (opened)
+					printf("closing sane");
 					sane_close(handle);
+				printf("exiting sane");
 				sane_exit();
 				opened=0;
 				initted_already=0;
@@ -178,6 +181,7 @@ printf("setting options handle=%lx\n", (long)handle);
 		} else {	// set resolution
 			SANE_Word val = st[this_scan_type].dpi;
 			res = sane_control_option(handle, resolution_option, SANE_ACTION_SET_VALUE, &val, 0);
+			printf("set resolution choice flag");
 			if (res != SANE_STATUS_GOOD)
 				fprintf(stderr, "SANE set resolution=%d failed '%s'\n", val,  sane_strstatus(res));
 		}
@@ -185,6 +189,7 @@ printf("setting options handle=%lx\n", (long)handle);
 		if (br_y_option < 0) {
 			fprintf(stderr, "no SANE br-y parameter found\n");
 		} else {	// set length
+		        printf("else chosen flag");
 			SANE_Fixed val = SANE_FIX(st[this_scan_type].length);// altered from SANE_Fixed val = SANE_FIX(st[this_scan_type].length)  but then changed to SANE_Fixed val = st[this_scan_type].length;
 			//if (o->unit != SANE_UNIT_MM)
 			//	val = val*st[this_scan_type].dpi/25.4;
@@ -192,10 +197,11 @@ printf("setting options handle=%lx\n", (long)handle);
 			if (res != SANE_STATUS_GOOD)
 				fprintf(stderr, "SANE set length %d/%d failed '%s'\n", val, SANE_FIX(st[this_scan_type].length), sane_strstatus(res));
 		}
-
+                printf("about to setScanner");
 		setScanner((char*)"Canon", (char*)"700F");
 printf("start\n");
 		if (sane_start(handle) != SANE_STATUS_GOOD)
+		        printf("retrying");
 			goto retry;
 printf("start done\n");
 		if ((res = sane_get_parameters(handle, &p)) != SANE_STATUS_GOOD) {
@@ -324,6 +330,7 @@ startup_scan()
 		pthread_create(&tid, 0, jpeg_thread, 0);
 	}
 	pthread_mutex_unlock(&scan_mutex);
+	printf("Exiting startup_scan nicely\n");
 }
 // purpose
 void
@@ -477,6 +484,7 @@ printf("jpeg done\n");
 		}
 	}
 	pthread_mutex_unlock(&image_mutex);
+	printf("exiting jpeg done bit successfully \n");
 	return 0;
 }
 // purpose
