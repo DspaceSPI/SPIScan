@@ -25,7 +25,7 @@ typedef struct scan_type {
 static const scan_type st[] = {
 	SCAN_TYPE(75,100),		// placement check
 	SCAN_TYPE(75,1100),		// preview scan
-	SCAN_TYPE(600,600),		// HQ scan
+	SCAN_TYPE(600,50),		// HQ scan
 };
 
 static pthread_mutex_t scan_mutex = PTHREAD_MUTEX_INITIALIZER;

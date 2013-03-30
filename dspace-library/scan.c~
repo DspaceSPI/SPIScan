@@ -146,12 +146,12 @@ printf("searching for options\n");
 				if (!o)
 					continue;
 			// --mode=Color --depth=8 --resolution=600 --format=tiff 
-printf("%d: option name='%s'\n", i, o->name);
-printf("%d: option unit=%d\n", i, o->unit);
+//printf("%d: option name='%s'\n", i, o->name);
+//printf("%d: option unit=%d\n", i, o->unit);
 //printf("%d: option title='%s'\n", i, o->title);
 //printf("%d: option desc='%s'\n", i, o->desc);
-printf("%d: option type=%d\n", i, o->type);
-printf("%d: option size=%d\n", i, o->size);
+//printf("%d: option type=%d\n", i, o->type);
+//printf("%d: option size=%d\n", i, o->size);
 //printf("%d: option ct=%d\n", i, o->constraint_type);
 //printf("%d: option range=0x%lx\n", i, (long)o->constraint.range);
 fflush(stdout);

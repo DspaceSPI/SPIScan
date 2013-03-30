@@ -60,32 +60,30 @@ xmlhttp.open("POST","ajax_info.txt",true);
 xmlhttp.send();
 }
 
-function notelastEvent()
+function noteLastEvent()
 {
-var d;
-d = new Date();
-var t;
-t = d.toUTCString();
-var levent;
-levent = JSON.stringify(t);
-jQuery.ajax({
-      url: '/lastevent',
-      contentType:"application/json; charset=utf-8",
-      data: levent, 
-      type: 'POST'
-     });
-document.getElementById("lastevent").innerHTML=t;
+	var d = new Date();
+	var t = d.toUTCString();
+	var levent = JSON.stringify(t);
+	document.getElementById("lastevent").innerHTML=t;
+	jQuery.ajax({
+		url: '/lastevent',
+		contentType:"application/json; charset=utf-8",
+		data: levent, 
+		type: 'POST'
+	});
 }
 
 function camCapture()
 {
-deploydata = JSON.stringify({"spifileprefix" : $("#prefixfld").val(), "memo" : $("#memo").val(), "project" : $("#projfld").val()});
-jQuery.ajax({
-	url: '/camcapture',
-	contentType:"application/json; charset=utf-8",
-	data: deploydata, 
-	type: 'POST'
-});
+	noteLastEvent();
+	deploydata = JSON.stringify({"spifileprefix" : $("#prefixfld").val(), "memo" : $("#memo").val(), "project" : $("#projfld").val()});
+	jQuery.ajax({
+		url: '/camcapture',
+		contentType:"application/json; charset=utf-8",
+		data: deploydata, 
+		type: 'POST'
+	});
 }
 
 var myVar=setInterval(function(){myTimer()},1000);
@@ -96,8 +94,6 @@ var d=new Date();
 var t=d.toUTCString();
 document.getElementById("sysclock").innerHTML=t;
 }
-
-
 </script>
 
 
@@ -149,10 +145,10 @@ document.getElementById("sysclock").innerHTML=t;
 
 					<br/>
 					<textbody style="text-align:center"><a class="btn" href="#" id="laserbtn">Lasers<i class="icon-asterisk"></i></a>&nbsp;&nbsp;<a class="btn" href="#" id="capturebtn" onclick="camCapture()">Capture<i class="icon-camera"></i></a>
-					<p align="center"><a class="btn btn-warning" href="#" id="acqbtn" onclick="stampTime()">Acquire</a>&nbsp;&nbsp;<a class="btn btn-success" href="#" id="plcbtn" onClick="placement()">Placement</a>
+					<p align="center"><a class="btn btn-warning" href="#" id="acqbtn" onclick="acquireScan()">Acquire</a>&nbsp;&nbsp;<a class="btn btn-success" href="#" id="plcbtn" onClick="placement()">Placement</a>
 					<p><a id="prebtn" class="btn btn-block btn-primary" onclick="preview()">Preview</a>
 					<p style="text-align:center">
-					<a class="btn btn-inverse" href="#" data-toggle="button" id="pump1btn" onClick="lastEvent()">Pump 1</a>
+					<a class="btn btn-inverse" href="#" data-toggle="button" id="pump1btn" onClick="noteLastEvent()">Pump 1</a>
 					&nbsp;&nbsp;
 					<a class="btn btn-inverse" href="#" data-toggle="button" id="pump2btn">Pump 2</a>
 					</p>
@@ -194,9 +190,9 @@ document.getElementById("sysclock").innerHTML=t;
 		</div>
 	</div>
 <script>
-
-function stampTime()
+function acquireScan()
 {
+	noteLastEvent();
 	deploydata = JSON.stringify({"project" : $("#projfld").val(), "memo" : $("#memo").val(), "spifileprefix" : $("#prefixfld").val()})
 	jQuery.ajax({
 		url: '/update',
@@ -204,7 +200,6 @@ function stampTime()
 		type: 'POST',
 		data: deploydata,
 	});
-//	notelastEvent();
 }
 
 function placement()
@@ -214,7 +209,7 @@ function placement()
        contentType:"application/json; charset=utf-8",
        type: 'POST',
        data: "teststring",
-   });
+  });
 }
 
 function preview()
@@ -224,7 +219,7 @@ function preview()
        contentType:"application/json; charset=utf-8",
        type: 'POST',
        data: "teststring",
-   });
+  });
 }
 
 function startCamView()
@@ -262,9 +257,6 @@ else
   }
 }
 
-</script>
-
-<script>
 var JSONObject = {
   "temp":42,
   "long":16, 

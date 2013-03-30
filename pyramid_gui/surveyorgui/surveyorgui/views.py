@@ -86,11 +86,6 @@ def camcapture(request):
     cam_event = Event(spifileprefix, now, 'CAM', outfile, memo, project)
     DBSession.add(cam_event)
     stopcam(1)
-    ##cmdkill = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/killmjpg.sh"
-    ##cmdlostart = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/lostart.sh"
-    ##cmdhistart = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/histart.sh"
-    ##cmdframegrab = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/framegrab.sh"
-    ##subprocess.check_call(cmdkill, shell=True)
     pygame.camera.init()
     cam = pygame.camera.Camera("/dev/video1",(1920,1080))
     cam.start()
@@ -98,7 +93,6 @@ def camcapture(request):
     pygame.image.save(img,"/tmp/capture.jpg")
     cam.stop()
     time.sleep(1)
-    ##subprocess.call(cmdlostart,shell=True)
     startcam(1)
     inpfile = "/tmp/capture.jpg"
     tfile = "/home/.spiscan/runtime.conf"
@@ -171,6 +165,13 @@ def update_view(request):
     subprocess.call(["convert",outfile] + thmb + [thmbfile])
     return []
 
+@view_config(renderer='json', name="lastevent")
+def lastevent_view(request):
+    levent = request.json_body
+    with open("/home/brian/spiscanconfig/levent.txt", "w") as text_file:
+        text_file.write("%s" % levent) 
+    return ['OK']
+
 class myView(object):
 
     def __init__(self, request):
@@ -235,13 +236,6 @@ class myView(object):
         data = dbsession.query(Event).order_by(Event.project).all()
         print data
         return {"page_title":"LOG Files", "data":data}
-
-    @view_config(renderer='json', name="lastevent")
-    def lastevent_view(request):
-        levent = request.json_body
-        with open("/home/brian/spiscanconfig/levent.txt", "w") as text_file:
-            text_file.write("%s" % levent) 
-        return ['OK']
 
     @view_config(renderer="json", name="placement")
     def placement_view(request):
