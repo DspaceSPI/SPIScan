@@ -33,11 +33,11 @@
 <script>
 $(document).ready(function(){
   $("form :input").change(function() {
-    deploydatadata = JSON.stringify({"project" : $("#projfld").val(), "spifileprefix" : $("#prefixfld").val(), "memo" : $("#memo").val(), "bright" : $("#bright").val(), "scanresolution" : $("#scanresolution").val()});
+    jsondata = JSON.stringify({"project" : $("#projfld").val(), "spifileprefix" : $("#prefixfld").val(), "memo" : $("#memo").val(), "bright" : $("#bright").val(), "scanresolution" : $("#scanresolution").val()});
     jQuery.ajax({
        url: '/fieldchange',
        contentType:"application/json; charset=utf-8",
-       data: deploydata, 
+       data: jsondata, 
        type: 'POST'
      });
    // document.getElementById("memo").innerHTML=jsondata;
@@ -79,12 +79,11 @@ document.getElementById("lastevent").innerHTML=t;
 
 function camCapture()
 {
-notelastEvent();
-jsondata = JSON.stringify({"fileprefix" : $("#prefixfld").val(), "memo" : $("#memo").val(), "project" : $("#projfld").val()});
+deploydata = JSON.stringify({"spifileprefix" : $("#prefixfld").val(), "memo" : $("#memo").val(), "project" : $("#projfld").val()});
 jQuery.ajax({
 	url: '/camcapture',
 	contentType:"application/json; charset=utf-8",
-	data: jsondata, 
+	data: deploydata, 
 	type: 'POST'
 });
 }
@@ -205,7 +204,7 @@ function stampTime()
 		type: 'POST',
 		data: deploydata,
 	});
-	notelastEvent();
+//	notelastEvent();
 }
 
 function placement()

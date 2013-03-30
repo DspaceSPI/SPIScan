@@ -25,12 +25,12 @@ def startcam(self):
 
 @view_config(renderer='json', name="fieldchange")
 def fieldchange_view(request):
-    deploydata = request.json_body
-    project = deploydata['project']
-    spifileprefix = deploydata['spifileprefix']
-    memo = deploydata['memo']
-    bright = deploydata['bright']
-    scanresolution = deploydata['scanresolution']
+    jsondata = request.json_body
+    project = jsondata['project']
+    spifileprefix = jsondata['spifileprefix']
+    memo = jsondata['memo']
+    bright = jsondata['bright']
+    scanresolution = jsondata['scanresolution']
     with open("/home/brian/spiscanconfig/deploydata.txt", "w") as text_file:
         text_file.write(
         "%s\n" % project + 
@@ -76,14 +76,14 @@ def setupchange_view(request):
     return ['OK']
 
 @view_config(renderer="json", name="camcapture")
-def camcapture_view(request):
+def camcapture(request):
     jsondata = request.json_body
-    fileprefix = jsondata['fileprefix']
+    spifileprefix = jsondata['spifileprefix']
     memo = jsondata['memo']
     project = jsondata['project']
     now = datetime.datetime.utcnow()
     outfile = ("/home/brian/cam/%s" % now.strftime("CAM_%Y%m%d%H%M%S") + ".jpg")
-    cam_event = Event(fileprefix, now, 'CAM', outfile, memo, project)
+    cam_event = Event(spifileprefix, now, 'CAM', outfile, memo, project)
     DBSession.add(cam_event)
     stopcam(1)
     ##cmdkill = "bash /home/brian/DspaceSPI/SPIScan/mjpg-streamer/killmjpg.sh"
