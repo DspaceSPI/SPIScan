@@ -10,7 +10,7 @@
     
 	<!-- Version 0.1.0 14 February 2013 Benthic Science Limited --!>
 	<!-- Open-source under the Apache License Version 2.0, January 2004 http://www.apache.org/licenses/ --!>
-	<!-- Based on the Twitter Bootstrap --!>
+	<!-- CSS Twitter Bootstrap --!>
 
     <!-- Le styles -->
     <link href="static/bootstrap/css/bootstrap.css" rel="stylesheet">
@@ -28,25 +28,29 @@
     <link rel="apple-touch-icon-precomposed" sizes="114x114" href="static/docs/assets/ico/apple-touch-icon-114-precomposed.png">
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/docs/assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="static/docs/assets/ico/apple-touch-icon-57-precomposed.png">
-    <script src="static/docs/assets/js/vidstreamstuff.js"></script>
+<!--    <script src="static/docs/assets/js/vidstreamstuff.js"></script> -->
     <script src="static/js/jquery-1.9.1.min.js"></script>
 
-<script>
 
-//$(document).ready(function(){
-//  $(stopstreambtn).click(function(){
-//    $(deploycam).hide();
-//  });
-//});
+<script>
+$(document).ready(function(){
+  $("form :input").change(function() {
+    jsondata = JSON.stringify({"project" : $("#projfld").val(), "spifileprefix" : $("#prefixfld").val(), "memo" : $("#memo").val(), "bright" : $("#bright").val(), "scanresolution" : $("#scanresolution").val()});
+    jQuery.ajax({
+       url: '/fieldchange',
+       contentType:"application/json; charset=utf-8",
+       data: jsondata, 
+       type: 'POST'
+     });
+   // document.getElementById("memo").innerHTML=jsondata;
+  });
+});
 
 // APPLICATION SUPPORTS ONLY for IE7+, Firefox, Chrome, Opera, Safari
 function loadXMLDoc()
 {
 var xmlhttp;
-if (window.XMLHttpRequest)
-  {
-  xmlhttp=new XMLHttpRequest();
-  }
+xmlhttp=new XMLHttpRequest();
 xmlhttp.onreadystatechange=function()
   {
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
@@ -69,10 +73,7 @@ document.getElementById("sysclock").innerHTML=t;
 
 </script>
 </head>
-
-
-
-<body>
+  <body>
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container-fluid">
@@ -97,10 +98,10 @@ document.getElementById("sysclock").innerHTML=t;
     <div class="container-fluid">
  	<div class="row">
         	<div class="span9">
-		<iframe frameborder="1" name="mainscan" scrolling="auto" height="800px" width="100%" src="static/img/lastscan.jpg">i-frame not permitted</iframe>
+		<iframe frameborder="1" name="mainscan" scrolling="auto" height="800px" width="100%" src="lastscan.jpg">i-frame not permitted</iframe>
        	 	</div><br>
         <div class="span3">
-		<form method="post">     
+		<form method="post" id="deployform">     
 			<p style="color:red;text-align:center">Sys Temp <span id="systemp">var here</span>&deg;
 			<img id="gpslock" onclick="changeGPSLock()" src="static/img/gpslockoff.png" width="100" height="50">
 			<p style="font-size:10px;color:black;text-align:left">Sys: <span id="sysclock"></span>
@@ -109,33 +110,33 @@ document.getElementById("sysclock").innerHTML=t;
 			<br/>LONG: <span id="longvalue">var here</span>&deg;
 			<br/><iframe marginheight="0px" name="deploycam" marginwidth="0" frameborder="0" width="176px" height="144px" src="static/docs/stopcammsg.html" scrolling="no" id="deploycam">i-frame not permitted</iframe>
 			</p><p style="text-align:center">Deploy Camera <nbsp><a class="btn btn-mini" href="#" id="streambtn" onclick="startCamView()"><i class="icon-play"></i></a><nbsp><a class="btn btn-mini" href="#" id="stopstreambtn" onclick="stopCamView()"><i class="icon-stop"></i></a>
-			<br/><textbody style="text-align:center"><a class="btn" href="#" id="laserbtn">Lasers<i class="icon-asterisk"></i></a><nbsp><a class="btn" href="#" id="capturebtn" onclick="camCapture()">Capture<i class="icon-camera"></i></a>
-			<p align="center"><a class="btn btn-warning" href="#" id="acqbtn" onclick="stampTime()">Acquire</a><nbsp><a class="btn btn-success" href="#" id="plcbtn">Placement</a>
-			<p><a id="prebtn" class="btn btn-block btn-primary" onclick="alert('Scan without saving')">Preview</a>
-			<p style="text-align:center"><a class="btn btn-inverse" href="#" data-toggle="button" id="pump1btn">Pump 1</a><a class="btn btn-inverse" href="#" data-toggle="button" id="pump2btn">Pump 2</a>
-			<p><input type="text" class="input-small" id="projfld" value="Project Name">
-			<br/><textarea class="input-xlarge" id="memo" rows="3" value="Scan memo">Scan memo</textarea>
-			<p><label class="control-label" for="select01">LED Brightness (var here)</label>
-				<div class="btn-group" data-toggle="buttons-radio">
-				<button type="button" class="btn btn-small">Off</button>	
-				<button type="button" class="btn btn-small">10%</button>	
-				<button type="button" class="btn btn-small">25%</button>	
-				<button type="button" class="btn btn-small">50%</button>	
-				<button type="button" class="btn btn-small">75%</button>	
-				<button type="button" class="btn btn-small">Full</button>	
-				</div>
-			<p><label class="control-label" for="select02">Acquire Scan Resolution</label>
+			<br/><textbody style="text-align:center"><a class="btn" href="#" id="laserbtn">Lasers<i class="icon-asterisk"></i></a>&nbsp;&nbsp;<a class="btn" href="#" id="capturebtn" onclick="camCapture()">Capture<i class="icon-camera"></i></a>
+			<p align="center"><a class="btn btn-warning" href="#" id="acqbtn" onclick="stampTime()">Acquire</a>&nbsp;&nbsp;<a class="btn btn-success" href="#" id="plcbtn" onClick="placement()">Placement</a>
+			<p><a id="prebtn" class="btn btn-block btn-primary" onclick="preview()">Preview</a>
+			<p style="text-align:center"><a class="btn btn-inverse" href="#" data-toggle="button" id="pump1btn" onClick="lastEvent()">Pump 1</a>&nbsp;&nbsp;<a class="btn btn-inverse" href="#" data-toggle="button" id="pump2btn">Pump 2</a>
+			<p><input type="text" class="input-small" id="projfld" value="Project Name">&nbsp;&nbsp;<input type="text" class="input-small" id="prefixfld" value="File Prefix">
+			<br/><textarea class="input-xlarge" id="memo" rows="3" value="Scan memo">Scan memo (tab away to save)</textarea>
+			<br/><label class="control-label" for="bright">LED Brightness (%)</label>
 				<div class="controls">
+				<select id="bright">
+				<option>0</option>	
+				<option>10</option>
+				<option>25</option>
+				<option>50</option>
+				<option>75</option>
+				<option>100</option></select>
+				
+			        <br/><label class="control-label" for="scanresolution">Acquire Scan Resolution (dpi)</label>
 				<select id="scanresolution">
-				<option> 75 dpi</option>
-				<option>100 dpi</option>
-				<option>150 dpi</option>
-				<option>200 dpi</option>
-				<option>300 dpi</option>
-				<option>600 dpi</option>
-				<option>1200 dpi</option>
-				<option>2400 dpi</option>
-				<option>4800 dpi</option>
+				<option> 75</option>
+				<option>100</option>
+				<option>150</option>
+				<option>200</option>
+				<option>300</option>
+				<option>600</option>
+				<option>1200</option>
+				<option>2400</option>
+				<option>4800</option></select>
 				</div>
 			<br/><label class="checkbox"><input type="checkbox" id="autoscan"> Autoscan</label><label class="checkbox"><input type="checkbox" id="lampoff" value="TRUE"> Lamp Off</label>
 			<p style="text-align:right"><a class="btn" href="/manual.html" target="blank" id="manbtn">Manual <i class="icon-question-sign"></i></a>
@@ -144,35 +145,59 @@ document.getElementById("sysclock").innerHTML=t;
        </div>
        </div>
 
-<!-- 
-Scripts/functions/elements below for testing purposes
-++++++++++++++++++++++++++++++++++++++++++++
--->
 <script>
 function lastEvent()
 {
 var d=new Date();
 var t=d.toUTCString();
+var levent = JSON.stringify(t)
+jQuery.ajax({
+      url: '/lastevent',
+      contentType:"application/json; charset=utf-8",
+      data: levent, 
+      type: 'POST'
+     });
 document.getElementById("lastevent").innerHTML=t;
 }
 
 function camCapture()
 {
 lastEvent();
-//stopCamView();
-//projstring = document.getElementById('projfld').value;
+deploydata = JSON.stringify({"fileprefix" : $("#prefixfld").val(), "memo" : $("#memo").val(), "project" : $("#projfld").val()});
 jQuery.ajax({
-       url: '/camcapture',
-       dataType:"json",
-       type: 'POST',
-       data: "test",
-   });
+    url: '/setupchange',
+    contentType:"application/json; charset=utf-8",
+    data: deploydata, 
+    type: 'POST'
+    });   
 }
 
 function stampTime()
 {
   jQuery.ajax({
        url: '/update',
+       dataType:"json",
+       type: 'POST',
+       data: "teststring",
+   });
+lastEvent();
+}
+
+function placement()
+{
+  jQuery.ajax({
+       url: '/placement',
+       dataType:"json",
+       type: 'POST',
+       data: "teststring",
+   });
+lastEvent();
+}
+
+function preview()
+{
+  jQuery.ajax({
+       url: '/preview',
        dataType:"json",
        type: 'POST',
        data: "teststring",
@@ -219,17 +244,13 @@ else
 
 <script>
 var JSONObject = {
-  "temp":45,
+  "temp":42,
   "long":16, 
   "lat":30};
 document.getElementById("systemp").innerHTML=JSONObject.temp  
 document.getElementById("longvalue").innerHTML=JSONObject.long 
 document.getElementById("latvalue").innerHTML=JSONObject.lat  
 </script>
-<!-- 
-++++++++++++++++++++++++++++++++++++++++++++
-Scripts/functions above for testing purposes
--->
 
     </div> <!-- /container -->
 
@@ -239,7 +260,7 @@ Scripts/functions above for testing purposes
     <script src="static/docs/assets/js/jquery.js"></script>
     <script src="static/bootstrap/js/bootstrap.js"></script>
     <script src="static/bootstrap/js/bootstrap.min.js"></script>
-    <script src="static/docs/assets/js/jquery-1.9.1.js"></script>
+    <script src="static/js/jquery-1.9.1.js"></script>
     <script src="static/docs/assets/js/global_layout.js"></script>
 
   </body>

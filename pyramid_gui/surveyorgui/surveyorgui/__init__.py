@@ -20,6 +20,7 @@ def main(global_config, **settings):
     config.add_route('spifiles', '/spifiles')
     config.add_route('camfiles', '/camfiles')
     config.add_route('logfiles', '/logfiles')
+    config.add_static_view(name='scans', path='/home/brian/scan')
     config.scan()
 #    print dir(config)  // prints all object to console
     return config.make_wsgi_app()

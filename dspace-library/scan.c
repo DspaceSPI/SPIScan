@@ -1,5 +1,5 @@
 //
-//  (C) Paul Campbell paul@taniwha.com 2012
+// (C) Paul Campbell paul@taniwha.com 2012
 //
 #include <stdio.h>
 #include <string.h>
@@ -23,8 +23,8 @@ typedef struct scan_type {
 #define SCAN_TYPE(dpi, degrees) {dpi, CIRC*(double)degrees/360.0}
 
 static const scan_type st[] = {
-	SCAN_TYPE(75,75),		// preview
-	SCAN_TYPE(300,300),		// scan
+	SCAN_TYPE(75,100),		// placement check
+	SCAN_TYPE(75,1100),		// preview scan
 	SCAN_TYPE(600,600),		// HQ scan
 };
 
@@ -57,7 +57,7 @@ tiff_name(char *v)
         strncpy(tiff_file, v, sizeof(tiff_file));
         tiff_file[sizeof(tiff_file)-1] = 0;
 }
-// purpose
+// purpose setting up variables
 void *
 scan_thread(void *v)
 {
@@ -88,14 +88,14 @@ printf("s1\n");
 		if (!initted) {		// initialise the first time
 			initted = 1;
 			not_retried = 1;
-printf("initted");
+printf("initted\n");
 retry:		
 printf("s2\n");
 			if (initted_already) {	// close stuff if required
 				if (opened)
-					printf("closing sane");
+					printf("closing sane\n");
 					sane_close(handle);
-				printf("exiting sane");
+				printf("exiting sane\n");
 				sane_exit();
 				opened=0;
 				initted_already=0;
@@ -108,7 +108,7 @@ printf("s3\n");
 				goto done;
 			}
 			not_retried = 0;
-printf("s4\n");
+printf("looking for sane devices\n");
 
 			sane_init(0,0);		// init sane
 			initted_already=1;
@@ -117,8 +117,8 @@ printf("s4\n");
 				fprintf(stderr, "no scanners found '%s'\n", sane_strstatus(res));
 				goto retry;
 			}
-printf("s5\n");
-			for (i = 0; ; i++) {	// walk thru the list of devices ooking for ours
+printf("looking for genesys device\n");
+			for (i = 0; ; i++) {	// walk thru the list of devices looking for ours
 				if (!list[i]) {		// end of list - genesys not found
 					fprintf(stderr, "SANE can't find a genesys scanner\n");
 					goto retry;
@@ -146,12 +146,12 @@ printf("searching for options\n");
 				if (!o)
 					continue;
 			// --mode=Color --depth=8 --resolution=600 --format=tiff 
-printf("%d: option name='%s'\n", i, o->name);
-printf("%d: option unit=%d\n", i, o->unit);
+//printf("%d: option name='%s'\n", i, o->name);
+//printf("%d: option unit=%d\n", i, o->unit);
 //printf("%d: option title='%s'\n", i, o->title);
 //printf("%d: option desc='%s'\n", i, o->desc);
-printf("%d: option type=%d\n", i, o->type);
-printf("%d: option size=%d\n", i, o->size);
+//printf("%d: option type=%d\n", i, o->type);
+//printf("%d: option size=%d\n", i, o->size);
 //printf("%d: option ct=%d\n", i, o->constraint_type);
 //printf("%d: option range=0x%lx\n", i, (long)o->constraint.range);
 fflush(stdout);
@@ -181,7 +181,7 @@ printf("setting options handle=%lx\n", (long)handle);
 		} else {	// set resolution
 			SANE_Word val = st[this_scan_type].dpi;
 			res = sane_control_option(handle, resolution_option, SANE_ACTION_SET_VALUE, &val, 0);
-			printf("set resolution choice flag");
+			printf("set resolution choice flag\n");
 			if (res != SANE_STATUS_GOOD)
 				fprintf(stderr, "SANE set resolution=%d failed '%s'\n", val,  sane_strstatus(res));
 		}
@@ -189,7 +189,7 @@ printf("setting options handle=%lx\n", (long)handle);
 		if (br_y_option < 0) {
 			fprintf(stderr, "no SANE br-y parameter found\n");
 		} else {	// set length
-		        printf("else chosen flag");
+		        printf("else chosen flag\n");
 			SANE_Fixed val = SANE_FIX(st[this_scan_type].length);// altered from SANE_Fixed val = SANE_FIX(st[this_scan_type].length)  but then changed to SANE_Fixed val = st[this_scan_type].length;
 			//if (o->unit != SANE_UNIT_MM)
 			//	val = val*st[this_scan_type].dpi/25.4;
@@ -197,12 +197,13 @@ printf("setting options handle=%lx\n", (long)handle);
 			if (res != SANE_STATUS_GOOD)
 				fprintf(stderr, "SANE set length %d/%d failed '%s'\n", val, SANE_FIX(st[this_scan_type].length), sane_strstatus(res));
 		}
-                printf("about to setScanner");
+                printf("about to setScanner\n");
 		setScanner((char*)"Canon", (char*)"700F");
 printf("start\n");
-		if (sane_start(handle) != SANE_STATUS_GOOD)
+		if (sane_start(handle) != SANE_STATUS_GOOD) {
 		        printf("retrying");
 			goto retry;
+		}
 printf("start done\n");
 		if ((res = sane_get_parameters(handle, &p)) != SANE_STATUS_GOOD) {
 			fprintf(stderr, "SANE get parameters failed '%s'\n", sane_strstatus(res));

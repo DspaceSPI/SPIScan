@@ -25,7 +25,24 @@
     <link rel="apple-touch-icon-precomposed" sizes="72x72" href="static/docs/assets/ico/apple-touch-icon-72-precomposed.png">
     <link rel="apple-touch-icon-precomposed" href="static/docs/assets/ico/apple-touch-icon-57-precomposed.png">
     <script src="static/js/jquery-1.9.1.min.js"></script>
+<script>
+$(document).ready(function(){
+  
+   // document.getElementById("memo").innerHTML=jsondata;
 
+});
+
+function savesetup()
+{
+setupdata = JSON.stringify({"topmargin" : $("#topmargin").val(), "endmargin" : $("#endmargin").val(), "startmargin" : $("#startmargin").val(), "botmargin" : $("#botmargin").val(), "pretopmargin" : $("#pretopmargin").val(),"preendmargin" : $("#preendmargin").val(),"prestartmargin" : $("#prestartmargin").val(),"prebotmargin" : $("#prebotmargin").val(),"plcendmargin" : $("#plcendmargin").val(),"plcstartmargin" : $("#plcstartmargin").val(),"autoscaninterval" : $("#autoscaninterval").val(),"autopiccapture" : $("#autopiccapture").val(), "overlaytext" : $("#overlaytext").val(), "viddev" : $("#viddev").val()});
+jQuery.ajax({
+    url: '/setupchange',
+    contentType:"application/json; charset=utf-8",
+    data: setupdata, 
+    type: 'POST'
+    });
+}
+</script>
   </head>
 
   <body>
@@ -56,77 +73,59 @@
 <div class="container-fluid">
  <div class="row">
  	<div class="span12">
- 	<p style="text-align:center"><a class="btn btn-warning" href="#" id="defaultsetupvalues" onclick="setupDefaults()">Change to Default Values</a><nbsp><a class="btn" href="/manual.html" target="blank" id="manbtn">User Manual <i class="icon-question-sign"></i></a></p>
+ 	<p style="text-align:center"><a class="btn btn-warning" href="#" id="savesetupbtn" onclick="savesetup()">Save Setup Below</a>&nbsp;<a class="btn btn-primary" href="#" id="defaultsetupvalues" onclick="setupDefaults()">Change to Default Values</a>&nbsp;<a class="btn" href="/manual.html" target="blank" id="manbtn">User Manual <i class="icon-question-sign"></i></a></p>
 	</div>
  </div>
 <div>
-
+<form name="scannersetup" class="well" method="post">
 <div class="container-fluid">
  <div class="row">
         <div class="span12">
-		<form name="setupmargin" class="well" method="post">
+		
 		<h2>Scanner</h2>
 		<h3>Acquire Scan Margins</h3>
-		<p style="text-align:center">Top (mm)<input type="text" class="input-small" value="0">
-		<p style="text-align:middle; text-align:center">End (12-200 mm)<input type="text" class="input-small" id="endmargin" onchange="validateSetup()"><img src="static/docs/assets/img/marginfig.png">Start (mm)<input type="text" class="input-small" value="0">
-		<p style="text-align:center">Bottom (mm)<input type="text" class="input-small" value="0">
+		<p style="text-align:center">Top (mm)<input type="text" class="input-small" value="0" id="topmargin">
+		<p style="text-align:middle; text-align:center">End (12-200 mm)<input type="text" class="input-small" id="endmargin" onchange="validateSetup()"><img src="static/docs/assets/img/marginfig.png">Start (mm)<input type="text" class="input-small" value="0" id="startmargin">
+		<p style="text-align:center">Bottom (mm)<input type="text" class="input-small" value="0" id="botmargin">
 		
 		<h3>Preview Scan Margins</h3>
 		Preview scans are at low resolution (75 dpi)
-		<p style="text-align:center">Top (mm)<input type="text" class="input-small" value="0">
-		<p style="text-align:middle; text-align:center">End (12-200 mm)<input type="text" class="input-small" id="preendmargin" onchange="validateSetup()"><nbsp>Start (mm)<input type="text" class="input-small" value="0">
-		<p style="text-align:center">Bottom (mm)<input type="text" class="input-small" value="0">
+		<p style="text-align:center">Top (mm)<input type="text" class="input-small" value="0" id="pretopmargin">
+		<p style="text-align:middle; text-align:center">End (12-200 mm)<input type="text" class="input-small" id="preendmargin" onchange="validateSetup()"><nbsp>Start (mm)<input type="text" class="input-small" value="0" id="prestartmargin">
+		<p style="text-align:center">Bottom (mm)<input type="text" class="input-small" value="0" id="prebotmargin">
 
 		<h3>Placement Check Scan Extent</h3>
-		Preview scans are at low resolution (75 dpi)
-		<p style="text-align:middle; text-align:center">End (12-200 mm)<input type="text" class="input-small" id="plcendmargin" onchange="validateSetup()"><nbsp>Start (mm)<input type="text" class="input-small" value="0">
+		Placement scans are at low resolution (75 dpi)
+		<p style="text-align:middle; text-align:center">End (12-200 mm)<input type="text" class="input-small" id="plcendmargin" onchange="validateSetup()"><nbsp>Start (mm)<input type="text" class="input-small" value="0" id="plcstartmargin">
 		
 		<label class="control-label" for="input01"><h3>Autoscan</h3></label>
 		<p class="help-block">Period (minutes) between scans when Autoscan is active<input type=text" class="input-small" id="autoscaninterval" value="1">
 		<br/>
 		Capture simultaneous seabed images? <input type="checkbox" id="autopiccapture"> 
 		</p>
-		</form>
-	</div>
- </div>
-
-<div class="row">
-        <div class="span12">
-            	<form class="well">
-			<h2>Information Overlay</h2>
-			<label class="control-label" for="select01"><h3>Information to include</h3></label>
-			<div class="controls"><input type=text" class="input-large" id="overlaytext"  value="Sample %date %time %lat %long %deg WGS84"><p class="help-block">%time = GPS or computer time, %date = computer date, %lat = GPS latitude, %long = GPS longitude, %deg = &deg;, text = user text</p>
-			</div>
-		<label class="control-label" for="select01"><h3>Margins</h3></label>
-		<div class="controls"><b>Top</b><nbsp><input type=text" class="input-small" id="overlaytopmargin" value="2">
-		<p class="help-block">Distance (mm) from top of scan</p>
-			</div>
-			<div class="controls"><b>Start</b><nbsp><input type=text" class="input-small" id="overlaytopmargin" value="2"><p class="help-block">Distance (mm) from start of scan</p>
-			</div>
 		
-		</form>
-        
-	</div>
-</div>
-      
-<div class="row">
-	<div class="span12">
-            	<form class="well">
-            	<h2>Deployment Camera</h2>
+
+<hr>
+            	
+			<label class="control-label" for="overlaytext"><h3>Overlay</h3></label>
+			<div class="controls"><input type=text" class="input-large" id="overlaytext"  value="ProjA1"><p class="help-block"> Your label will be appended to GPS or computer time, date, latitude and longitude (WGS84)</p>
+			</div>	
+<hr>
+            	
+            	<h3>Deployment Camera</h3>
 		<div class="controls">
-		<select id="camdevice">
-		<option>video device 0</option>
-		<option>video device 1</option>	
-		<option>video device 2</option>
+		<select id="viddev">
+		<option>0</option>
+		<option>1</option>	
+		<option>2</option>
 		</div>
-		</form>
+		<p class="help-block"> video device 0 is SPI-Scan system camera, others may be added, but check system info for device id</p>
+		
     	</div>
     
 </div>  
+</form>
 
-<footer>
-
-</footer>
 </div> <!-- /container -->
 
 <!--
@@ -135,16 +134,9 @@ The code below is for testing purposes
 -->
 
 <script>
-var JSONOBJECTdefaultValues [
-{"topmarg":0,"startmarg":0,"endmarg":15,"botmarg":0,"pretopmarg":0,"prestartmarg":0}
-];
-
-var endmargdefault;
-var emax;
-var emin;
-endmargdefault = 15;
-emax = 200;
-emin = 12;
+var endmargdefault = 15;
+var emax = 200;
+var emin = 12;
 
 function willRobinson()
 {
@@ -197,7 +189,7 @@ The code above is for testing purposes
     <script src="static/docs/assets/js/jquery.js"></script>
     <script src="static/bootstrap/js/bootstrap.js"></script>
     <script src="static/bootstrap/js/bootstrap.min.js"></script>
-    <script src="static/docs/assets/js/jquery-1.9.1.js"></script>
+    <script src="static/js/jquery-1.9.1.js"></script>
     <script src="static/docs/assets/js/global_layout.js"></script>
-  </body>
+</body>
 </html>

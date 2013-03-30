@@ -155,6 +155,7 @@ surveyorgui/static/img/gpslockoff.gif
 surveyorgui/static/img/gpslockoff.png
 surveyorgui/static/img/gpslockon.gif
 surveyorgui/static/img/gpslockon.png
+surveyorgui/static/img/samplethumb.jpg
 surveyorgui/static/js/bootstrap-alert.js
 surveyorgui/static/js/bootstrap-button.js
 surveyorgui/static/js/bootstrap-carousel.js
@@ -192,11 +193,13 @@ surveyorgui/static/srvrscans/20120919173130.jpg
 surveyorgui/static/srvrscans/20120919173500.jpg
 surveyorgui/templates/about.pt
 surveyorgui/templates/add.pt
+surveyorgui/templates/camfiles.pt
 surveyorgui/templates/company.pt
 surveyorgui/templates/files.pt
 surveyorgui/templates/global_layout.pt
 surveyorgui/templates/index.pt
 surveyorgui/templates/io.pt
+surveyorgui/templates/logfiles.pt
 surveyorgui/templates/manual.pt
 surveyorgui/templates/people.pt
 surveyorgui/templates/setup.pt
